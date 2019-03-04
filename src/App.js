@@ -1,54 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { indexedDBinit, idbInputs } from './utils/indexedDB';
+import { indexedDBinit, idbEvents } from './utils/indexedDB';
 import QuestionBlock from './components/QuestionBlock';
 import AddInputButton from './components/AddInputButton';
 
 function App() {
-	const [inputList, setInputList] = useState([]);
+	const [questionList, setQuestionList] = useState([]);
 
 	useEffect(() => {
 		indexedDBinit();
-		idbInputs.getAll().then(e => setInputList(e));
+		idbEvents.getAll().then(e => setQuestionList(e));
 	}, []);
 
 	useEffect(() => {
-		console.log(inputList);
+		console.log(questionList);
 	});
 
 	const addQuestion = value => {
-		idbInputs.set(value).then(() => {
-			idbInputs.getAll().then(e => {
-				setInputList(e);
+		idbEvents.set(value).then(() => {
+			idbEvents.getAll().then(e => {
+				setQuestionList(e);
 			});
 		});
 	};
 
 	const removeQuestion = id => {
-		idbInputs.delete(id).then(() => {
-			idbInputs.getAll().then(e => {
-				setInputList(e);
+		idbEvents.delete(id).then(() => {
+			idbEvents.getAll().then(e => {
+				setQuestionList(e);
 			});
-		});
-	};
-
-	const QuestionBlockList = props => {
-		return inputList.map(i => {
-			return (
-				<QuestionBlock
-					key={i.id}
-					value={i.name}
-					id={i.id}
-					removeQuestion={props.removeQuestion}
-				>
-					{i.name} {i.id}
-				</QuestionBlock>
-			);
 		});
 	};
 
 	return (
 		<div className="App">
-			<QuestionBlockList removeQuestion={removeQuestion} />
+			<h1>FORM BUILDER</h1>
+			{questionList.map(i => {
+				return (
+					<QuestionBlock
+						key={i.id}
+						value={i}
+						removeQuestion={removeQuestion}
+						updateQuestion={addQuestion}
+					/>
+				);
+			})}
+
 			<AddInputButton addQuestion={addQuestion} />
 		</div>
 	);

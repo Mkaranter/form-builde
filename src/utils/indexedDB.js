@@ -1,4 +1,4 @@
-import { openDb, deleteDb } from 'idb';
+import { openDb } from 'idb';
 
 export const indexedDBinit = () => {
 	if (!('indexedDB' in window)) {
@@ -19,7 +19,7 @@ export const indexedDBinit = () => {
 
 const dbPromise = openDb('form-db');
 
-export const idbInputs = {
+export const idbEvents = {
 	async getAll() {
 		const db = await dbPromise;
 		return db

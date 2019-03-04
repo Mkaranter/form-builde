@@ -1,24 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { indexedDBinit, idbInputs } from './utils/indexedDB';
+import QuestionBlock from './components/QuestionBlock';
+import AddInputButton from './components/AddInputButton';
 
 function App() {
+	const [inputList, setInputList] = useState([]);
+
+	useEffect(() => {
+		indexedDBinit();
+		idbInputs.getAll().then(e => setInputList(e));
+	}, []);
+
+	useEffect(() => {
+		console.log(inputList);
+	});
+
+	const addQuestion = value => {
+		idbInputs.set(value).then(() => {
+			idbInputs.getAll().then(e => {
+				setInputList(e);
+			});
+		});
+	};
+
+	const removeQuestion = id => {
+		idbInputs.delete(id).then(() => {
+			idbInputs.getAll().then(e => {
+				setInputList(e);
+			});
+		});
+	};
+
+	const QuestionBlockList = props => {
+		return inputList.map(i => {
+			return (
+				<QuestionBlock
+					key={i.id}
+					value={i.name}
+					id={i.id}
+					removeQuestion={props.removeQuestion}
+				>
+					{i.name} {i.id}
+				</QuestionBlock>
+			);
+		});
+	};
+
 	return (
 		<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<p>
-					Edit <code>src/App.js</code> and save to reload.
-				</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-			</header>
+			<QuestionBlockList removeQuestion={removeQuestion} />
+			<AddInputButton addQuestion={addQuestion} />
 		</div>
 	);
 }

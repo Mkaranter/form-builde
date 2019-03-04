@@ -14,6 +14,13 @@ function QuestionBlockStyled(props) {
 		props.updateQuestion({ ...props.value, type: e.target.value });
 	};
 
+	const addSubQuestion = () => {
+		props.updateQuestion({
+			parentId: props.value.id,
+			question: ''
+		});
+	};
+
 	return (
 		<QuestionBlock>
 			<label htmlFor={`question-${props.value.question}`}>Question</label>
@@ -35,6 +42,7 @@ function QuestionBlockStyled(props) {
 				<option value="boolean">Yes / No</option>
 			</select>
 			<button onClick={() => props.removeQuestion(props.value.id)}>X</button>
+			<button onClick={() => addSubQuestion(props.value.id)}>ADD SUB</button>
 		</QuestionBlock>
 	);
 }

@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { indexedDBinit, idbEvents } from './utils/indexedDB';
 import AddInputButton from './components/AddInputButton';
 import RenderQuestionTree from './components/RenderQuestionTree';
+import ShowFormButton from './components/ShowFormButton';
+import GeneratedForm from './components/GeneratedForm';
 
 function App() {
 	const [questionList, setQuestionList] = useState([]);
+	const [generatedFormVisible, setGeneratedFormVisible] = useState(false);
 
 	useEffect(() => {
 		indexedDBinit();
 		idbEvents.getAll().then(e => setQuestionList(flatToRoot(e)));
 	}, []);
-
-	useEffect(() => {
-		console.log(questionList);
-	});
 
 	const addQuestion = value => {
 		if (value.children) delete value.children;
@@ -36,6 +35,12 @@ function App() {
 				return removeQuestion(e);
 			});
 		}
+	};
+
+	const getOne = id => {
+		return idbEvents.getOne(id).then(value => {
+			return value;
+		});
 	};
 
 	const flatToRoot = data => {
@@ -66,13 +71,21 @@ function App() {
 
 	return (
 		<div className="App">
-			<h1>FORM BUILDER</h1>
-			<RenderQuestionTree
-				data={questionList}
-				removeQuestion={removeQuestion}
-				updateQuestion={addQuestion}
-			/>
-			<AddInputButton addQuestion={addQuestion} />
+			{!generatedFormVisible ? (
+				<Fragment>
+					<h1>FORM BUILDER</h1>
+					<RenderQuestionTree
+						data={questionList}
+						removeQuestion={removeQuestion}
+						updateQuestion={addQuestion}
+						getOne={getOne}
+					/>
+					<AddInputButton addQuestion={addQuestion} />
+					<ShowFormButton setGeneratedFormVisible={setGeneratedFormVisible} />
+				</Fragment>
+			) : (
+				<GeneratedForm formData={questionList} getOne={getOne} />
+			)}
 		</div>
 	);
 }

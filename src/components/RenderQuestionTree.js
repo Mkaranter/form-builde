@@ -9,12 +9,14 @@ function RenderQuestionTree(props) {
 					value={i}
 					removeQuestion={props.removeQuestion}
 					updateQuestion={props.updateQuestion}
+					getOne={props.getOne}
 				/>
 				{i.children ? (
 					<RenderQuestionTree
 						data={i.children}
 						updateQuestion={props.updateQuestion}
 						removeQuestion={props.removeQuestion}
+						getOne={props.getOne}
 					/>
 				) : null}
 			</div>

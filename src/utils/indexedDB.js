@@ -28,6 +28,14 @@ export const idbEvents = {
 			.getAll();
 	},
 
+	async getOne(key) {
+		const db = await dbPromise;
+		return db
+			.transaction('formStore')
+			.objectStore('formStore')
+			.get(key);
+	},
+
 	async set(val) {
 		const db = await dbPromise;
 		const tx = db.transaction('formStore', 'readwrite');

@@ -1,11 +1,20 @@
 import React from 'react';
+import styled from 'styled-components';
 
-function AddInputButton(props) {
+const AddInputButton = styled.button`
+	background: lightgrey;
+	padding: 5px 10px;
+	margin: 0 10px 0 10px;
+`;
+
+function AddInputButtonStyled(props) {
 	return (
-		<button onClick={() => props.addQuestion({ question: '', type: 'text' })}>
-			Add question block
-		</button>
+		<AddInputButton
+			onClick={() => props.addQuestion({ question: '', type: 'text' })}
+		>
+			Add Input
+		</AddInputButton>
 	);
 }
 
-export default AddInputButton;
+export default AddInputButtonStyled;

@@ -14,7 +14,11 @@ const InputWrapper = styled.div`
 	label {
 		width: 20%;
 	}
-	input,
+	input {
+		flex-grow: ${props => (props.select ? '0' : '1')};
+		width: ${props => (props.select ? '20%' : 'unset')};
+		margin: ${props => (props.select ? '0 0 0 10px' : '0')};
+	}
 	select {
 		flex-grow: 1;
 	}
@@ -23,6 +27,16 @@ const InputWrapper = styled.div`
 const ButtonWrapper = styled.div`
 	display: flex;
 	justify-content: flex-end;
+	margin: 10px 10px 0 0;
+
+	button {
+		background: lightgrey;
+		padding: 5px 10px;
+	}
+
+	button:first-child {
+		margin: 0 10px 0 0;
+	}
 `;
 
 function QuestionBlockStyled(props) {
@@ -66,7 +80,7 @@ function QuestionBlockStyled(props) {
 	return (
 		<QuestionBlock level={props.value.level}>
 			{props.value.level > 0 ? (
-				<div>
+				<InputWrapper select>
 					<label>Condition</label>
 					<select onChange={inputConditionTypeChange}>
 						<option value="equals">Equals</option>
@@ -78,7 +92,7 @@ function QuestionBlockStyled(props) {
 						) : null}
 					</select>
 					<input onChange={inputConditionValueChange} />
-				</div>
+				</InputWrapper>
 			) : null}
 			<InputWrapper>
 				<label htmlFor={`question-${props.value.question}`}>Question</label>

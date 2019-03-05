@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 
 const FormBlock = styled.fieldset`
@@ -21,11 +21,46 @@ const FormBlock = styled.fieldset`
 	}
 `;
 
+const RadioWrapper = styled.div`
+	input {
+		width: unset;
+	}
+
+	label {
+		padding: 0 0 0 10px;
+	}
+`;
+
 function FormBlockStyled(props) {
 	return (
 		<FormBlock>
 			<label>{props.data.question}</label>
-			<input onChange={props.setFormInputValue} />
+			{props.data.type !== 'boolean' ? (
+				<input onChange={props.setFormInputValue} />
+			) : (
+				<Fragment>
+					<RadioWrapper>
+						<input
+							type="radio"
+							id="yes"
+							name="boolForm"
+							value="true"
+							onChange={props.setFormInputValue}
+						/>
+						<label htmlFor="yes">Yes</label>
+					</RadioWrapper>
+					<RadioWrapper>
+						<input
+							type="radio"
+							name="boolForm"
+							id="no"
+							value="false"
+							onChange={props.setFormInputValue}
+						/>
+						<label htmlFor="no">No</label>
+					</RadioWrapper>
+				</Fragment>
+			)}
 		</FormBlock>
 	);
 }

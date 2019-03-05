@@ -18,9 +18,15 @@ const InputWrapper = styled.div`
 		flex-grow: ${props => (props.select ? '0' : '1')};
 		width: ${props => (props.select ? '20%' : 'unset')};
 		margin: ${props => (props.select ? '0 0 0 10px' : '0')};
+		padding: 0 0 0 5px;
 	}
 	select {
 		flex-grow: 1;
+	}
+	select:nth-child(3) {
+		width: 30%;
+		margin: 0 0 0 10px;
+		flex-grow: 0;
 	}
 `;
 
@@ -91,7 +97,18 @@ function QuestionBlockStyled(props) {
 							<option value="less">Less than</option>
 						) : null}
 					</select>
-					<input onChange={inputConditionValueChange} />
+					{parentValueType !== 'boolean' ? (
+						<input
+							onChange={inputConditionValueChange}
+							type={parentValueType}
+						/>
+					) : (
+						<select onChange={inputConditionValueChange}>
+							<option defaultChecked />
+							<option value="true">Yes</option>
+							<option value="false">No</option>
+						</select>
+					)}
 				</InputWrapper>
 			) : null}
 			<InputWrapper>

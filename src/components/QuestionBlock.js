@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 const QuestionBlock = styled.fieldset`
 	display: flex;
+	margin-left: ${props =>
+		props.level ? `${props.level * 20}px` : 'palevioletred'};
 `;
 
 function QuestionBlockStyled(props) {
@@ -22,7 +24,7 @@ function QuestionBlockStyled(props) {
 	};
 
 	return (
-		<QuestionBlock>
+		<QuestionBlock level={props.value.level}>
 			<label htmlFor={`question-${props.value.question}`}>Question</label>
 			<input
 				type="text"
@@ -41,7 +43,7 @@ function QuestionBlockStyled(props) {
 				<option value="number">Number</option>
 				<option value="boolean">Yes / No</option>
 			</select>
-			<button onClick={() => props.removeQuestion(props.value.id)}>X</button>
+			<button onClick={() => props.removeQuestion(props.value)}>X</button>
 			<button onClick={() => addSubQuestion(props.value.id)}>ADD SUB</button>
 		</QuestionBlock>
 	);

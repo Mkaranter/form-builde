@@ -36,7 +36,6 @@ export const idbEvents = {
 	},
 
 	async delete(key) {
-		console.log(key);
 		const db = await dbPromise;
 		const tx = db.transaction('formStore', 'readwrite');
 		tx.objectStore('formStore').delete(key);

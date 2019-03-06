@@ -9,6 +9,7 @@ const rootArray = data => {
 		}
 
 		const parentIndex = data.findIndex(el => el.id === node.parentId);
+
 		if (!data[parentIndex].children) {
 			[node].forEach(n => {
 				n.level = data[parentIndex].level + 1;

@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import ConditionBlock from './QuestionBlock/ConditionBlock';
 
-const QuestionBlock = styled.fieldset`
+const QuestionBlock = styled.form`
 	display: flex;
+	flex-direction: column;
 	margin-left: ${props => (props.level ? `${props.level * 20}px` : '10px')};
 	margin-right: 10px;
 	margin-bottom: 20px;
+	margin-inline-end: 2px;
+	padding-block-start: 0.35em;
+	padding-inline-start: 0.75em;
+	padding-inline-end: 0.75em;
+	padding-block-end: 0.625em;
+	min-inline-size: min-content;
+	border-width: 2px;
+	border-style: groove;
+	border-color: threedface;
+	border-image: initial;
 `;
 
 const InputWrapper = styled.div`
@@ -57,11 +69,25 @@ function QuestionBlockStyled(props) {
 	};
 
 	const inputTypeChange = e => {
-		props.updateQuestion({ ...props.value, type: e.target.value });
+		props
+			.updateQuestion({
+				...props.value,
+				type: e.target.value
+			})
+			.then(() => {
+				props.updateQuestion({
+					...props.value.children[0],
+					conditionType: 'equals',
+					conditionValue: ''
+				});
+			});
 	};
 
 	const inputConditionTypeChange = e => {
-		props.updateQuestion({ ...props.value, conditionType: e.target.value });
+		props.updateQuestion({
+			...props.value,
+			conditionType: e.target.value
+		});
 	};
 
 	const inputConditionValueChange = e => {
@@ -73,7 +99,8 @@ function QuestionBlockStyled(props) {
 			parentId: props.value.id,
 			question: '',
 			type: 'text',
-			conditionType: 'equals'
+			conditionType: 'equals',
+			conditionValue: ''
 		});
 	};
 
@@ -84,33 +111,24 @@ function QuestionBlockStyled(props) {
 	};
 
 	return (
-		<QuestionBlock level={props.value.level}>
-			{props.value.level > 0 ? (
+		<QuestionBlock
+			level={props.value.level}
+			onSubmit={e => {
+				addSubQuestion(props.value.id);
+				e.preventDefault();
+			}}
+		>
+			{props.value.level > 0 && (
 				<InputWrapper select>
-					<label>Condition</label>
-					<select onChange={inputConditionTypeChange}>
-						<option value="equals">Equals</option>
-						{parentValueType === 'number' ? (
-							<option value="greater">Greater than</option>
-						) : null}
-						{parentValueType === 'number' ? (
-							<option value="less">Less than</option>
-						) : null}
-					</select>
-					{parentValueType !== 'boolean' ? (
-						<input
-							onChange={inputConditionValueChange}
-							type={parentValueType}
-						/>
-					) : (
-						<select onChange={inputConditionValueChange}>
-							<option defaultChecked />
-							<option value="true">Yes</option>
-							<option value="false">No</option>
-						</select>
-					)}
+					<ConditionBlock
+						inputConditionTypeChange={inputConditionTypeChange}
+						inputConditionValueChange={inputConditionValueChange}
+						conditionType={props.value.conditionType}
+						conditionValue={props.value.conditionValue}
+						parentValueType={parentValueType}
+					/>
 				</InputWrapper>
-			) : null}
+			)}
 			<InputWrapper>
 				<label htmlFor={`question-${props.value.question}`}>Question</label>
 				<input
@@ -133,10 +151,8 @@ function QuestionBlockStyled(props) {
 				</select>
 			</InputWrapper>
 			<ButtonWrapper>
-				<button onClick={() => addSubQuestion(props.value.id)}>
-					Add Sub-Input
-				</button>
-				<button onClick={() => props.removeQuestion(props.value)}>
+				<button type="submit">Add Sub-Input</button>
+				<button type="button" onClick={() => props.removeQuestion(props.value)}>
 					Delete
 				</button>
 			</ButtonWrapper>

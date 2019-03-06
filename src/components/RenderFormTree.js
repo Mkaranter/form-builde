@@ -1,13 +1,35 @@
 import React, { useState, Fragment } from 'react';
-import FormBlock from './FormBlock';
+import FormBlock from './RenderFormTree/FormBlock';
 
 function RenderFormTree(props) {
 	const [formInputValue, setFormInputValue] = useState('');
 
+	const checkCondition = (
+		conditionType,
+		parentValue,
+		conditionValue,
+		level
+	) => {
+		if (level === 0) return true;
+		if (conditionType === 'equals' && parentValue == conditionValue)
+			return true;
+		if (conditionType === 'less' && parentValue < Number(conditionValue))
+			return true;
+		if (conditionType === 'greater' && parentValue > Number(conditionValue))
+			return true;
+
+		return false;
+	};
+
 	return props.formData.map(e => {
 		return (
 			<div key={e.id}>
-				{props.parentValue === e.conditionValue ? (
+				{checkCondition(
+					e.conditionType,
+					props.parentValue,
+					e.conditionValue,
+					e.level
+				) ? (
 					<Fragment>
 						<FormBlock
 							data={e}

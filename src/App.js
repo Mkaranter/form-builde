@@ -27,7 +27,7 @@ function App() {
 
 	const addQuestion = value => {
 		if (value.children) delete value.children;
-		idbEvents.set(value).then(() => {
+		return idbEvents.set(value).then(() => {
 			idbEvents.getAll().then(e => {
 				setQuestionList(rootArray(e));
 			});

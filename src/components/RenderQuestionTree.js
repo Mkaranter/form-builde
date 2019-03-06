@@ -1,5 +1,5 @@
 import React from 'react';
-import QuestionBlock from './QuestionBlock';
+import QuestionBlock from './RenderQuestionTree/QuestionBlock';
 
 function RenderQuestionTree(props) {
 	return props.data.map(i => {

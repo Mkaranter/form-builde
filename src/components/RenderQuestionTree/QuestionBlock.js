@@ -75,11 +75,15 @@ function QuestionBlockStyled(props) {
 				type: e.target.value
 			})
 			.then(() => {
-				props.updateQuestion({
-					...props.value.children[0],
-					conditionType: 'equals',
-					conditionValue: ''
-				});
+				if (props.value.children.length > 0) {
+					props.value.children.forEach(element => {
+						props.updateQuestion({
+							...element,
+							conditionType: 'equals',
+							conditionValue: ''
+						});
+					});
+				}
 			});
 	};
 

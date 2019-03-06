@@ -75,7 +75,7 @@ function QuestionBlockStyled(props) {
 				type: e.target.value
 			})
 			.then(() => {
-				if (props.value.children.length > 0) {
+				if (props.value.children && props.value.children.length > 0) {
 					props.value.children.forEach(element => {
 						props.updateQuestion({
 							...element,

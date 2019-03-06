@@ -4,8 +4,6 @@ Simple form builder for rooted forms
 
 ## Tech
 
-### Tech
-
 Dillinger uses a number of open source projects to work properly:
 
 - [ReactJS](https://reactjs.org/) - A JavaScript library for building user interfaces

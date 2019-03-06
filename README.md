@@ -4,8 +4,6 @@ Simple form builder for rooted data
 
 ## Tech
 
-Dillinger uses a number of open source projects to work properly:
-
 - [ReactJS](https://reactjs.org/) - A JavaScript library for building user interfaces
 - [Styled Components](https://www.styled-components.com/) - Visual primitives for the component age.
 - [Idb](https://github.com/jakearchibald/idb) - IndexedDB, but with promises

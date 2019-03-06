@@ -1,6 +1,6 @@
 # Form-builder
 
-Simple form builder for rooted forms
+Simple form builder for rooted data
 
 ## Tech
 

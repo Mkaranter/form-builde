@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { idbEvents } from '../../utils/indexedDB'
 import styled from 'styled-components'
 import ConditionBlock from './QuestionBlock/ConditionBlock'
 
@@ -65,47 +66,51 @@ function QuestionBlockStyled(props) {
     })
 
     const inputQuestionChange = e => {
-        props.updateQuestion({ ...props.value, question: e.target.value })
+        idbEvents.updateQuestion({ ...props.value, question: e.target.value })
     }
 
     const inputTypeChange = e => {
-        props
-            .updateQuestion({
-                ...props.value,
-                type: e.target.value,
-            })
-            .then(() => {
-                if (props.value.children && props.value.children.length > 0) {
-                    props.value.children.forEach(element => {
-                        props.updateQuestion({
-                            ...element,
-                            conditionType: 'equals',
-                            conditionValue: '',
-                        })
-                    })
-                }
-            })
+        idbEvents.updateQuestion({ ...props.value, type: e.target.value })
+
+        // .then(() => {
+        //     if (props.value.children && props.value.children.length > 0) {
+        //         props.value.children.forEach(element => {
+        //             props.updateQuestion({
+        //                 ...element,
+        //                 conditionType: 'equals',
+        //                 conditionValue: '',
+        //             })
+        //         })
+        //     }
+        // })
     }
 
     const inputConditionTypeChange = e => {
-        props.updateQuestion({
-            ...props.value,
-            conditionType: e.target.value,
-        })
+        idbEvents.updateQuestion({ ...props.value, conditionType: e.target.value })
     }
 
     const inputConditionValueChange = e => {
-        props.updateQuestion({ ...props.value, conditionValue: e.target.value })
+        idbEvents.updateQuestion({ ...props.value, conditionValue: e.target.value })
     }
 
-    const addSubQuestion = () => {
-        props.updateQuestion({
-            parentId: props.value.id,
+    const addSubQuestion = value => {
+        idbEvents.addSubQuestion({
+            parentId: value.id,
             question: '',
             type: 'text',
             conditionType: 'equals',
             conditionValue: '',
+            level: value.level + 1,
         })
+    }
+
+    const deleteQuestion = value => {
+        if (value.children) {
+            value.children.forEach(element => {
+                idbEvents.deleteQuestion(element.id)
+            })
+        }
+        idbEvents.deleteQuestion(value.id)
     }
 
     const getParentValue = parentId => {
@@ -118,7 +123,7 @@ function QuestionBlockStyled(props) {
         <QuestionBlock
             level={props.value.level}
             onSubmit={e => {
-                addSubQuestion(props.value.id)
+                addSubQuestion(props.value)
                 e.preventDefault()
             }}>
             {props.value.level > 0 && (
@@ -154,7 +159,7 @@ function QuestionBlockStyled(props) {
             </InputWrapper>
             <ButtonWrapper>
                 <button type="submit">Add Sub-Input</button>
-                <button type="button" onClick={() => props.removeQuestion(props.value)}>
+                <button type="button" onClick={() => deleteQuestion(props.value)}>
                     Delete
                 </button>
             </ButtonWrapper>

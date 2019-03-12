@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { idbEvents } from '../utils/indexedDB'
 
 const AddInputButton = styled.button`
     background: lightgrey;
@@ -7,9 +8,12 @@ const AddInputButton = styled.button`
     margin: 0 10px 0 10px;
 `
 
-function AddInputButtonStyled(props) {
+function AddInputButtonStyled() {
     return (
-        <AddInputButton onClick={() => props.addQuestion({ question: '', type: 'text' })}>
+        <AddInputButton
+            onClick={() => {
+                idbEvents.addNewQuestion({ question: '', type: 'text', level: 0 })
+            }}>
             Add Input
         </AddInputButton>
     )

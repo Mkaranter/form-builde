@@ -1,7 +1,8 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { idbEvents } from './utils/indexedDB'
+import arrayToTree from 'array-to-tree'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
-import rootArray from './utils/rootArray'
 import AddInputButton from './components/AddInputButton'
 import RenderQuestionTree from './components/RenderQuestionTree'
 import ShowFormButton from './components/ShowFormButton'
@@ -16,36 +17,12 @@ const AppWrapper = styled.div`
     }
 `
 
-function App() {
-    const [questionList, setQuestionList] = useState([])
+function App(props) {
     const [generatedFormVisible, setGeneratedFormVisible] = useState(false)
 
     useEffect(() => {
-        idbEvents.getAll().then(e => setQuestionList(rootArray(e)))
+        idbEvents.getAllRedux()
     }, [])
-
-    const addQuestion = value => {
-        if (value.children) delete value.children
-        return idbEvents.set(value).then(() => {
-            idbEvents.getAll().then(e => {
-                setQuestionList(rootArray(e))
-            })
-        })
-    }
-
-    const removeQuestion = value => {
-        idbEvents.delete(value.id).then(() => {
-            idbEvents.getAll().then(e => {
-                return setQuestionList(rootArray(e))
-            })
-        })
-
-        if (value.children) {
-            return value.children.map(e => {
-                return removeQuestion(e)
-            })
-        }
-    }
 
     const getOne = id => {
         return idbEvents.getOne(id).then(value => {
@@ -59,19 +36,26 @@ function App() {
                 <Fragment>
                     <h1>FORM BUILDER</h1>
                     <RenderQuestionTree
-                        data={questionList}
-                        removeQuestion={removeQuestion}
-                        updateQuestion={addQuestion}
+                        data={arrayToTree(props.questionList, { parentProperty: 'parentId' })}
                         getOne={getOne}
                     />
-                    <AddInputButton addQuestion={addQuestion} />
+                    <AddInputButton />
                     <ShowFormButton setGeneratedFormVisible={setGeneratedFormVisible} />
                 </Fragment>
             ) : (
-                <GeneratedForm formData={questionList} getOne={getOne} />
+                <GeneratedForm getOne={getOne} />
             )}
         </AppWrapper>
     )
 }
 
-export default App
+const mapStateToProps = state => {
+    return {
+        questionList: state.form.questionList,
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(App)

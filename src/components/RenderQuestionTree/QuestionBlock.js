@@ -59,38 +59,45 @@ const ButtonWrapper = styled.div`
 `
 
 function QuestionBlockStyled(props) {
-    const [parentValueType, setParentValueType] = useState({})
+    const [questionValue, setQuestionValue] = useState({})
+    const [questionText, setQuestionText] = useState('')
+    const [questionType, setQuestionType] = useState('')
+    const [conditionText, setConditionText] = useState('')
+    const [conditionType, setConditionType] = useState('')
+    const [parentValueType, setParentValueType] = useState('')
 
     useEffect(() => {
-        if (props.value.parentId) getParentValue(props.value.parentId)
+        idbEvents.getOne(props.questionId).then(val => {
+            setQuestionValue(val)
+            setQuestionText(val.question)
+            setQuestionType(val.type)
+            setConditionText(val.conditionValue)
+            setConditionType(val.conditionType)
+        })
+    }, [])
+
+    useEffect(() => {
+        if (props.parentId) getParentValue(props.parentId)
     })
 
-    const inputQuestionChange = e => {
-        idbEvents.updateQuestion({ ...props.value, question: e.target.value })
+    const questionTextChange = e => {
+        setQuestionText(e.target.value)
+        idbEvents.updateQuestion({ ...questionValue, question: e.target.value })
     }
 
-    const inputTypeChange = e => {
-        idbEvents.updateQuestion({ ...props.value, type: e.target.value })
+    const questionTypeChange = e => {
+        setQuestionType(e.target.value)
+        idbEvents.updateQuestion({ ...questionValue, type: e.target.value })
+    }
 
-        // .then(() => {
-        //     if (props.value.children && props.value.children.length > 0) {
-        //         props.value.children.forEach(element => {
-        //             props.updateQuestion({
-        //                 ...element,
-        //                 conditionType: 'equals',
-        //                 conditionValue: '',
-        //             })
-        //         })
-        //     }
-        // })
+    const inputConditionTextChange = e => {
+        setConditionText(e.target.value)
+        idbEvents.updateQuestion({ ...questionValue, conditionValue: e.target.value })
     }
 
     const inputConditionTypeChange = e => {
-        idbEvents.updateQuestion({ ...props.value, conditionType: e.target.value })
-    }
-
-    const inputConditionValueChange = e => {
-        idbEvents.updateQuestion({ ...props.value, conditionValue: e.target.value })
+        setConditionType(e.target.value)
+        idbEvents.updateQuestion({ ...questionValue, conditionType: e.target.value })
     }
 
     const addSubQuestion = value => {
@@ -114,44 +121,42 @@ function QuestionBlockStyled(props) {
     }
 
     const getParentValue = parentId => {
-        props.getOne(parentId).then(val => {
-            setParentValueType(val.type)
-        })
+        idbEvents.getOne(parentId).then(val => setParentValueType(val.type))
     }
 
     return (
         <QuestionBlock
-            level={props.value.level}
+            level={questionValue.level}
             onSubmit={e => {
-                addSubQuestion(props.value)
+                addSubQuestion(questionValue)
                 e.preventDefault()
             }}>
-            {props.value.level > 0 && (
+            {questionValue.level > 0 && (
                 <InputWrapper select>
                     <ConditionBlock
                         inputConditionTypeChange={inputConditionTypeChange}
-                        inputConditionValueChange={inputConditionValueChange}
-                        conditionType={props.value.conditionType}
-                        conditionValue={props.value.conditionValue}
+                        inputConditionValueChange={inputConditionTextChange}
+                        conditionType={conditionType}
+                        conditionValue={conditionText}
                         parentValueType={parentValueType}
                     />
                 </InputWrapper>
             )}
             <InputWrapper>
-                <label htmlFor={`question-${props.value.question}`}>Question</label>
+                <label htmlFor={`question-${questionText}`}>Question</label>
                 <input
                     type="text"
-                    id={`question-${props.value.question}`}
-                    value={props.value.question}
-                    onChange={inputQuestionChange}
+                    id={`question-${questionText}`}
+                    value={questionText}
+                    onChange={questionTextChange}
                 />
             </InputWrapper>
             <InputWrapper>
-                <label htmlFor={`type-${props.value}`}>Type</label>
+                <label htmlFor={`type-${questionType}`}>Type</label>
                 <select
-                    id={`type-${props.value}`}
-                    value={props.value.type}
-                    onChange={inputTypeChange}>
+                    id={`type-${questionType}`}
+                    value={questionType}
+                    onChange={questionTypeChange}>
                     <option value="text">Text</option>
                     <option value="number">Number</option>
                     <option value="boolean">Yes / No</option>

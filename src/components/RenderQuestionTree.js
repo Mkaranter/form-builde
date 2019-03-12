@@ -5,8 +5,8 @@ function RenderQuestionTree(props) {
     return props.data.map(i => {
         return (
             <div key={i.id}>
-                <QuestionBlock value={i} getOne={props.getOne} />
-                {i.children && <RenderQuestionTree data={i.children} getOne={props.getOne} />}
+                <QuestionBlock questionId={i.id} parentId={i.parentId} />
+                {i.children && <RenderQuestionTree data={i.children} />}
             </div>
         )
     })

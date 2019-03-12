@@ -24,12 +24,6 @@ function App(props) {
         idbEvents.getAllRedux()
     }, [])
 
-    const getOne = id => {
-        return idbEvents.getOne(id).then(value => {
-            return value
-        })
-    }
-
     return (
         <AppWrapper>
             {!generatedFormVisible ? (
@@ -37,13 +31,14 @@ function App(props) {
                     <h1>FORM BUILDER</h1>
                     <RenderQuestionTree
                         data={arrayToTree(props.questionList, { parentProperty: 'parentId' })}
-                        getOne={getOne}
                     />
                     <AddInputButton />
                     <ShowFormButton setGeneratedFormVisible={setGeneratedFormVisible} />
                 </Fragment>
             ) : (
-                <GeneratedForm getOne={getOne} />
+                <GeneratedForm
+                    formData={arrayToTree(props.questionList, { parentProperty: 'parentId' })}
+                />
             )}
         </AppWrapper>
     )

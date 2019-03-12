@@ -18,17 +18,17 @@ function RenderFormTree(props) {
     return props.formData.map(e => {
         return (
             <div key={e.id}>
-                {checkCondition(e.conditionType, formInputValue, e.conditionValue, e.level) ? (
+                {checkCondition(e.conditionType, props.parentValue, e.conditionValue, e.level) && (
                     <Fragment>
                         <FormBlock
                             data={e}
                             setFormInputValue={e => setFormInputValue(e.target.value)}
                         />
-                        {e.children ? (
+                        {e.children && (
                             <RenderFormTree formData={e.children} parentValue={formInputValue} />
-                        ) : null}
+                        )}
                     </Fragment>
-                ) : null}
+                )}
             </div>
         )
     })

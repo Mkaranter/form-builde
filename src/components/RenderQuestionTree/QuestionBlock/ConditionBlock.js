@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 
 function ConditionBlock(props) {
     return (
         <Fragment>
             <label>Condition</label>
-            <select onChange={props.inputConditionTypeChange} value={props.conditionType}>
+            <select onChange={props.conditionTypeChange} value={props.conditionType}>
                 <option value="equals">Equals</option>
                 {props.parentValueType === 'number' && (
                     <Fragment>
@@ -15,12 +15,12 @@ function ConditionBlock(props) {
             </select>
             {props.parentValueType !== 'boolean' ? (
                 <input
-                    onChange={props.inputConditionValueChange}
+                    onChange={props.conditionValueChange}
                     type={props.parentValueType}
                     value={props.conditionValue}
                 />
             ) : (
-                <select onChange={props.inputConditionValueChange} value={props.conditionValue}>
+                <select onChange={props.conditionValueChange} value={props.conditionValue}>
                     <option defaultChecked value="" disabled>
                         -- select --
                     </option>

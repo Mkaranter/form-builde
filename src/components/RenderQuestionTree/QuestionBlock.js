@@ -59,12 +59,14 @@ const ButtonWrapper = styled.div`
 `
 
 function QuestionBlockStyled(props) {
-    const questionTextChange = e => {
-        idbEvents.updateQuestion({
+    const questionChange = (e, property) => {
+        const questionObj = {
             ...props.questionData,
-            question: e.target.value,
             children: undefined,
-        })
+        }
+
+        questionObj[property] = e.target.value
+        idbEvents.updateQuestion(questionObj)
     }
 
     const questionTypeChange = e => {
@@ -85,22 +87,6 @@ function QuestionBlockStyled(props) {
         })
 
         props.setParentValueType(e.target.value)
-    }
-
-    const conditionValueChange = e => {
-        idbEvents.updateQuestion({
-            ...props.questionData,
-            conditionValue: e.target.value,
-            children: undefined,
-        })
-    }
-
-    const conditionTypeChange = e => {
-        idbEvents.updateQuestion({
-            ...props.questionData,
-            conditionType: e.target.value,
-            children: undefined,
-        })
     }
 
     const addSubQuestion = value => {
@@ -133,8 +119,8 @@ function QuestionBlockStyled(props) {
             {props.questionData.level > 0 && (
                 <InputWrapper select>
                     <ConditionBlock
-                        conditionTypeChange={conditionTypeChange}
-                        conditionValueChange={conditionValueChange}
+                        conditionTypeChange={e => questionChange(e, 'conditionType')}
+                        conditionValueChange={e => questionChange(e, 'conditionValue')}
                         conditionType={props.questionData.conditionType}
                         conditionValue={props.questionData.conditionValue}
                         parentValueType={props.parentValueType}
@@ -147,7 +133,7 @@ function QuestionBlockStyled(props) {
                     type="text"
                     id={`question-${props.questionData.id}`}
                     value={props.questionData.question}
-                    onChange={questionTextChange}
+                    onChange={e => questionChange(e, 'question')}
                 />
             </InputWrapper>
             <InputWrapper>

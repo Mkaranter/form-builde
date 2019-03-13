@@ -18,12 +18,6 @@ export const form = {
             })
         },
 
-        // addSubQuestion(state, payload) {
-        //     return produce(state, draft => {
-        //         draft.questionList = [...state.questionList, payload]
-        //     })
-        // },
-
         updateQuestion(state, payload) {
             const updatedState = state.questionList.map(q => {
                 if (q.id === payload.id) return payload

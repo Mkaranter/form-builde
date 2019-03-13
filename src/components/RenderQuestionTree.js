@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import QuestionBlock from './RenderQuestionTree/QuestionBlock'
 
 function RenderQuestionTree(props) {
-    const [parentValueType, setParentValueType] = useState('number')
+    const [parentValueType, setParentValueType] = useState('')
 
     return props.data.map(i => {
         return (

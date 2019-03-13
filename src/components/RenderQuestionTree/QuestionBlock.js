@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { idbEvents } from '../../utils/indexedDB'
 import styled from 'styled-components'
 import ConditionBlock from './QuestionBlock/ConditionBlock'
@@ -59,11 +59,6 @@ const ButtonWrapper = styled.div`
 `
 
 function QuestionBlockStyled(props) {
-    useEffect(() => {
-        // if (props.parentId) getParentValue(props.parentId)
-        // console.log(props)
-    })
-
     const questionTextChange = e => {
         idbEvents.updateQuestion({
             ...props.questionData,
@@ -75,7 +70,6 @@ function QuestionBlockStyled(props) {
     const questionTypeChange = e => {
         if (props.questionData.children) {
             props.questionData.children.forEach(element => {
-                console.log(element)
                 idbEvents.updateQuestion({
                     ...element,
                     conditionType: 'equals',
@@ -110,7 +104,7 @@ function QuestionBlockStyled(props) {
     }
 
     const addSubQuestion = value => {
-        idbEvents.addSubQuestion({
+        idbEvents.addQuestion({
             parentId: value.id,
             question: '',
             type: 'text',

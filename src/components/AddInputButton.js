@@ -12,7 +12,7 @@ function AddInputButtonStyled() {
     return (
         <AddInputButton
             onClick={() => {
-                idbEvents.addNewQuestion({ question: '', type: 'text', level: 0 })
+                idbEvents.addQuestion({ question: '', type: 'text', level: 0 })
             }}>
             Add Input
         </AddInputButton>

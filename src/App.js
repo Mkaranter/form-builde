@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment } from 'react'
 import { idbEvents } from './utils/indexedDB'
 import arrayToTree from 'array-to-tree'
 import { connect } from 'react-redux'
@@ -18,22 +18,20 @@ const AppWrapper = styled.div`
 `
 
 function App(props) {
-    const [generatedFormVisible, setGeneratedFormVisible] = useState(false)
-
     useEffect(() => {
-        idbEvents.getAllRedux()
+        idbEvents.getAllQuestions()
     }, [])
 
     return (
         <AppWrapper>
-            {!generatedFormVisible ? (
+            {!props.showGeneratedForm ? (
                 <Fragment>
                     <h1>FORM BUILDER</h1>
                     <RenderQuestionTree
                         data={arrayToTree(props.questionList, { parentProperty: 'parentId' })}
                     />
                     <AddInputButton />
-                    <ShowFormButton setGeneratedFormVisible={setGeneratedFormVisible} />
+                    <ShowFormButton setGeneratedFormVisible={props.toggleGeneratedForm} />
                 </Fragment>
             ) : (
                 <GeneratedForm
@@ -47,10 +45,15 @@ function App(props) {
 const mapStateToProps = state => {
     return {
         questionList: state.form.questionList,
+        showGeneratedForm: state.form.showGeneratedForm,
     }
+}
+
+const mapDispatchToProps = dispatch => {
+    return { toggleGeneratedForm: () => dispatch.form.toggleGeneratedForm() }
 }
 
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(App)

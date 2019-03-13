@@ -9,7 +9,7 @@ const dbPromise = openDb('form-db', 1, upgradeDB => {
 })
 
 export const idbEvents = {
-    async getAllRedux() {
+    async getAllQuestions() {
         const db = await dbPromise
         return db
             .transaction('formStore')
@@ -18,14 +18,6 @@ export const idbEvents = {
             .then(res => {
                 dispatch.form.initQuestionList(res)
             })
-    },
-
-    async getOne(key) {
-        const db = await dbPromise
-        return db
-            .transaction('formStore')
-            .objectStore('formStore')
-            .get(key)
     },
 
     async updateQuestion(updatedQuestion) {
@@ -40,7 +32,7 @@ export const idbEvents = {
         return tx.complete
     },
 
-    async addNewQuestion(newQuestion) {
+    async addQuestion(newQuestion) {
         if (newQuestion.children) delete newQuestion.children
         const db = await dbPromise
         const tx = db.transaction('formStore', 'readwrite')
@@ -49,18 +41,6 @@ export const idbEvents = {
             .then(res => {
                 newQuestion.id = res
                 dispatch.form.addQuestion(newQuestion)
-            })
-        return tx.complete
-    },
-
-    async addSubQuestion(newSubQuestion) {
-        const db = await dbPromise
-        const tx = db.transaction('formStore', 'readwrite')
-        tx.objectStore('formStore')
-            .put(newSubQuestion)
-            .then(res => {
-                newSubQuestion.id = res
-                dispatch.form.addSubQuestion(newSubQuestion)
             })
         return tx.complete
     },

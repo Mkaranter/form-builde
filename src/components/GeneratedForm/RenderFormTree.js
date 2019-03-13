@@ -9,7 +9,12 @@ function RenderFormTree(props) {
 
         //eslint-disable-next-line
         if (conditionType === 'equals' && formInputValue == conditionValue) return true
-        if (conditionType === 'less' && formInputValue < Number(conditionValue)) return true
+        if (
+            conditionType === 'less' &&
+            formInputValue !== '' &&
+            formInputValue < Number(conditionValue)
+        )
+            return true
         if (conditionType === 'greater' && formInputValue > Number(conditionValue)) return true
 
         return false

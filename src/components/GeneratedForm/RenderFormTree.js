@@ -12,10 +12,11 @@ function RenderFormTree(props) {
         if (
             conditionType === 'less' &&
             formInputValue !== '' &&
-            formInputValue < Number(conditionValue)
+            formInputValue < parseInt(conditionValue, 10)
         )
             return true
-        if (conditionType === 'greater' && formInputValue > Number(conditionValue)) return true
+        if (conditionType === 'greater' && formInputValue > parseInt(conditionValue, 10))
+            return true
 
         return false
     }

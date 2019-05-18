@@ -69,7 +69,7 @@ function QuestionBlockStyled(props) {
         idbEvents.updateQuestion(questionObj)
     }
 
-    const questionTypeChange = e => {
+    const questionTypeChange = ({ target }) => {
         if (props.questionData.children) {
             props.questionData.children.forEach(element => {
                 idbEvents.updateQuestion({
@@ -82,11 +82,11 @@ function QuestionBlockStyled(props) {
 
         idbEvents.updateQuestion({
             ...props.questionData,
-            type: e.target.value,
+            type: target.value,
             children: undefined,
         })
 
-        props.setParentValueType(e.target.value)
+        props.setParentValueType(target.value)
     }
 
     const addSubQuestion = value => {
@@ -100,13 +100,13 @@ function QuestionBlockStyled(props) {
         })
     }
 
-    const deleteQuestion = questionData => {
-        if (questionData.children) {
-            questionData.children.forEach(element => {
-                idbEvents.deleteQuestion(element.id)
+    const deleteQuestion = ({ id, children }) => {
+        if (children) {
+            children.forEach(child => {
+                idbEvents.deleteQuestion(child.id)
             })
         }
-        idbEvents.deleteQuestion(questionData.id)
+        idbEvents.deleteQuestion(id)
     }
 
     return (

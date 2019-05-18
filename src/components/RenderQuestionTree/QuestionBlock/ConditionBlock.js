@@ -1,15 +1,17 @@
 import React, { Fragment } from 'react'
 
+import { questionCondtionTypes } from '../../../utils/helpers'
+
 function ConditionBlock(props) {
     return (
         <Fragment>
             <label>Condition</label>
             <select onChange={props.conditionTypeChange} value={props.conditionType}>
-                <option value="equals">Equals</option>
+                <option value={questionCondtionTypes.equals}>Equals</option>
                 {props.parentValueType === 'number' && (
                     <Fragment>
-                        <option value="greater">Greater than</option>
-                        <option value="less">Less than</option>
+                        <option value={questionCondtionTypes.greater}>Greater than</option>
+                        <option value={questionCondtionTypes.less}>Less than</option>
                     </Fragment>
                 )}
             </select>

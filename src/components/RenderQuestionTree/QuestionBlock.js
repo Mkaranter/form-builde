@@ -1,6 +1,8 @@
 import React from 'react'
-import { idbEvents } from '../../utils/indexedDB'
 import styled from 'styled-components'
+
+import { idbEvents } from '../../utils/indexedDB'
+import { questionCondtionTypes } from '../../utils/helpers'
 import ConditionBlock from './QuestionBlock/ConditionBlock'
 
 const QuestionBlock = styled.form`
@@ -74,7 +76,7 @@ function QuestionBlockStyled(props) {
             props.questionData.children.forEach(element => {
                 idbEvents.updateQuestion({
                     ...element,
-                    conditionType: 'equals',
+                    conditionType: questionCondtionTypes.equals,
                     conditionValue: '',
                 })
             })
@@ -94,7 +96,7 @@ function QuestionBlockStyled(props) {
             parentId: value.id,
             question: '',
             type: 'text',
-            conditionType: 'equals',
+            conditionType: questionCondtionTypes.equals,
             conditionValue: '',
             level: value.level + 1,
         })

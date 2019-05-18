@@ -1,6 +1,8 @@
 import React, { useState, Fragment } from 'react'
 import FormBlock from './RenderFormTree/FormBlock'
 
+import { questionCondtionTypes } from '../../utils/helpers'
+
 function RenderFormTree(props) {
     const [formInputValue, setFormInputValue] = useState('')
 
@@ -8,14 +10,18 @@ function RenderFormTree(props) {
         if (level === 0) return true
 
         //eslint-disable-next-line
-        if (conditionType === 'equals' && formInputValue == conditionValue) return true
+        if (conditionType === questionCondtionTypes.equals && formInputValue == conditionValue)
+            return true
         if (
-            conditionType === 'less' &&
+            conditionType === questionCondtionTypes.less &&
             formInputValue !== '' &&
             formInputValue < parseInt(conditionValue, 10)
         )
             return true
-        if (conditionType === 'greater' && formInputValue > parseInt(conditionValue, 10))
+        if (
+            conditionType === questionCondtionTypes.greater &&
+            formInputValue > parseInt(conditionValue, 10)
+        )
             return true
 
         return false

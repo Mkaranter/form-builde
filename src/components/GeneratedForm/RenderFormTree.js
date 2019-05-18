@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import FormBlock from './RenderFormTree/FormBlock'
 
+import FormBlock from './RenderFormTree/FormBlock'
 import { questionCondtionTypes } from '../../utils/helpers'
 
 function RenderFormTree(props) {

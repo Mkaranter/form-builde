@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import arrayToTree from 'array-to-tree'
 import { connect } from 'react-redux'
+import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
 
 import AddInputButton from './components/AddInputButton'

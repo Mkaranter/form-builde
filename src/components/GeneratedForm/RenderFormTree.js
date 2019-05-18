@@ -27,23 +27,21 @@ function RenderFormTree(props) {
         return false
     }
 
-    return props.formData.map(e => {
-        return (
-            <div key={e.id}>
-                {checkCondition(e.conditionType, props.parentValue, e.conditionValue, e.level) && (
-                    <>
-                        <FormBlock
-                            data={e}
-                            setFormInputValue={e => setFormInputValue(e.target.value)}
-                        />
-                        {e.children && (
-                            <RenderFormTree formData={e.children} parentValue={formInputValue} />
-                        )}
-                    </>
-                )}
-            </div>
-        )
-    })
+    return props.formData.map(e => (
+        <div key={e.id}>
+            {checkCondition(e.conditionType, props.parentValue, e.conditionValue, e.level) && (
+                <>
+                    <FormBlock
+                        data={e}
+                        setFormInputValue={e => setFormInputValue(e.target.value)}
+                    />
+                    {e.children && (
+                        <RenderFormTree formData={e.children} parentValue={formInputValue} />
+                    )}
+                </>
+            )}
+        </div>
+    ))
 }
 
 export default RenderFormTree

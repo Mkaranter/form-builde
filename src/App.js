@@ -42,12 +42,10 @@ function App(props) {
     )
 }
 
-const mapStateToProps = state => {
-    return {
-        questionList: state.form.questionList,
-        showGeneratedForm: state.form.showGeneratedForm,
-    }
-}
+const mapStateToProps = state => ({
+    questionList: state.form.questionList,
+    showGeneratedForm: state.form.showGeneratedForm,
+})
 
 const mapDispatchToProps = dispatch => {
     return { toggleGeneratedForm: () => dispatch.form.toggleGeneratedForm() }

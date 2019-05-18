@@ -1,18 +1,18 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
 import { questionCondtionTypes } from '../../../utils/helpers'
 
 function ConditionBlock(props) {
     return (
-        <Fragment>
+        <>
             <label>Condition</label>
             <select onChange={props.conditionTypeChange} value={props.conditionType}>
                 <option value={questionCondtionTypes.equals}>Equals</option>
                 {props.parentValueType === 'number' && (
-                    <Fragment>
+                    <>
                         <option value={questionCondtionTypes.greater}>Greater than</option>
                         <option value={questionCondtionTypes.less}>Less than</option>
-                    </Fragment>
+                    </>
                 )}
             </select>
             {props.parentValueType !== 'boolean' ? (
@@ -30,7 +30,7 @@ function ConditionBlock(props) {
                     <option value="false">No</option>
                 </select>
             )}
-        </Fragment>
+        </>
     )
 }
 

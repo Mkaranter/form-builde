@@ -3,3 +3,9 @@ export const questionCondtionTypes = {
     less: 'less',
     greater: 'greater',
 }
+
+export const questionTypes = {
+    text: 'text',
+    number: 'number',
+    boolean: 'boolean',
+}

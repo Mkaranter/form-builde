@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 const FormBlock = styled.fieldset`
@@ -38,7 +38,7 @@ function FormBlockStyled(props) {
             {props.data.type !== 'boolean' ? (
                 <input onChange={props.setFormInputValue} />
             ) : (
-                <Fragment>
+                <>
                     <RadioWrapper>
                         <input
                             type="radio"
@@ -59,7 +59,7 @@ function FormBlockStyled(props) {
                         />
                         <label htmlFor="no">No</label>
                     </RadioWrapper>
-                </Fragment>
+                </>
             )}
         </FormBlock>
     )

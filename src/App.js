@@ -1,12 +1,13 @@
-import React, { useEffect, Fragment } from 'react'
-import { idbEvents } from './utils/indexedDB'
+import React, { useEffect } from 'react'
 import arrayToTree from 'array-to-tree'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
+
 import AddInputButton from './components/AddInputButton'
 import RenderQuestionTree from './components/RenderQuestionTree'
 import ShowFormButton from './components/ShowFormButton'
 import GeneratedForm from './components/GeneratedForm'
+import { idbEvents } from './utils/indexedDB'
 
 const AppWrapper = styled.div`
     margin: 0 auto;
@@ -25,14 +26,14 @@ function App(props) {
     return (
         <AppWrapper>
             {!props.showGeneratedForm ? (
-                <Fragment>
+                <>
                     <h1>FORM BUILDER</h1>
                     <RenderQuestionTree
                         data={arrayToTree(props.questionList, { parentProperty: 'parentId' })}
                     />
                     <AddInputButton />
                     <ShowFormButton setGeneratedFormVisible={props.toggleGeneratedForm} />
-                </Fragment>
+                </>
             ) : (
                 <GeneratedForm
                     formData={arrayToTree(props.questionList, { parentProperty: 'parentId' })}

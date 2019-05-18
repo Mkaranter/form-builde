@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState } from 'react'
 import FormBlock from './RenderFormTree/FormBlock'
 
 import { questionCondtionTypes } from '../../utils/helpers'
@@ -31,7 +31,7 @@ function RenderFormTree(props) {
         return (
             <div key={e.id}>
                 {checkCondition(e.conditionType, props.parentValue, e.conditionValue, e.level) && (
-                    <Fragment>
+                    <>
                         <FormBlock
                             data={e}
                             setFormInputValue={e => setFormInputValue(e.target.value)}
@@ -39,7 +39,7 @@ function RenderFormTree(props) {
                         {e.children && (
                             <RenderFormTree formData={e.children} parentValue={formInputValue} />
                         )}
-                    </Fragment>
+                    </>
                 )}
             </div>
         )

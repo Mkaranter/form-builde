@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
+import { questionTypes } from '../../../utils/helpers'
+
 const FormBlock = styled.fieldset`
     display: flex;
     flex-direction: column;
@@ -33,12 +35,12 @@ const RadioWrapper = styled.div`
     }
 `
 
-function FormBlockStyled(props) {
+function FormBlockStyled({ data, setFormInputValue }) {
     return (
         <FormBlock>
-            <label>{props.data.question}</label>
-            {props.data.type !== 'boolean' ? (
-                <input onChange={props.setFormInputValue} />
+            <label>{data.question}</label>
+            {data.type !== questionTypes.boolean ? (
+                <input onChange={setFormInputValue} />
             ) : (
                 <>
                     <RadioWrapper>
@@ -47,7 +49,7 @@ function FormBlockStyled(props) {
                             id="yes"
                             name="boolForm"
                             value="true"
-                            onChange={props.setFormInputValue}
+                            onChange={setFormInputValue}
                         />
                         <label htmlFor="yes">Yes</label>
                     </RadioWrapper>
@@ -57,7 +59,7 @@ function FormBlockStyled(props) {
                             name="boolForm"
                             id="no"
                             value="false"
-                            onChange={props.setFormInputValue}
+                            onChange={setFormInputValue}
                         />
                         <label htmlFor="no">No</label>
                     </RadioWrapper>

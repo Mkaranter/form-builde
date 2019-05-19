@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 const FormBlock = styled.fieldset`
     display: flex;
@@ -67,3 +68,8 @@ function FormBlockStyled(props) {
 }
 
 export default FormBlockStyled
+
+FormBlockStyled.propTypes = {
+    formData: PropTypes.array,
+    setFormInputValue: PropTypes.func.isRequired,
+}

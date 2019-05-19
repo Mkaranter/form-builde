@@ -1,22 +1,24 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+
 import QuestionBlock from './RenderQuestionTree/QuestionBlock'
 
-function RenderQuestionTree(props) {
-    const [parentValueType, setParentValueType] = useState('')
+function RenderQuestionTree({ questionsData, parentQuestion, parentValueType }) {
+    const [parentValueTypeFromState, setParentValueType] = useState('')
 
-    return props.data.map(i => {
+    return questionsData.map(question => {
         return (
-            <div key={i.id}>
+            <div key={question.id}>
                 <QuestionBlock
-                    questionData={i}
-                    setParentValueType={val => setParentValueType(val)}
-                    parentValueType={props.parent ? props.parent.type : props.parentValueType}
+                    questionData={question}
+                    setParentValueType={setParentValueType}
+                    parentValueType={parentQuestion ? parentQuestion.type : parentValueType}
                 />
-                {i.children && (
+                {question.children && (
                     <RenderQuestionTree
-                        data={i.children}
-                        parent={i}
-                        parentValueType={parentValueType}
+                        questionsData={question.children}
+                        parentQuestion={question}
+                        parentValueType={parentValueTypeFromState}
                     />
                 )}
             </div>
@@ -25,3 +27,9 @@ function RenderQuestionTree(props) {
 }
 
 export default RenderQuestionTree
+
+RenderQuestionTree.propTypes = {
+    questionData: PropTypes.object,
+    parentQuestion: PropTypes.object,
+    parentValueType: PropTypes.string,
+}

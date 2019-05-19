@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 import FormBlock from './RenderFormTree/FormBlock'
 import { questionCondtionTypes } from '../../utils/helpers'
 
-function RenderFormTree(props) {
+function RenderFormTree({ formData, parentValue }) {
     const [formInputValue, setFormInputValue] = useState('')
 
     const checkCondition = (conditionType, formInputValue, conditionValue, level) => {
@@ -27,9 +28,9 @@ function RenderFormTree(props) {
         return false
     }
 
-    return props.formData.map(e => (
+    return formData.map(e => (
         <div key={e.id}>
-            {checkCondition(e.conditionType, props.parentValue, e.conditionValue, e.level) && (
+            {checkCondition(e.conditionType, parentValue, e.conditionValue, e.level) && (
                 <>
                     <FormBlock
                         data={e}
@@ -45,3 +46,8 @@ function RenderFormTree(props) {
 }
 
 export default RenderFormTree
+
+RenderFormTree.propTypes = {
+    formData: PropTypes.array.isRequired,
+    parentValue: PropTypes.string,
+}

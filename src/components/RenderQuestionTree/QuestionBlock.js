@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 import { idbEvents } from '../../utils/indexedDB'
 import { questionCondtionTypes } from '../../utils/helpers'
@@ -160,3 +161,9 @@ function QuestionBlockStyled(props) {
 }
 
 export default QuestionBlockStyled
+
+ConditionBlock.propTypes = {
+    questionData: PropTypes.object,
+    setParentValueType: PropTypes.func,
+    parentValueType: PropTypes.string,
+}

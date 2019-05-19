@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { questionCondtionTypes } from '../../../utils/helpers'
 
@@ -35,3 +36,11 @@ function ConditionBlock(props) {
 }
 
 export default ConditionBlock
+
+ConditionBlock.propTypes = {
+    parentValueType: PropTypes.string,
+    conditionType: PropTypes.string.isRequired,
+    conditionValue: PropTypes.string.isRequired,
+    conditionTypeChange: PropTypes.func.isRequired,
+    conditionValueChange: PropTypes.func.isRequired,
+}

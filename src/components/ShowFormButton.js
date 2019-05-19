@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 const ShowFormButton = styled.button`
     background: lightgrey;
@@ -7,8 +8,12 @@ const ShowFormButton = styled.button`
     margin: 0 10px 0 0;
 `
 
-function ShowFormButtonStyled(props) {
-    return <ShowFormButton onClick={props.setGeneratedFormVisible}>Create form</ShowFormButton>
+function ShowFormButtonStyled({ setGeneratedFormVisible }) {
+    return <ShowFormButton onClick={setGeneratedFormVisible}>Create form</ShowFormButton>
 }
 
 export default ShowFormButtonStyled
+
+ShowFormButtonStyled.propTypes = {
+    setGeneratedFormVisible: PropTypes.func.isRequired,
+}

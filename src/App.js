@@ -29,7 +29,9 @@ function App(props) {
                 <>
                     <h1>FORM BUILDER</h1>
                     <RenderQuestionTree
-                        data={arrayToTree(props.questionList, { parentProperty: 'parentId' })}
+                        questionsData={arrayToTree(props.questionList, {
+                            parentProperty: 'parentId',
+                        })}
                     />
                     <AddInputButton />
                     <ShowFormButton setGeneratedFormVisible={props.toggleGeneratedForm} />

@@ -1,8 +1,12 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
+
+import { questionTypes } from '../../../utils/helpers'
 
 const FormBlock = styled.fieldset`
     display: flex;
+    flex-direction: column;
     margin-left: ${props => (props.level ? `${props.level * 20}px` : '10px')};
     margin-right: 10px;
     margin-bottom: 20px;
@@ -31,21 +35,21 @@ const RadioWrapper = styled.div`
     }
 `
 
-function FormBlockStyled(props) {
+function FormBlockStyled({ data, setFormInputValue }) {
     return (
         <FormBlock>
-            <label>{props.data.question}</label>
-            {props.data.type !== 'boolean' ? (
-                <input onChange={props.setFormInputValue} />
+            <label>{data.question}</label>
+            {data.type !== questionTypes.boolean ? (
+                <input onChange={setFormInputValue} />
             ) : (
-                <Fragment>
+                <>
                     <RadioWrapper>
                         <input
                             type="radio"
                             id="yes"
                             name="boolForm"
                             value="true"
-                            onChange={props.setFormInputValue}
+                            onChange={setFormInputValue}
                         />
                         <label htmlFor="yes">Yes</label>
                     </RadioWrapper>
@@ -55,14 +59,19 @@ function FormBlockStyled(props) {
                             name="boolForm"
                             id="no"
                             value="false"
-                            onChange={props.setFormInputValue}
+                            onChange={setFormInputValue}
                         />
                         <label htmlFor="no">No</label>
                     </RadioWrapper>
-                </Fragment>
+                </>
             )}
         </FormBlock>
     )
 }
 
 export default FormBlockStyled
+
+FormBlockStyled.propTypes = {
+    formData: PropTypes.array,
+    setFormInputValue: PropTypes.func.isRequired,
+}

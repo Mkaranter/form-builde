@@ -1,26 +1,29 @@
-import React, { Fragment } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
+
+import { questionCondtionTypes } from '../../../utils/helpers'
 
 function ConditionBlock(props) {
     return (
-        <Fragment>
+        <>
             <label>Condition</label>
-            <select onChange={props.inputConditionTypeChange} value={props.conditionType}>
-                <option value="equals">Equals</option>
+            <select onChange={props.conditionTypeChange} value={props.conditionType}>
+                <option value={questionCondtionTypes.equals}>Equals</option>
                 {props.parentValueType === 'number' && (
-                    <Fragment>
-                        <option value="greater">Greater than</option>
-                        <option value="less">Less than</option>
-                    </Fragment>
+                    <>
+                        <option value={questionCondtionTypes.greater}>Greater than</option>
+                        <option value={questionCondtionTypes.less}>Less than</option>
+                    </>
                 )}
             </select>
             {props.parentValueType !== 'boolean' ? (
                 <input
-                    onChange={props.inputConditionValueChange}
+                    onChange={props.conditionValueChange}
                     type={props.parentValueType}
                     value={props.conditionValue}
                 />
             ) : (
-                <select onChange={props.inputConditionValueChange} value={props.conditionValue}>
+                <select onChange={props.conditionValueChange} value={props.conditionValue}>
                     <option defaultChecked value="" disabled>
                         -- select --
                     </option>
@@ -28,8 +31,16 @@ function ConditionBlock(props) {
                     <option value="false">No</option>
                 </select>
             )}
-        </Fragment>
+        </>
     )
 }
 
 export default ConditionBlock
+
+ConditionBlock.propTypes = {
+    parentValueType: PropTypes.string,
+    conditionType: PropTypes.string.isRequired,
+    conditionValue: PropTypes.string.isRequired,
+    conditionTypeChange: PropTypes.func.isRequired,
+    conditionValueChange: PropTypes.func.isRequired,
+}

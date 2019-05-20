@@ -1,8 +1,14 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import RenderFormTree from './GeneratedForm/RenderFormTree'
 
-function GeneratedForm(props) {
-    return <RenderFormTree formData={props.formData} getOne={props.getOne} />
+function GeneratedForm({ formData }) {
+    return <RenderFormTree formData={formData} />
 }
 
 export default GeneratedForm
+
+GeneratedForm.propTypes = {
+    formData: PropTypes.array.isRequired,
+}

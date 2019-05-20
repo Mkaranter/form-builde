@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
+
+import { idbEvents } from '../../utils/indexedDB'
+import { questionCondtionTypes } from '../../utils/helpers'
 import ConditionBlock from './QuestionBlock/ConditionBlock'
 
 const QuestionBlock = styled.form`
@@ -58,95 +62,89 @@ const ButtonWrapper = styled.div`
 `
 
 function QuestionBlockStyled(props) {
-    const [parentValueType, setParentValueType] = useState({})
+    const questionChange = (e, property) => {
+        const questionObj = {
+            ...props.questionData,
+            children: undefined,
+        }
 
-    useEffect(() => {
-        if (props.value.parentId) getParentValue(props.value.parentId)
-    })
-
-    const inputQuestionChange = e => {
-        props.updateQuestion({ ...props.value, question: e.target.value })
+        questionObj[property] = e.target.value
+        idbEvents.updateQuestion(questionObj)
     }
 
-    const inputTypeChange = e => {
-        props
-            .updateQuestion({
-                ...props.value,
-                type: e.target.value,
+    const questionTypeChange = ({ target }) => {
+        if (props.questionData.children) {
+            props.questionData.children.forEach(element => {
+                idbEvents.updateQuestion({
+                    ...element,
+                    conditionType: questionCondtionTypes.equals,
+                    conditionValue: '',
+                })
             })
-            .then(() => {
-                if (props.value.children && props.value.children.length > 0) {
-                    props.value.children.forEach(element => {
-                        props.updateQuestion({
-                            ...element,
-                            conditionType: 'equals',
-                            conditionValue: '',
-                        })
-                    })
-                }
-            })
-    }
+        }
 
-    const inputConditionTypeChange = e => {
-        props.updateQuestion({
-            ...props.value,
-            conditionType: e.target.value,
+        idbEvents.updateQuestion({
+            ...props.questionData,
+            type: target.value,
+            children: undefined,
         })
+
+        props.setParentValueType(target.value)
     }
 
-    const inputConditionValueChange = e => {
-        props.updateQuestion({ ...props.value, conditionValue: e.target.value })
-    }
-
-    const addSubQuestion = () => {
-        props.updateQuestion({
-            parentId: props.value.id,
+    const addSubQuestion = value => {
+        idbEvents.addQuestion({
+            parentId: value.id,
             question: '',
             type: 'text',
-            conditionType: 'equals',
+            conditionType: questionCondtionTypes.equals,
             conditionValue: '',
+            level: value.level + 1,
         })
     }
 
-    const getParentValue = parentId => {
-        props.getOne(parentId).then(val => {
-            setParentValueType(val.type)
-        })
+    const deleteQuestion = ({ id, children }) => {
+        if (children) {
+            children.forEach(child => {
+                idbEvents.deleteQuestion(child.id)
+            })
+        }
+        idbEvents.deleteQuestion(id)
     }
 
     return (
         <QuestionBlock
-            level={props.value.level}
+            level={props.questionData.level}
             onSubmit={e => {
-                addSubQuestion(props.value.id)
+                addSubQuestion(props.questionData)
                 e.preventDefault()
             }}>
-            {props.value.level > 0 && (
+            {props.questionData.level > 0 && (
                 <InputWrapper select>
                     <ConditionBlock
-                        inputConditionTypeChange={inputConditionTypeChange}
-                        inputConditionValueChange={inputConditionValueChange}
-                        conditionType={props.value.conditionType}
-                        conditionValue={props.value.conditionValue}
-                        parentValueType={parentValueType}
+                        conditionTypeChange={e => questionChange(e, 'conditionType')}
+                        conditionValueChange={e => questionChange(e, 'conditionValue')}
+                        conditionType={props.questionData.conditionType}
+                        conditionValue={props.questionData.conditionValue}
+                        parentValueType={props.parentValueType}
                     />
                 </InputWrapper>
             )}
             <InputWrapper>
-                <label htmlFor={`question-${props.value.question}`}>Question</label>
+                <label htmlFor={`question-${props.questionData.id}`}>Question</label>
                 <input
                     type="text"
-                    id={`question-${props.value.question}`}
-                    value={props.value.question}
-                    onChange={inputQuestionChange}
+                    id={`question-${props.questionData.id}`}
+                    value={props.questionData.question}
+                    onChange={e => questionChange(e, 'question')}
                 />
             </InputWrapper>
             <InputWrapper>
-                <label htmlFor={`type-${props.value}`}>Type</label>
+                <label htmlFor={`type-${props.questionData.id}`}>Type</label>
                 <select
-                    id={`type-${props.value}`}
-                    value={props.value.type}
-                    onChange={inputTypeChange}>
+                    id={`type-${props.questionData.id}`}
+                    value={props.questionData.type}
+                    onChange={questionTypeChange}>
                     <option value="text">Text</option>
                     <option value="number">Number</option>
                     <option value="boolean">Yes / No</option>
@@ -154,7 +152,7 @@ function QuestionBlockStyled(props) {
             </InputWrapper>
             <ButtonWrapper>
                 <button type="submit">Add Sub-Input</button>
-                <button type="button" onClick={() => props.removeQuestion(props.value)}>
+                <button type="button" onClick={() => deleteQuestion(props.questionData)}>
                     Delete
                 </button>
             </ButtonWrapper>
@@ -163,3 +161,9 @@ function QuestionBlockStyled(props) {
 }
 
 export default QuestionBlockStyled
+
+ConditionBlock.propTypes = {
+    questionData: PropTypes.object,
+    setParentValueType: PropTypes.func,
+    parentValueType: PropTypes.string,
+}

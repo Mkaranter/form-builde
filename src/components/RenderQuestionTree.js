@@ -1,27 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+
 import QuestionBlock from './RenderQuestionTree/QuestionBlock'
 
-function RenderQuestionTree(props) {
-    return props.data.map(i => {
+function RenderQuestionTree({ questionsData, parentQuestion, parentValueType }) {
+    const [parentValueTypeFromState, setParentValueType] = useState('')
+
+    return questionsData.map(question => {
         return (
-            <div key={i.id}>
+            <div key={question.id}>
                 <QuestionBlock
-                    value={i}
-                    removeQuestion={props.removeQuestion}
-                    updateQuestion={props.updateQuestion}
-                    getOne={props.getOne}
+                    questionData={question}
+                    setParentValueType={setParentValueType}
+                    parentValueType={parentQuestion ? parentQuestion.type : parentValueType}
                 />
-                {i.children ? (
+                {question.children && (
                     <RenderQuestionTree
-                        data={i.children}
-                        updateQuestion={props.updateQuestion}
-                        removeQuestion={props.removeQuestion}
-                        getOne={props.getOne}
+                        questionsData={question.children}
+                        parentQuestion={question}
+                        parentValueType={parentValueTypeFromState}
                     />
-                ) : null}
+                )}
             </div>
         )
     })
 }
 
 export default RenderQuestionTree
+
+RenderQuestionTree.propTypes = {
+    questionData: PropTypes.object,
+    parentQuestion: PropTypes.object,
+    parentValueType: PropTypes.string,
+}

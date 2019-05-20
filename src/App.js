@@ -1,11 +1,13 @@
-import React, { useState, useEffect, Fragment } from 'react'
-import { idbEvents } from './utils/indexedDB'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
-import rootArray from './utils/rootArray'
+
 import AddInputButton from './components/AddInputButton'
 import RenderQuestionTree from './components/RenderQuestionTree'
 import ShowFormButton from './components/ShowFormButton'
 import GeneratedForm from './components/GeneratedForm'
+import { idbEvents } from './utils/indexedDB'
 
 const AppWrapper = styled.div`
     margin: 0 auto;
@@ -16,62 +18,43 @@ const AppWrapper = styled.div`
     }
 `
 
-function App() {
-    const [questionList, setQuestionList] = useState([])
-    const [generatedFormVisible, setGeneratedFormVisible] = useState(false)
-
+function App(props) {
     useEffect(() => {
-        idbEvents.getAll().then(e => setQuestionList(rootArray(e)))
+        idbEvents.getAllQuestions()
     }, [])
-
-    const addQuestion = value => {
-        if (value.children) delete value.children
-        return idbEvents.set(value).then(() => {
-            idbEvents.getAll().then(e => {
-                setQuestionList(rootArray(e))
-            })
-        })
-    }
-
-    const removeQuestion = value => {
-        idbEvents.delete(value.id).then(() => {
-            idbEvents.getAll().then(e => {
-                return setQuestionList(rootArray(e))
-            })
-        })
-
-        if (value.children) {
-            return value.children.map(e => {
-                return removeQuestion(e)
-            })
-        }
-    }
-
-    const getOne = id => {
-        return idbEvents.getOne(id).then(value => {
-            return value
-        })
-    }
 
     return (
         <AppWrapper>
-            {!generatedFormVisible ? (
-                <Fragment>
+            {!props.showGeneratedForm ? (
+                <>
                     <h1>FORM BUILDER</h1>
                     <RenderQuestionTree
-                        data={questionList}
-                        removeQuestion={removeQuestion}
-                        updateQuestion={addQuestion}
-                        getOne={getOne}
+                        questionsData={arrayToTree(props.questionList, {
+                            parentProperty: 'parentId',
+                        })}
                     />
-                    <AddInputButton addQuestion={addQuestion} />
-                    <ShowFormButton setGeneratedFormVisible={setGeneratedFormVisible} />
-                </Fragment>
+                    <AddInputButton />
+                    <ShowFormButton setGeneratedFormVisible={props.toggleGeneratedForm} />
+                </>
             ) : (
-                <GeneratedForm formData={questionList} getOne={getOne} />
+                <GeneratedForm
+                    formData={arrayToTree(props.questionList, { parentProperty: 'parentId' })}
+                />
             )}
         </AppWrapper>
     )
 }
 
-export default App
+const mapStateToProps = ({ form }) => ({
+    questionList: form.questionList,
+    showGeneratedForm: form.showGeneratedForm,
+})
+
+const mapDispatchToProps = dispatch => {
+    return { toggleGeneratedForm: () => dispatch.form.toggleGeneratedForm() }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App)

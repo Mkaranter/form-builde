@@ -3,27 +3,33 @@ import PropTypes from 'prop-types'
 
 import { questionCondtionTypes } from '../../../utils/helpers'
 
-function ConditionBlock(props) {
+function ConditionBlock({
+    conditionTypeChange,
+    conditionValueChange,
+    conditionType,
+    conditionValue,
+    parentValueType,
+}) {
     return (
         <>
             <label>Condition</label>
-            <select onChange={props.conditionTypeChange} value={props.conditionType}>
+            <select onChange={conditionTypeChange} value={conditionType}>
                 <option value={questionCondtionTypes.equals}>Equals</option>
-                {props.parentValueType === 'number' && (
+                {parentValueType === 'number' && (
                     <>
                         <option value={questionCondtionTypes.greater}>Greater than</option>
                         <option value={questionCondtionTypes.less}>Less than</option>
                     </>
                 )}
             </select>
-            {props.parentValueType !== 'boolean' ? (
+            {parentValueType !== 'boolean' ? (
                 <input
-                    onChange={props.conditionValueChange}
-                    type={props.parentValueType}
-                    value={props.conditionValue}
+                    onChange={conditionValueChange}
+                    type={parentValueType}
+                    value={conditionValue}
                 />
             ) : (
-                <select onChange={props.conditionValueChange} value={props.conditionValue}>
+                <select onChange={conditionValueChange} value={conditionValue}>
                     <option defaultChecked value="" disabled>
                         -- select --
                     </option>

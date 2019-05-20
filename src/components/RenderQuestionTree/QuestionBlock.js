@@ -61,10 +61,10 @@ const ButtonWrapper = styled.div`
     }
 `
 
-function QuestionBlockStyled(props) {
+function QuestionBlockStyled({ questionData, setParentValueType, parentValueType }) {
     const questionChange = (e, property) => {
         const questionObj = {
-            ...props.questionData,
+            ...questionData,
             children: undefined,
         }
 
@@ -73,8 +73,8 @@ function QuestionBlockStyled(props) {
     }
 
     const questionTypeChange = ({ target }) => {
-        if (props.questionData.children) {
-            props.questionData.children.forEach(element => {
+        if (questionData.children) {
+            questionData.children.forEach(element => {
                 idbEvents.updateQuestion({
                     ...element,
                     conditionType: questionCondtionTypes.equals,
@@ -84,12 +84,12 @@ function QuestionBlockStyled(props) {
         }
 
         idbEvents.updateQuestion({
-            ...props.questionData,
+            ...questionData,
             type: target.value,
             children: undefined,
         })
 
-        props.setParentValueType(target.value)
+        setParentValueType(target.value)
     }
 
     const addSubQuestion = value => {
@@ -114,36 +114,36 @@ function QuestionBlockStyled(props) {
 
     return (
         <QuestionBlock
-            level={props.questionData.level}
+            level={questionData.level}
             onSubmit={e => {
-                addSubQuestion(props.questionData)
+                addSubQuestion(questionData)
                 e.preventDefault()
             }}>
-            {props.questionData.level > 0 && (
+            {questionData.level > 0 && (
                 <InputWrapper select>
                     <ConditionBlock
                         conditionTypeChange={e => questionChange(e, 'conditionType')}
                         conditionValueChange={e => questionChange(e, 'conditionValue')}
-                        conditionType={props.questionData.conditionType}
-                        conditionValue={props.questionData.conditionValue}
-                        parentValueType={props.parentValueType}
+                        conditionType={questionData.conditionType}
+                        conditionValue={questionData.conditionValue}
+                        parentValueType={parentValueType}
                     />
                 </InputWrapper>
             )}
             <InputWrapper>
-                <label htmlFor={`question-${props.questionData.id}`}>Question</label>
+                <label htmlFor={`question-${questionData.id}`}>Question</label>
                 <input
                     type="text"
-                    id={`question-${props.questionData.id}`}
-                    value={props.questionData.question}
+                    id={`question-${questionData.id}`}
+                    value={questionData.question}
                     onChange={e => questionChange(e, 'question')}
                 />
             </InputWrapper>
             <InputWrapper>
-                <label htmlFor={`type-${props.questionData.id}`}>Type</label>
+                <label htmlFor={`type-${questionData.id}`}>Type</label>
                 <select
-                    id={`type-${props.questionData.id}`}
-                    value={props.questionData.type}
+                    id={`type-${questionData.id}`}
+                    value={questionData.type}
                     onChange={questionTypeChange}>
                     <option value="text">Text</option>
                     <option value="number">Number</option>
@@ -152,7 +152,7 @@ function QuestionBlockStyled(props) {
             </InputWrapper>
             <ButtonWrapper>
                 <button type="submit">Add Sub-Input</button>
-                <button type="button" onClick={() => deleteQuestion(props.questionData)}>
+                <button type="button" onClick={() => deleteQuestion(questionData)}>
                     Delete
                 </button>
             </ButtonWrapper>

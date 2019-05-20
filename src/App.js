@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 import AddInputButton from './components/AddInputButton'
 import RenderQuestionTree from './components/RenderQuestionTree'
@@ -18,27 +19,27 @@ const AppWrapper = styled.div`
     }
 `
 
-function App(props) {
+function App({ showGeneratedForm, questionList, toggleGeneratedForm }) {
     useEffect(() => {
         idbEvents.getAllQuestions()
     }, [])
 
     return (
         <AppWrapper>
-            {!props.showGeneratedForm ? (
+            {!showGeneratedForm ? (
                 <>
                     <h1>FORM BUILDER</h1>
                     <RenderQuestionTree
-                        questionsData={arrayToTree(props.questionList, {
+                        questionsData={arrayToTree(questionList, {
                             parentProperty: 'parentId',
                         })}
                     />
                     <AddInputButton />
-                    <ShowFormButton setGeneratedFormVisible={props.toggleGeneratedForm} />
+                    <ShowFormButton setGeneratedFormVisible={toggleGeneratedForm} />
                 </>
             ) : (
                 <GeneratedForm
-                    formData={arrayToTree(props.questionList, { parentProperty: 'parentId' })}
+                    formData={arrayToTree(questionList, { parentProperty: 'parentId' })}
                 />
             )}
         </AppWrapper>
@@ -58,3 +59,9 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(App)
+
+App.propTypes = {
+    showGeneratedForm: PropTypes.bool.isRequired,
+    questionList: PropTypes.array.isRequired,
+    setGeneratedFormVisible: PropTypes.func,
+}

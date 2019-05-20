@@ -4,7 +4,12 @@ import PropTypes from 'prop-types'
 import RenderFormTree from './GeneratedForm/RenderFormTree'
 
 function GeneratedForm({ formData }) {
-    return <RenderFormTree formData={formData} />
+    return (
+        <>
+            <h1>USER FORM</h1>
+            <RenderFormTree formData={formData} />
+        </>
+    )
 }
 
 export default GeneratedForm

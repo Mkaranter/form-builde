@@ -12,7 +12,7 @@ function ShowFormButtonStyled({ setGeneratedFormVisible }) {
     return <ShowFormButton onClick={setGeneratedFormVisible}>Create form</ShowFormButton>
 }
 
-export default ShowFormButtonStyled
+// export default ShowFormButtonStyled
 
 ShowFormButtonStyled.propTypes = {
     setGeneratedFormVisible: PropTypes.func.isRequired,

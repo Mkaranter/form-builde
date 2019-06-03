@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
 
-import AddInputButton from './components/AddInputButton'
-import RenderQuestionTree from './components/RenderQuestionTree'
-import ShowFormButton from './components/ShowFormButton'
-import GeneratedForm from './components/GeneratedForm'
+import FormBuilder from './components/FormBuilder/'
+
+import UserForm from './components/UserForm/'
 import { idbEvents } from './utils/indexedDB'
+
+import { Button } from './components/common/Button'
 
 const AppWrapper = styled.div`
     margin: 0 auto;
@@ -28,16 +29,21 @@ function App(props) {
             {!props.showGeneratedForm ? (
                 <>
                     <h1>FORM BUILDER</h1>
-                    <RenderQuestionTree
+                    <FormBuilder
                         questionsData={arrayToTree(props.questionList, {
                             parentProperty: 'parentId',
                         })}
                     />
-                    <AddInputButton />
-                    <ShowFormButton setGeneratedFormVisible={props.toggleGeneratedForm} />
+                    <Button
+                        label={'Add input'}
+                        buttonClick={() =>
+                            idbEvents.addQuestion({ question: '', type: 'text', level: 0 })
+                        }
+                    />
+                    <Button buttonClick={props.toggleGeneratedForm} label={'Make a form'} />
                 </>
             ) : (
-                <GeneratedForm
+                <UserForm
                     formData={arrayToTree(props.questionList, { parentProperty: 'parentId' })}
                 />
             )}

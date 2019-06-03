@@ -2,11 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import { idbEvents } from '../../utils/indexedDB'
-import { questionCondtionTypes } from '../../utils/helpers'
-import ConditionBlock from './QuestionBlock/ConditionBlock'
+import { idbEvents } from '../../../utils/indexedDB'
+import { questionConditionTypes } from '../../../utils/helpers'
+import Condition from './Condition/'
 
-const QuestionBlock = styled.form`
+const QuestionStyled = styled.form`
     display: flex;
     flex-direction: column;
     margin-left: ${props => (props.level ? `${props.level * 20}px` : '10px')};
@@ -61,7 +61,7 @@ const ButtonWrapper = styled.div`
     }
 `
 
-function QuestionBlockStyled(props) {
+function Question(props) {
     const questionChange = (e, property) => {
         const questionObj = {
             ...props.questionData,
@@ -77,7 +77,7 @@ function QuestionBlockStyled(props) {
             props.questionData.children.forEach(element => {
                 idbEvents.updateQuestion({
                     ...element,
-                    conditionType: questionCondtionTypes.equals,
+                    conditionType: questionConditionTypes.equals,
                     conditionValue: '',
                 })
             })
@@ -97,7 +97,7 @@ function QuestionBlockStyled(props) {
             parentId: value.id,
             question: '',
             type: 'text',
-            conditionType: questionCondtionTypes.equals,
+            conditionType: questionConditionTypes.equals,
             conditionValue: '',
             level: value.level + 1,
         })
@@ -113,7 +113,7 @@ function QuestionBlockStyled(props) {
     }
 
     return (
-        <QuestionBlock
+        <QuestionStyled
             level={props.questionData.level}
             onSubmit={e => {
                 addSubQuestion(props.questionData)
@@ -121,7 +121,7 @@ function QuestionBlockStyled(props) {
             }}>
             {props.questionData.level > 0 && (
                 <InputWrapper select>
-                    <ConditionBlock
+                    <Condition
                         conditionTypeChange={e => questionChange(e, 'conditionType')}
                         conditionValueChange={e => questionChange(e, 'conditionValue')}
                         conditionType={props.questionData.conditionType}
@@ -156,13 +156,13 @@ function QuestionBlockStyled(props) {
                     Delete
                 </button>
             </ButtonWrapper>
-        </QuestionBlock>
+        </QuestionStyled>
     )
 }
 
-export default QuestionBlockStyled
+export default Question
 
-ConditionBlock.propTypes = {
+Question.propTypes = {
     questionData: PropTypes.object,
     setParentValueType: PropTypes.func,
     parentValueType: PropTypes.string,

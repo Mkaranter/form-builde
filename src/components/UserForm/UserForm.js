@@ -1,26 +1,27 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import FormBlock from './RenderFormTree/FormBlock'
-import { questionCondtionTypes } from '../../utils/helpers'
+import FormBlock from './UserQuestion'
 
-function RenderFormTree({ formData, parentValue }) {
+import { questionConditionTypes } from '../../utils/helpers'
+
+function UserForm({ formData, parentValue }) {
     const [formInputValue, setFormInputValue] = useState('')
 
     const checkCondition = (conditionType, formInputValue, conditionValue, level) => {
         if (level === 0) return true
 
         //eslint-disable-next-line
-        if (conditionType === questionCondtionTypes.equals && formInputValue == conditionValue)
+        if (conditionType === questionConditionTypes.equals && formInputValue == conditionValue)
             return true
         if (
-            conditionType === questionCondtionTypes.less &&
+            conditionType === questionConditionTypes.less &&
             formInputValue !== '' &&
             formInputValue < parseInt(conditionValue, 10)
         )
             return true
         if (
-            conditionType === questionCondtionTypes.greater &&
+            conditionType === questionConditionTypes.greater &&
             formInputValue > parseInt(conditionValue, 10)
         )
             return true
@@ -36,18 +37,16 @@ function RenderFormTree({ formData, parentValue }) {
                         data={e}
                         setFormInputValue={e => setFormInputValue(e.target.value)}
                     />
-                    {e.children && (
-                        <RenderFormTree formData={e.children} parentValue={formInputValue} />
-                    )}
+                    {e.children && <UserForm formData={e.children} parentValue={formInputValue} />}
                 </>
             )}
         </div>
     ))
 }
 
-export default RenderFormTree
+export default UserForm
 
-RenderFormTree.propTypes = {
+UserForm.propTypes = {
     formData: PropTypes.array.isRequired,
     parentValue: PropTypes.string,
 }

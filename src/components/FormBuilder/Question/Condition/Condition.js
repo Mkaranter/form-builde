@@ -1,18 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { questionCondtionTypes } from '../../../utils/helpers'
+import { questionConditionTypes } from '../../../../utils/helpers'
 
-function ConditionBlock(props) {
+function Condition(props) {
     return (
         <>
             <label>Condition</label>
             <select onChange={props.conditionTypeChange} value={props.conditionType}>
-                <option value={questionCondtionTypes.equals}>Equals</option>
+                <option value={questionConditionTypes.equals}>Equals</option>
                 {props.parentValueType === 'number' && (
                     <>
-                        <option value={questionCondtionTypes.greater}>Greater than</option>
-                        <option value={questionCondtionTypes.less}>Less than</option>
+                        <option value={questionConditionTypes.greater}>Greater than</option>
+                        <option value={questionConditionTypes.less}>Less than</option>
                     </>
                 )}
             </select>
@@ -35,9 +35,9 @@ function ConditionBlock(props) {
     )
 }
 
-export default ConditionBlock
+export default Condition
 
-ConditionBlock.propTypes = {
+Condition.propTypes = {
     parentValueType: PropTypes.string,
     conditionType: PropTypes.string.isRequired,
     conditionValue: PropTypes.string.isRequired,

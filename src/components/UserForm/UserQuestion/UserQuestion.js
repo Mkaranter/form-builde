@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import { questionTypes } from '../../../utils/helpers'
 
-const FormBlock = styled.fieldset`
+const UserQuestionStyled = styled.fieldset`
     display: flex;
     flex-direction: column;
     margin-left: ${props => (props.level ? `${props.level * 20}px` : '10px')};
@@ -35,9 +35,9 @@ const RadioWrapper = styled.div`
     }
 `
 
-function FormBlockStyled({ data, setFormInputValue }) {
+function UserQuestion({ data, setFormInputValue }) {
     return (
-        <FormBlock>
+        <UserQuestionStyled>
             <label>{data.question}</label>
             {data.type !== questionTypes.boolean ? (
                 <input onChange={setFormInputValue} />
@@ -65,13 +65,13 @@ function FormBlockStyled({ data, setFormInputValue }) {
                     </RadioWrapper>
                 </>
             )}
-        </FormBlock>
+        </UserQuestionStyled>
     )
 }
 
-export default FormBlockStyled
+export default UserQuestion
 
-FormBlockStyled.propTypes = {
+UserQuestion.propTypes = {
     formData: PropTypes.array,
     setFormInputValue: PropTypes.func.isRequired,
 }

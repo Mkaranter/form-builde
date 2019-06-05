@@ -4,11 +4,10 @@ import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
 
 import FormBuilder from './components/FormBuilder/'
+import Header from './components/Header'
 
 import UserForm from './components/UserForm/'
 import { idbEvents } from './utils/indexedDB'
-
-import { Button } from './components/common/Button'
 
 const AppWrapper = styled.div`
     margin: 0 auto;
@@ -33,14 +32,8 @@ function App(props) {
                         questionsData={arrayToTree(props.questionList, {
                             parentProperty: 'parentId',
                         })}
+                        showUserForm={props.toggleGeneratedForm}
                     />
-                    <Button
-                        label={'Add input'}
-                        buttonClick={() =>
-                            idbEvents.addQuestion({ question: '', type: 'text', level: 0 })
-                        }
-                    />
-                    <Button buttonClick={props.toggleGeneratedForm} label={'Make a form'} />
                 </>
             ) : (
                 <UserForm

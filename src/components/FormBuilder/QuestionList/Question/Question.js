@@ -2,8 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import { idbEvents } from '../../../utils/indexedDB'
-import { questionConditionTypes } from '../../../utils/helpers'
+import { Button } from '../../../common/Button'
+
+import { idbEvents } from '../../../../utils/indexedDB'
+import { questionConditionTypes } from '../../../../utils/helpers'
 import Condition from './Condition/'
 
 const QuestionStyled = styled.form`
@@ -50,15 +52,6 @@ const ButtonWrapper = styled.div`
     display: flex;
     justify-content: flex-end;
     margin: 10px 10px 0 0;
-
-    button {
-        background: lightgrey;
-        padding: 5px 10px;
-    }
-
-    button:first-child {
-        margin: 0 10px 0 0;
-    }
 `
 
 function Question(props) {
@@ -151,10 +144,10 @@ function Question(props) {
                 </select>
             </InputWrapper>
             <ButtonWrapper>
-                <button type="submit">Add Sub-Input</button>
-                <button type="button" onClick={() => deleteQuestion(props.questionData)}>
+                <Button type="submit">Add Sub-Input</Button>
+                <Button type="button" onClick={() => deleteQuestion(props.questionData)}>
                     Delete
-                </button>
+                </Button>
             </ButtonWrapper>
         </QuestionStyled>
     )

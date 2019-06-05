@@ -1,29 +1,24 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
-import Question from './Question/'
+import QuestionList from './QuestionList/'
+import { Button } from '../common/Button'
+import { idbEvents } from '../../utils/indexedDB'
 
-function FormBuilder({ questionsData, parentQuestion, parentValueType }) {
-    const [parentValueTypeFromState, setParentValueType] = useState('')
-
-    return questionsData.map(question => {
-        return (
-            <div key={question.id}>
-                <Question
-                    questionData={question}
-                    setParentValueType={setParentValueType}
-                    parentValueType={parentQuestion ? parentQuestion.type : parentValueType}
-                />
-                {question.children && (
-                    <FormBuilder
-                        questionsData={question.children}
-                        parentQuestion={question}
-                        parentValueType={parentValueTypeFromState}
-                    />
-                )}
-            </div>
-        )
-    })
+function FormBuilder({ questionsData, parentQuestion, parentValueType, showUserForm }) {
+    return (
+        <>
+            <QuestionList
+                questionsData={questionsData}
+                parentQuestion={parentQuestion}
+                parentValueType={parentValueType}
+            />
+            <Button onClick={() => idbEvents.addQuestion({ question: '', type: 'text', level: 0 })}>
+                Add Input
+            </Button>
+            <Button onClick={showUserForm}>Make a form</Button>
+        </>
+    )
 }
 
 export default FormBuilder
@@ -32,4 +27,5 @@ FormBuilder.propTypes = {
     questionData: PropTypes.object,
     parentQuestion: PropTypes.object,
     parentValueType: PropTypes.string,
+    showUserForm: PropTypes.func,
 }

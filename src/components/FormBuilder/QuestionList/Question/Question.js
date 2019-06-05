@@ -11,7 +11,7 @@ import Condition from './Condition/'
 const QuestionStyled = styled.form`
     display: flex;
     flex-direction: column;
-    margin-left: ${props => (props.level ? `${props.level * 20}px` : '10px')};
+    margin-left: ${({ level }) => (level ? `${level * 20}px` : '10px')};
     margin-right: 10px;
     margin-bottom: 20px;
     margin-inline-end: 2px;
@@ -33,9 +33,9 @@ const InputWrapper = styled.div`
         width: 20%;
     }
     input {
-        flex-grow: ${props => (props.select ? '0' : '1')};
-        width: ${props => (props.select ? '20%' : 'unset')};
-        margin: ${props => (props.select ? '0 0 0 10px' : '0')};
+        flex-grow: ${({ select }) => (select ? '0' : '1')};
+        width: ${({ select }) => (select ? '20%' : 'unset')};
+        margin: ${({ select }) => (select ? '0 0 0 10px' : '0')};
         padding: 0 0 0 5px;
     }
     select {
@@ -54,20 +54,20 @@ const ButtonWrapper = styled.div`
     margin: 10px 10px 0 0;
 `
 
-function Question(props) {
+function Question({ question, setParentValueType, parentValueType }) {
     const questionChange = (e, property) => {
-        const questionObj = {
-            ...props.questionData,
+        const questionObject = {
+            ...question,
             children: undefined,
         }
 
-        questionObj[property] = e.target.value
-        idbEvents.updateQuestion(questionObj)
+        questionObject[property] = e.target.value
+        idbEvents.updateQuestion(questionObject)
     }
 
     const questionTypeChange = ({ target }) => {
-        if (props.questionData.children) {
-            props.questionData.children.forEach(element => {
+        if (question.children) {
+            question.children.forEach(element => {
                 idbEvents.updateQuestion({
                     ...element,
                     conditionType: questionConditionTypes.equals,
@@ -77,18 +77,18 @@ function Question(props) {
         }
 
         idbEvents.updateQuestion({
-            ...props.questionData,
+            ...question,
             type: target.value,
             children: undefined,
         })
 
-        props.setParentValueType(target.value)
+        setParentValueType(target.value)
     }
 
     const addSubQuestion = value => {
         idbEvents.addQuestion({
             parentId: value.id,
-            question: '',
+            text: '',
             type: 'text',
             conditionType: questionConditionTypes.equals,
             conditionValue: '',
@@ -99,7 +99,7 @@ function Question(props) {
     const deleteQuestion = ({ id, children }) => {
         if (children) {
             children.forEach(child => {
-                idbEvents.deleteQuestion(child.id)
+                deleteQuestion(child)
             })
         }
         idbEvents.deleteQuestion(id)
@@ -107,36 +107,36 @@ function Question(props) {
 
     return (
         <QuestionStyled
-            level={props.questionData.level}
+            level={question.level}
             onSubmit={e => {
-                addSubQuestion(props.questionData)
+                addSubQuestion(question)
                 e.preventDefault()
             }}>
-            {props.questionData.level > 0 && (
+            {question.level > 0 && (
                 <InputWrapper select>
                     <Condition
-                        conditionTypeChange={e => questionChange(e, 'conditionType')}
-                        conditionValueChange={e => questionChange(e, 'conditionValue')}
-                        conditionType={props.questionData.conditionType}
-                        conditionValue={props.questionData.conditionValue}
-                        parentValueType={props.parentValueType}
+                        value={question.conditionValue}
+                        type={question.conditionType}
+                        setValue={e => questionChange(e, 'conditionValue')}
+                        setType={e => questionChange(e, 'conditionType')}
+                        parentValueType={parentValueType}
                     />
                 </InputWrapper>
             )}
             <InputWrapper>
-                <label htmlFor={`question-${props.questionData.id}`}>Question</label>
+                <label htmlFor={`question-${question.id}`}>Question</label>
                 <input
                     type="text"
-                    id={`question-${props.questionData.id}`}
-                    value={props.questionData.question}
+                    id={`question-${question.id}`}
+                    value={question.text}
                     onChange={e => questionChange(e, 'question')}
                 />
             </InputWrapper>
             <InputWrapper>
-                <label htmlFor={`type-${props.questionData.id}`}>Type</label>
+                <label htmlFor={`type-${question.id}`}>Type</label>
                 <select
-                    id={`type-${props.questionData.id}`}
-                    value={props.questionData.type}
+                    id={`type-${question.id}`}
+                    value={question.type}
                     onChange={questionTypeChange}>
                     <option value="text">Text</option>
                     <option value="number">Number</option>
@@ -145,7 +145,7 @@ function Question(props) {
             </InputWrapper>
             <ButtonWrapper>
                 <Button type="submit">Add Sub-Input</Button>
-                <Button type="button" onClick={() => deleteQuestion(props.questionData)}>
+                <Button type="button" onClick={() => deleteQuestion(question)}>
                     Delete
                 </Button>
             </ButtonWrapper>
@@ -156,7 +156,7 @@ function Question(props) {
 export default Question
 
 Question.propTypes = {
-    questionData: PropTypes.object,
+    question: PropTypes.object,
     setParentValueType: PropTypes.func,
     parentValueType: PropTypes.string,
 }

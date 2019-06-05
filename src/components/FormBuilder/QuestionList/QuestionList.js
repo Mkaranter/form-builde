@@ -1,20 +1,21 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 import Question from './Question/'
 
-function QuestionList({ questionsData, parentQuestion, parentValueType }) {
+function QuestionList({ questions, parentQuestion, parentValueType }) {
     const [parentValueTypeFromState, setParentValueType] = useState('')
 
-    return questionsData.map(question => (
+    return questions.map(question => (
         <div key={question.id}>
             <Question
-                questionData={question}
+                question={question}
                 setParentValueType={setParentValueType}
                 parentValueType={parentQuestion ? parentQuestion.type : parentValueType}
             />
             {question.children && (
                 <QuestionList
-                    questionsData={question.children}
+                    questions={question.children}
                     parentQuestion={question}
                     parentValueType={parentValueTypeFromState}
                 />
@@ -24,3 +25,9 @@ function QuestionList({ questionsData, parentQuestion, parentValueType }) {
 }
 
 export default QuestionList
+
+QuestionList.propTypes = {
+    questionData: PropTypes.object,
+    parentQuestion: PropTypes.object,
+    parentValueType: PropTypes.string,
+}

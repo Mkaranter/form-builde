@@ -7,7 +7,7 @@ function Condition(props) {
     return (
         <>
             <label>Condition</label>
-            <select onChange={props.conditionTypeChange} value={props.conditionType}>
+            <select onChange={props.setType} value={props.type}>
                 <option value={questionConditionTypes.equals}>Equals</option>
                 {props.parentValueType === 'number' && (
                     <>
@@ -17,13 +17,9 @@ function Condition(props) {
                 )}
             </select>
             {props.parentValueType !== 'boolean' ? (
-                <input
-                    onChange={props.conditionValueChange}
-                    type={props.parentValueType}
-                    value={props.conditionValue}
-                />
+                <input onChange={props.setValue} type={props.parentValueType} value={props.value} />
             ) : (
-                <select onChange={props.conditionValueChange} value={props.conditionValue}>
+                <select onChange={props.setValue} value={props.value}>
                     <option defaultChecked value="" disabled>
                         -- select --
                     </option>
@@ -39,8 +35,8 @@ export default Condition
 
 Condition.propTypes = {
     parentValueType: PropTypes.string,
-    conditionType: PropTypes.string.isRequired,
-    conditionValue: PropTypes.string.isRequired,
-    conditionTypeChange: PropTypes.func.isRequired,
-    conditionValueChange: PropTypes.func.isRequired,
+    type: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    setType: PropTypes.func.isRequired,
+    setValue: PropTypes.func.isRequired,
 }

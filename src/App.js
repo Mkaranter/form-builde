@@ -25,16 +25,14 @@ function App(props) {
 
     return (
         <AppWrapper>
-            {!props.showGeneratedForm ? (
-                <>
-                    <h1>FORM BUILDER</h1>
-                    <FormBuilder
-                        questionsData={arrayToTree(props.questionList, {
-                            parentProperty: 'parentId',
-                        })}
-                        showUserForm={props.toggleGeneratedForm}
-                    />
-                </>
+            <Header />
+            {!props.showUserForm ? (
+                <FormBuilder
+                    questions={arrayToTree(props.questionList, {
+                        parentProperty: 'parentId',
+                    })}
+                    showUserForm={props.toggleUserForm}
+                />
             ) : (
                 <UserForm
                     formData={arrayToTree(props.questionList, { parentProperty: 'parentId' })}
@@ -46,11 +44,11 @@ function App(props) {
 
 const mapStateToProps = ({ form }) => ({
     questionList: form.questionList,
-    showGeneratedForm: form.showGeneratedForm,
+    showUserForm: form.showUserForm,
 })
 
 const mapDispatchToProps = dispatch => {
-    return { toggleGeneratedForm: () => dispatch.form.toggleGeneratedForm() }
+    return { toggleUserForm: () => dispatch.form.toggleUserForm() }
 }
 
 export default connect(

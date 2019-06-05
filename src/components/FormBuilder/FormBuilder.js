@@ -5,14 +5,10 @@ import QuestionList from './QuestionList/'
 import { Button } from '../common/Button'
 import { idbEvents } from '../../utils/indexedDB'
 
-function FormBuilder({ questionsData, parentQuestion, parentValueType, showUserForm }) {
+function FormBuilder({ questions, showUserForm }) {
     return (
         <>
-            <QuestionList
-                questionsData={questionsData}
-                parentQuestion={parentQuestion}
-                parentValueType={parentValueType}
-            />
+            <QuestionList questions={questions} />
             <Button onClick={() => idbEvents.addQuestion({ question: '', type: 'text', level: 0 })}>
                 Add Input
             </Button>
@@ -25,7 +21,5 @@ export default FormBuilder
 
 FormBuilder.propTypes = {
     questionData: PropTypes.object,
-    parentQuestion: PropTypes.object,
-    parentValueType: PropTypes.string,
     showUserForm: PropTypes.func,
 }

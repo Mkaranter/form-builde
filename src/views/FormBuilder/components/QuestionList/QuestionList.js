@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
 
 import Question from '../Question'
 
@@ -25,9 +24,3 @@ function QuestionList({ questions, parentQuestion, parentValueType }) {
 }
 
 export default QuestionList
-
-QuestionList.propTypes = {
-    questionData: PropTypes.object,
-    parentQuestion: PropTypes.object,
-    parentValueType: PropTypes.string,
-}

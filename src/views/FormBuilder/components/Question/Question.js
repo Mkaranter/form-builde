@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import PropTypes from 'prop-types'
 
 import Button from 'components/Button'
 import { storageService } from 'utils/storageService'
@@ -154,9 +153,3 @@ function Question({ question, setParentValueType, parentValueType }) {
 }
 
 export default Question
-
-Question.propTypes = {
-    question: PropTypes.object,
-    setParentValueType: PropTypes.func,
-    parentValueType: PropTypes.string,
-}

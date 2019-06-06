@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
 
 import { questionConditionTypes } from 'utils/helpers'
 
@@ -45,8 +44,3 @@ function UserForm({ formData, parentValue }) {
 }
 
 export default UserForm
-
-UserForm.propTypes = {
-    formData: PropTypes.array.isRequired,
-    parentValue: PropTypes.string,
-}

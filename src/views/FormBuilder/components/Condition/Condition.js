@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import { questionConditionTypes } from 'utils/helpers'
 
@@ -32,11 +31,3 @@ function Condition(props) {
 }
 
 export default Condition
-
-Condition.propTypes = {
-    parentValueType: PropTypes.string,
-    type: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    setType: PropTypes.func.isRequired,
-    setValue: PropTypes.func.isRequired,
-}

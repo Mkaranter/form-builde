@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import Button from 'components/Button'
 import { storageService } from 'utils/storageService'
@@ -22,8 +21,3 @@ function FormBuilder({ questions, showUserForm }) {
 }
 
 export default FormBuilder
-
-FormBuilder.propTypes = {
-    questionData: PropTypes.object,
-    showUserForm: PropTypes.func,
-}

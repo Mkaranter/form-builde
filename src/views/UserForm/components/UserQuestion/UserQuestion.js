@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import PropTypes from 'prop-types'
 
 import { questionTypes } from 'utils/helpers'
 
@@ -70,8 +69,3 @@ function UserQuestion({ data, setFormInputValue }) {
 }
 
 export default UserQuestion
-
-UserQuestion.propTypes = {
-    formData: PropTypes.array,
-    setFormInputValue: PropTypes.func.isRequired,
-}

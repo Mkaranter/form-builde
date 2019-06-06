@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
-import PropTypes from 'prop-types'
 
 import FormBuilder from './views/FormBuilder'
 import Header from './components/Header'
@@ -54,9 +53,3 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(App)
-
-App.propTypes = {
-    showUserForm: PropTypes.bool.isRequired,
-    questionList: PropTypes.array.isRequired,
-    toggleUserForm: PropTypes.func,
-}

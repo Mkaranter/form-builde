@@ -4,10 +4,20 @@ import { questionConditionTypes } from 'utils/helpers'
 
 import FormBlock from './components/UserQuestion'
 
-function UserForm({ formData, parentValue }) {
+interface UserFormProps {
+    formData: any
+    parentValue: any
+}
+
+function UserForm({ formData, parentValue }: UserFormProps) {
     const [formInputValue, setFormInputValue] = useState('')
 
-    const checkCondition = (conditionType, formInputValue, conditionValue, level) => {
+    const checkCondition = (
+        conditionType: any,
+        formInputValue: any,
+        conditionValue: any,
+        level: number
+    ) => {
         if (level === 0) return true
 
         //eslint-disable-next-line
@@ -28,13 +38,13 @@ function UserForm({ formData, parentValue }) {
         return false
     }
 
-    return formData.map(e => (
+    return formData.map((e: any) => (
         <div key={e.id}>
             {checkCondition(e.conditionType, parentValue, e.conditionValue, e.level) && (
                 <>
                     <FormBlock
                         data={e}
-                        setFormInputValue={e => setFormInputValue(e.target.value)}
+                        setFormInputValue={(e: any) => setFormInputValue(e.target.value)}
                     />
                     {e.children && <UserForm formData={e.children} parentValue={formInputValue} />}
                 </>

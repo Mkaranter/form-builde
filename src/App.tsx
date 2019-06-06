@@ -4,7 +4,7 @@ import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
 
 import FormBuilder from './views/FormBuilder'
-import Header from './components/Header'
+import Header from './common/components/Header'
 import UserForm from './views/UserForm'
 
 import { storageService } from 'utils/storageService'
@@ -18,7 +18,18 @@ const AppWrapper = styled.div`
     }
 `
 
-function App({ showUserForm, questionList, toggleUserForm }) {
+interface AppStateProps {
+    showUserForm: boolean
+    questionList: any[]
+}
+
+interface AppDispatchProps {
+    toggleUserForm: any
+}
+
+type AppProps = AppStateProps & AppDispatchProps
+
+function App({ showUserForm, questionList, toggleUserForm }: AppProps) {
     useEffect(() => {
         storageService.getAllQuestions()
     }, [])
@@ -31,7 +42,7 @@ function App({ showUserForm, questionList, toggleUserForm }) {
                     questions={arrayToTree(questionList, {
                         parentProperty: 'parentId',
                     })}
-                    showUserForm={toggleUserForm}
+                    toggleUserForm={toggleUserForm}
                 />
             ) : (
                 <UserForm
@@ -43,14 +54,14 @@ function App({ showUserForm, questionList, toggleUserForm }) {
     )
 }
 
-const mapStateToProps = ({ form }) => ({
+const mapStateToProps = ({ form }: any) => ({
     questionList: form.questionList,
     showUserForm: form.showUserForm,
 })
 
-const mapDispatchToProps = dispatch => {
-    return { toggleUserForm: () => dispatch.form.toggleUserForm() }
-}
+const mapDispatchToProps = (dispatch: any) => ({
+    toggleUserForm: () => dispatch.form.toggleUserForm(),
+})
 
 export default connect(
     mapStateToProps,

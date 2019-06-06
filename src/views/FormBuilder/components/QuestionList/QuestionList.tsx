@@ -1,8 +1,16 @@
 import React, { useState } from 'react'
 
+import { Question as QuestionModel } from 'common/models'
+
 import Question from '../Question'
 
-function QuestionList({ questions, parentQuestion, parentValueType }) {
+interface QuestionListProps {
+    questions: QuestionModel[]
+    parentQuestion: any
+    parentValueType: any
+}
+
+function QuestionList({ questions, parentQuestion, parentValueType }: QuestionListProps): any {
     const [parentValueTypeFromState, setParentValueType] = useState('')
 
     return questions.map(question => (

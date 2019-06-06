@@ -38,7 +38,12 @@ const RadioWrapper = styled.div`
     }
 `
 
-function UserQuestion({ data, setFormInputValue }) {
+interface UserQuestionProps {
+    data: any
+    setFormInputValue: any
+}
+
+function UserQuestion({ data, setFormInputValue }: UserQuestionProps) {
     return (
         <UserQuestionStyled>
             <label>{data.question}</label>

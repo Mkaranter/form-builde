@@ -2,23 +2,31 @@ import React from 'react'
 
 import { questionConditionTypes } from 'utils/helpers'
 
-function Condition(props) {
+interface ConditionProps {
+    value?: string
+    type?: string
+    setValue: any
+    setType: any
+    parentValueType: string
+}
+
+function Condition({ value, type, setValue, setType, parentValueType }: ConditionProps) {
     return (
         <>
             <label>Condition</label>
-            <select onChange={props.setType} value={props.type}>
+            <select onChange={setType} value={type}>
                 <option value={questionConditionTypes.equals}>Equals</option>
-                {props.parentValueType === 'number' && (
+                {parentValueType === 'number' && (
                     <>
                         <option value={questionConditionTypes.greater}>Greater than</option>
                         <option value={questionConditionTypes.less}>Less than</option>
                     </>
                 )}
             </select>
-            {props.parentValueType !== 'boolean' ? (
-                <input onChange={props.setValue} type={props.parentValueType} value={props.value} />
+            {parentValueType !== 'boolean' ? (
+                <input onChange={setValue} type={parentValueType} value={value} />
             ) : (
-                <select onChange={props.setValue} value={props.value}>
+                <select onChange={setValue} value={value}>
                     <option defaultChecked value="" disabled>
                         -- select --
                     </option>

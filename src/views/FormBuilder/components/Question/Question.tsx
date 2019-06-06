@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Button from 'components/Button'
+import Button from 'common/components/Button'
 import { storageService } from 'utils/storageService'
 import { questionConditionTypes } from 'utils/helpers'
+import { Question as QuestionModel } from 'common/models'
 
 import Condition from '../Condition'
 
@@ -61,9 +62,19 @@ const ButtonWrapper = styled.div`
     margin: 10px 10px 0 0;
 `
 
-function Question({ question, setParentValueType, parentValueType }) {
-    const questionChange = (e, property) => {
-        const questionObject = {
+interface QuestionProps {
+    question: QuestionModel
+    setParentValueType: any
+    parentValueType: any
+}
+
+interface Keyed {
+    [key: string]: any
+}
+
+function Question({ question, setParentValueType, parentValueType }: QuestionProps) {
+    const questionChange = (e: any, property: string) => {
+        const questionObject: Keyed = {
             ...question,
             children: undefined,
         }
@@ -72,7 +83,7 @@ function Question({ question, setParentValueType, parentValueType }) {
         storageService.updateQuestion(questionObject)
     }
 
-    const questionTypeChange = ({ target }) => {
+    const questionTypeChange = ({ target }: any) => {
         if (question.children) {
             question.children.forEach(element => {
                 storageService.updateQuestion({
@@ -92,7 +103,7 @@ function Question({ question, setParentValueType, parentValueType }) {
         setParentValueType(target.value)
     }
 
-    const addSubQuestion = value => {
+    const addSubQuestion = (value: QuestionModel) => {
         storageService.addQuestion({
             parentId: value.id,
             text: '',
@@ -103,9 +114,9 @@ function Question({ question, setParentValueType, parentValueType }) {
         })
     }
 
-    const deleteQuestion = ({ id, children }) => {
+    const deleteQuestion = ({ id, children }: QuestionModel) => {
         if (children) {
-            children.forEach(child => {
+            children.forEach((child: any) => {
                 deleteQuestion(child)
             })
         }
@@ -124,8 +135,8 @@ function Question({ question, setParentValueType, parentValueType }) {
                     <Condition
                         value={question.conditionValue}
                         type={question.conditionType}
-                        setValue={e => questionChange(e, 'conditionValue')}
-                        setType={e => questionChange(e, 'conditionType')}
+                        setValue={(e: any) => questionChange(e, 'conditionValue')}
+                        setType={(e: any) => questionChange(e, 'conditionType')}
                         parentValueType={parentValueType}
                     />
                 </InputWrapper>
@@ -136,7 +147,7 @@ function Question({ question, setParentValueType, parentValueType }) {
                     type="text"
                     id={`question-${question.id}`}
                     value={question.text}
-                    onChange={e => questionChange(e, 'question')}
+                    onChange={e => questionChange(e, 'text')}
                 />
             </InputWrapper>
             <InputWrapper>

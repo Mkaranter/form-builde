@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
 
-import FormBuilder from './components/FormBuilder/'
+import FormBuilder from './views/FormBuilder'
 import Header from './components/Header'
-import UserForm from './components/UserForm/'
+import UserForm from './views/UserForm'
 
 import { storageService } from 'utils/storageService'
 

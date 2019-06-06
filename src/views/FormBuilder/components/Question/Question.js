@@ -2,11 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import { Button } from 'components/common/Button'
+import Button from 'components/Button'
 import { storageService } from 'utils/storageService'
 import { questionConditionTypes } from 'utils/helpers'
 
-import Condition from './Condition/'
+import Condition from '../Condition'
 
 const QuestionStyled = styled.form`
     display: flex;

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { questionConditionTypes } from 'utils/helpers'
 
-import FormBlock from './UserQuestion'
+import FormBlock from './components/UserQuestion'
 
 function UserForm({ formData, parentValue }) {
     const [formInputValue, setFormInputValue] = useState('')

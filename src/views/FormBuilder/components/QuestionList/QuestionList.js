@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import Question from './Question/'
+import Question from '../Question'
 
 function QuestionList({ questions, parentQuestion, parentValueType }) {
     const [parentValueTypeFromState, setParentValueType] = useState('')

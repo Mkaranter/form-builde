@@ -1,21 +1,22 @@
 import React, { useState } from 'react'
 
 import { questionConditionTypes } from 'utils/helpers'
+import { Question } from 'common/models'
 
 import FormBlock from './components/UserQuestion'
 
 interface UserFormProps {
-    formData: any
-    parentValue: any
+    questions: Question[]
+    parentValue?: string
 }
 
-function UserForm({ formData, parentValue }: UserFormProps) {
+function UserForm({ questions, parentValue }: UserFormProps): any {
     const [formInputValue, setFormInputValue] = useState('')
 
     const checkCondition = (
-        conditionType: any,
+        conditionType: string,
         formInputValue: any,
-        conditionValue: any,
+        conditionValue: string,
         level: number
     ) => {
         if (level === 0) return true
@@ -38,7 +39,7 @@ function UserForm({ formData, parentValue }: UserFormProps) {
         return false
     }
 
-    return formData.map((e: any) => (
+    return questions.map((e: any) => (
         <div key={e.id}>
             {checkCondition(e.conditionType, parentValue, e.conditionValue, e.level) && (
                 <>
@@ -46,7 +47,7 @@ function UserForm({ formData, parentValue }: UserFormProps) {
                         data={e}
                         setFormInputValue={(e: any) => setFormInputValue(e.target.value)}
                     />
-                    {e.children && <UserForm formData={e.children} parentValue={formInputValue} />}
+                    {e.children && <UserForm questions={e.children} parentValue={formInputValue} />}
                 </>
             )}
         </div>

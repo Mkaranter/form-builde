@@ -14,7 +14,11 @@ interface FormBuilderProps {
 function FormBuilder({ questions, toggleUserForm }: FormBuilderProps) {
     return (
         <>
-            <QuestionList questions={questions} parentQuestion={null} parentValueType={null} />
+            <QuestionList
+                questions={questions}
+                parentQuestion={undefined}
+                parentValueType={undefined}
+            />
             <Button
                 onClick={() => storageService.addQuestion({ text: '', type: 'text', level: 0 })}>
                 Add Input

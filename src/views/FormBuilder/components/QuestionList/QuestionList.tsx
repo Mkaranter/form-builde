@@ -6,8 +6,8 @@ import Question from '../Question'
 
 interface QuestionListProps {
     questions: QuestionModel[]
-    parentQuestion: any
-    parentValueType: any
+    parentQuestion?: QuestionModel
+    parentValueType?: string
 }
 
 function QuestionList({ questions, parentQuestion, parentValueType }: QuestionListProps): any {

@@ -8,6 +8,7 @@ import Header from './common/components/Header'
 import UserForm from './views/UserForm'
 
 import { storageService } from 'utils/storageService'
+import { Question } from 'common/models'
 
 const AppWrapper = styled.div`
     margin: 0 auto;
@@ -20,7 +21,7 @@ const AppWrapper = styled.div`
 
 interface AppStateProps {
     showUserForm: boolean
-    questionList: any[]
+    questionList: Question[]
 }
 
 interface AppDispatchProps {
@@ -46,8 +47,8 @@ function App({ showUserForm, questionList, toggleUserForm }: AppProps) {
                 />
             ) : (
                 <UserForm
-                    formData={arrayToTree(questionList, { parentProperty: 'parentId' })}
-                    parentValue={null}
+                    questions={arrayToTree(questionList, { parentProperty: 'parentId' })}
+                    parentValue={undefined}
                 />
             )}
         </AppWrapper>
@@ -59,8 +60,8 @@ const mapStateToProps = ({ form }: any) => ({
     showUserForm: form.showUserForm,
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
-    toggleUserForm: () => dispatch.form.toggleUserForm(),
+const mapDispatchToProps = ({ form }: any) => ({
+    toggleUserForm: () => form.toggleUserForm(),
 })
 
 export default connect(

@@ -20,7 +20,7 @@ export const storageService = {
             })
     },
 
-    async updateQuestion(updatedQuestion) {
+    async updateQuestion(updatedQuestion: any) {
         const db = await dbPromise
         const tx = db.transaction('formStore', 'readwrite')
         tx.objectStore('formStore')
@@ -32,7 +32,7 @@ export const storageService = {
         return tx.complete
     },
 
-    async addQuestion(newQuestion) {
+    async addQuestion(newQuestion: any) {
         if (newQuestion.children) delete newQuestion.children
         const db = await dbPromise
         const tx = db.transaction('formStore', 'readwrite')
@@ -45,7 +45,7 @@ export const storageService = {
         return tx.complete
     },
 
-    async deleteQuestion(key) {
+    async deleteQuestion(key: number) {
         const db = await dbPromise
         const tx = db.transaction('formStore', 'readwrite')
         tx.objectStore('formStore')

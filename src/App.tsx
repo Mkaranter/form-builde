@@ -8,7 +8,7 @@ import Header from './common/components/Header'
 import UserForm from './views/UserForm'
 
 import { storageService } from 'utils/storageService'
-import { Question } from 'common/models'
+import { AppState, FormState } from 'common/models'
 
 const AppWrapper = styled.div`
     margin: 0 auto;
@@ -19,16 +19,11 @@ const AppWrapper = styled.div`
     }
 `
 
-interface AppStateProps {
-    showUserForm: boolean
-    questionList: Question[]
-}
-
 interface AppDispatchProps {
     toggleUserForm: any
 }
 
-type AppProps = AppStateProps & AppDispatchProps
+type AppProps = FormState & AppDispatchProps
 
 function App({ showUserForm, questionList, toggleUserForm }: AppProps) {
     useEffect(() => {
@@ -55,7 +50,7 @@ function App({ showUserForm, questionList, toggleUserForm }: AppProps) {
     )
 }
 
-const mapStateToProps = ({ form }: any) => ({
+const mapStateToProps = ({ form }: AppState) => ({
     questionList: form.questionList,
     showUserForm: form.showUserForm,
 })

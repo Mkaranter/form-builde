@@ -1,10 +1,5 @@
 import produce from 'immer'
-import { Question } from 'common/models'
-
-interface AppState {
-    questionList: Question[]
-    showUserForm: boolean
-}
+import { Question, FormState } from 'common/models'
 
 export const form = {
     state: {
@@ -12,19 +7,19 @@ export const form = {
         showUserForm: false,
     },
     reducers: {
-        initQuestionList(state: AppState, payload: Question[]) {
+        initQuestionList(state: FormState, payload: Question[]) {
             return produce(state, draft => {
                 draft.questionList = payload
             })
         },
 
-        addQuestion(state: AppState, payload: Question) {
+        addQuestion(state: FormState, payload: Question) {
             return produce(state, draft => {
                 draft.questionList = [...state.questionList, payload]
             })
         },
 
-        updateQuestion(state: AppState, payload: Question) {
+        updateQuestion(state: FormState, payload: Question) {
             const updatedState = state.questionList.map(q => {
                 if (q.id === payload.id) return payload
                 return q
@@ -35,14 +30,14 @@ export const form = {
             })
         },
 
-        deleteQuestion(state: AppState, payload: number) {
+        deleteQuestion(state: FormState, payload: number) {
             const updatedState = state.questionList.filter(q => q.id !== payload)
             return produce(state, draft => {
                 draft.questionList = updatedState
             })
         },
 
-        toggleUserForm(state: AppState) {
+        toggleUserForm(state: FormState) {
             return produce(state, draft => {
                 draft.showUserForm = !draft.showUserForm
             })

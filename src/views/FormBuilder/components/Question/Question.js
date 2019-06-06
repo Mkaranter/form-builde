@@ -2,14 +2,16 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import { idbEvents } from '../../utils/indexedDB'
-import { questionCondtionTypes } from '../../utils/helpers'
-import ConditionBlock from './QuestionBlock/ConditionBlock'
+import Button from 'components/Button'
+import { storageService } from 'utils/storageService'
+import { questionConditionTypes } from 'utils/helpers'
 
-const QuestionBlock = styled.form`
+import Condition from '../Condition'
+
+const QuestionStyled = styled.form`
     display: flex;
     flex-direction: column;
-    margin-left: ${props => (props.level ? `${props.level * 20}px` : '10px')};
+    margin-left: ${({ level }) => (level ? `${level * 20}px` : '10px')};
     margin-right: 10px;
     margin-bottom: 20px;
     margin-inline-end: 2px;
@@ -31,9 +33,9 @@ const InputWrapper = styled.div`
         width: 20%;
     }
     input {
-        flex-grow: ${props => (props.select ? '0' : '1')};
-        width: ${props => (props.select ? '20%' : 'unset')};
-        margin: ${props => (props.select ? '0 0 0 10px' : '0')};
+        flex-grow: ${({ select }) => (select ? '0' : '1')};
+        width: ${({ select }) => (select ? '20%' : 'unset')};
+        margin: ${({ select }) => (select ? '0 0 0 10px' : '0')};
         padding: 0 0 0 5px;
     }
     select {
@@ -50,41 +52,32 @@ const ButtonWrapper = styled.div`
     display: flex;
     justify-content: flex-end;
     margin: 10px 10px 0 0;
-
-    button {
-        background: lightgrey;
-        padding: 5px 10px;
-    }
-
-    button:first-child {
-        margin: 0 10px 0 0;
-    }
 `
 
-function QuestionBlockStyled({ questionData, setParentValueType, parentValueType }) {
+function Question({ question, setParentValueType, parentValueType }) {
     const questionChange = (e, property) => {
-        const questionObj = {
-            ...questionData,
+        const questionObject = {
+            ...question,
             children: undefined,
         }
 
-        questionObj[property] = e.target.value
-        idbEvents.updateQuestion(questionObj)
+        questionObject[property] = e.target.value
+        storageService.updateQuestion(questionObject)
     }
 
     const questionTypeChange = ({ target }) => {
-        if (questionData.children) {
-            questionData.children.forEach(element => {
-                idbEvents.updateQuestion({
+        if (question.children) {
+            question.children.forEach(element => {
+                storageService.updateQuestion({
                     ...element,
-                    conditionType: questionCondtionTypes.equals,
+                    conditionType: questionConditionTypes.equals,
                     conditionValue: '',
                 })
             })
         }
 
-        idbEvents.updateQuestion({
-            ...questionData,
+        storageService.updateQuestion({
+            ...question,
             type: target.value,
             children: undefined,
         })
@@ -93,11 +86,11 @@ function QuestionBlockStyled({ questionData, setParentValueType, parentValueType
     }
 
     const addSubQuestion = value => {
-        idbEvents.addQuestion({
+        storageService.addQuestion({
             parentId: value.id,
-            question: '',
+            text: '',
             type: 'text',
-            conditionType: questionCondtionTypes.equals,
+            conditionType: questionConditionTypes.equals,
             conditionValue: '',
             level: value.level + 1,
         })
@@ -106,44 +99,44 @@ function QuestionBlockStyled({ questionData, setParentValueType, parentValueType
     const deleteQuestion = ({ id, children }) => {
         if (children) {
             children.forEach(child => {
-                idbEvents.deleteQuestion(child.id)
+                deleteQuestion(child)
             })
         }
-        idbEvents.deleteQuestion(id)
+        storageService.deleteQuestion(id)
     }
 
     return (
-        <QuestionBlock
-            level={questionData.level}
+        <QuestionStyled
+            level={question.level}
             onSubmit={e => {
-                addSubQuestion(questionData)
+                addSubQuestion(question)
                 e.preventDefault()
             }}>
-            {questionData.level > 0 && (
+            {question.level > 0 && (
                 <InputWrapper select>
-                    <ConditionBlock
-                        conditionTypeChange={e => questionChange(e, 'conditionType')}
-                        conditionValueChange={e => questionChange(e, 'conditionValue')}
-                        conditionType={questionData.conditionType}
-                        conditionValue={questionData.conditionValue}
+                    <Condition
+                        value={question.conditionValue}
+                        type={question.conditionType}
+                        setValue={e => questionChange(e, 'conditionValue')}
+                        setType={e => questionChange(e, 'conditionType')}
                         parentValueType={parentValueType}
                     />
                 </InputWrapper>
             )}
             <InputWrapper>
-                <label htmlFor={`question-${questionData.id}`}>Question</label>
+                <label htmlFor={`question-${question.id}`}>Question</label>
                 <input
                     type="text"
-                    id={`question-${questionData.id}`}
-                    value={questionData.question}
+                    id={`question-${question.id}`}
+                    value={question.text}
                     onChange={e => questionChange(e, 'question')}
                 />
             </InputWrapper>
             <InputWrapper>
-                <label htmlFor={`type-${questionData.id}`}>Type</label>
+                <label htmlFor={`type-${question.id}`}>Type</label>
                 <select
-                    id={`type-${questionData.id}`}
-                    value={questionData.type}
+                    id={`type-${question.id}`}
+                    value={question.type}
                     onChange={questionTypeChange}>
                     <option value="text">Text</option>
                     <option value="number">Number</option>
@@ -151,19 +144,19 @@ function QuestionBlockStyled({ questionData, setParentValueType, parentValueType
                 </select>
             </InputWrapper>
             <ButtonWrapper>
-                <button type="submit">Add Sub-Input</button>
-                <button type="button" onClick={() => deleteQuestion(questionData)}>
+                <Button type="submit">Add Sub-Input</Button>
+                <Button type="button" onClick={() => deleteQuestion(question)}>
                     Delete
-                </button>
+                </Button>
             </ButtonWrapper>
-        </QuestionBlock>
+        </QuestionStyled>
     )
 }
 
-export default QuestionBlockStyled
+export default Question
 
-ConditionBlock.propTypes = {
-    questionData: PropTypes.object,
+Question.propTypes = {
+    question: PropTypes.object,
     setParentValueType: PropTypes.func,
     parentValueType: PropTypes.string,
 }

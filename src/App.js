@@ -4,11 +4,11 @@ import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import AddInputButton from './components/AddInputButton'
-import RenderQuestionTree from './components/RenderQuestionTree'
-import ShowFormButton from './components/ShowFormButton'
-import GeneratedForm from './components/GeneratedForm'
-import { idbEvents } from './utils/indexedDB'
+import FormBuilder from './views/FormBuilder'
+import Header from './components/Header'
+import UserForm from './views/UserForm'
+
+import { storageService } from 'utils/storageService'
 
 const AppWrapper = styled.div`
     margin: 0 auto;
@@ -21,25 +21,22 @@ const AppWrapper = styled.div`
 
 function App({ showGeneratedForm, questionList, toggleGeneratedForm }) {
     useEffect(() => {
-        idbEvents.getAllQuestions()
+        storageService.getAllQuestions()
     }, [])
 
     return (
         <AppWrapper>
-            {!showGeneratedForm ? (
-                <>
-                    <h1>FORM BUILDER</h1>
-                    <RenderQuestionTree
-                        questionsData={arrayToTree(questionList, {
-                            parentProperty: 'parentId',
-                        })}
-                    />
-                    <AddInputButton />
-                    <ShowFormButton setGeneratedFormVisible={toggleGeneratedForm} />
-                </>
+            <Header />
+            {!props.showUserForm ? (
+                <FormBuilder
+                    questions={arrayToTree(props.questionList, {
+                        parentProperty: 'parentId',
+                    })}
+                    showUserForm={props.toggleUserForm}
+                />
             ) : (
-                <GeneratedForm
-                    formData={arrayToTree(questionList, { parentProperty: 'parentId' })}
+                <UserForm
+                    formData={arrayToTree(props.questionList, { parentProperty: 'parentId' })}
                 />
             )}
         </AppWrapper>
@@ -48,11 +45,11 @@ function App({ showGeneratedForm, questionList, toggleGeneratedForm }) {
 
 const mapStateToProps = ({ form }) => ({
     questionList: form.questionList,
-    showGeneratedForm: form.showGeneratedForm,
+    showUserForm: form.showUserForm,
 })
 
 const mapDispatchToProps = dispatch => {
-    return { toggleGeneratedForm: () => dispatch.form.toggleGeneratedForm() }
+    return { toggleUserForm: () => dispatch.form.toggleUserForm() }
 }
 
 export default connect(

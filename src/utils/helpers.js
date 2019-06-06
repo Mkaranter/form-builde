@@ -1,4 +1,4 @@
-export const questionCondtionTypes = {
+export const questionConditionTypes = {
     equals: 'equals',
     less: 'less',
     greater: 'greater',

@@ -1,5 +1,5 @@
 import { openDb } from 'idb'
-import { dispatch } from '../index'
+import { dispatch } from 'index'
 
 const dbPromise = openDb('form-db', 1, upgradeDB => {
     upgradeDB.createObjectStore('formStore', {
@@ -8,7 +8,7 @@ const dbPromise = openDb('form-db', 1, upgradeDB => {
     })
 })
 
-export const idbEvents = {
+export const storageService = {
     async getAllQuestions() {
         const db = await dbPromise
         return db

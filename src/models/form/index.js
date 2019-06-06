@@ -3,7 +3,7 @@ import produce from 'immer'
 export const form = {
     state: {
         questionList: [],
-        showGeneratedForm: false,
+        showUserForm: false,
     },
     reducers: {
         initQuestionList(state, payload) {
@@ -36,9 +36,9 @@ export const form = {
             })
         },
 
-        toggleGeneratedForm(state) {
+        toggleUserForm(state) {
             return produce(state, draft => {
-                draft.showGeneratedForm = !draft.showGeneratedForm
+                draft.showUserForm = !draft.showUserForm
             })
         },
     },

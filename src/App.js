@@ -19,7 +19,7 @@ const AppWrapper = styled.div`
     }
 `
 
-function App({ showGeneratedForm, questionList, toggleGeneratedForm }) {
+function App({ showUserForm, questionList, toggleUserForm }) {
     useEffect(() => {
         storageService.getAllQuestions()
     }, [])
@@ -27,17 +27,15 @@ function App({ showGeneratedForm, questionList, toggleGeneratedForm }) {
     return (
         <AppWrapper>
             <Header />
-            {!props.showUserForm ? (
+            {!showUserForm ? (
                 <FormBuilder
-                    questions={arrayToTree(props.questionList, {
+                    questions={arrayToTree(questionList, {
                         parentProperty: 'parentId',
                     })}
-                    showUserForm={props.toggleUserForm}
+                    showUserForm={toggleUserForm}
                 />
             ) : (
-                <UserForm
-                    formData={arrayToTree(props.questionList, { parentProperty: 'parentId' })}
-                />
+                <UserForm formData={arrayToTree(questionList, { parentProperty: 'parentId' })} />
             )}
         </AppWrapper>
     )
@@ -58,7 +56,7 @@ export default connect(
 )(App)
 
 App.propTypes = {
-    showGeneratedForm: PropTypes.bool.isRequired,
+    showUserForm: PropTypes.bool.isRequired,
     questionList: PropTypes.array.isRequired,
-    setGeneratedFormVisible: PropTypes.func,
+    toggleUserForm: PropTypes.func,
 }

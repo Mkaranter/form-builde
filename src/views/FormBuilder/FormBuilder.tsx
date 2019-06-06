@@ -8,7 +8,7 @@ import QuestionList from './components/QuestionList'
 function FormBuilder({ questions, showUserForm }) {
     return (
         <>
-            <QuestionList questions={questions} />
+            <QuestionList questions={questions} parentQuestion={null} parentValueType={null} />
             <Button
                 onClick={() =>
                     storageService.addQuestion({ question: '', type: 'text', level: 0 })

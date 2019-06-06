@@ -34,7 +34,10 @@ function App({ showUserForm, questionList, toggleUserForm }) {
                     showUserForm={toggleUserForm}
                 />
             ) : (
-                <UserForm formData={arrayToTree(questionList, { parentProperty: 'parentId' })} />
+                <UserForm
+                    formData={arrayToTree(questionList, { parentProperty: 'parentId' })}
+                    parentValue={null}
+                />
             )}
         </AppWrapper>
     )

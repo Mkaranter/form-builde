@@ -7,7 +7,15 @@ import { questionConditionTypes } from 'utils/helpers'
 
 import Condition from '../Condition'
 
-const QuestionStyled = styled.form`
+interface QuestionStyledProps {
+    level?: number
+}
+
+interface InputWrapperProps {
+    select?: boolean
+}
+
+const QuestionStyled = styled.form<QuestionStyledProps>`
     display: flex;
     flex-direction: column;
     margin-left: ${({ level }) => (level ? `${level * 20}px` : '10px')};
@@ -25,7 +33,7 @@ const QuestionStyled = styled.form`
     border-image: initial;
 `
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<InputWrapperProps>`
     display: flex;
     margin: 0 10px 5px 10px;
     label {

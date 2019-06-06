@@ -3,10 +3,14 @@ import styled from 'styled-components'
 
 import { questionTypes } from 'utils/helpers'
 
-const UserQuestionStyled = styled.fieldset`
+interface UserQuestionStyledProps {
+    level?: number
+}
+
+const UserQuestionStyled = styled.fieldset<UserQuestionStyledProps>`
     display: flex;
     flex-direction: column;
-    margin-left: ${props => (props.level ? `${props.level * 20}px` : '10px')};
+    margin-left: ${({ level }) => (level ? `${level * 20}px` : '10px')};
     margin-right: 10px;
     margin-bottom: 20px;
 

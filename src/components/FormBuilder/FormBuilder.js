@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { Button } from 'components/common/Button'
+import { idbEvents } from 'utils/indexedDB'
+
 import QuestionList from './QuestionList/'
-import { Button } from '../common/Button'
-import { idbEvents } from '../../utils/indexedDB'
 
 function FormBuilder({ questions, showUserForm }) {
     return (

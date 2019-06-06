@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import { questionTypes } from '../../../utils/helpers'
+import { questionTypes } from 'utils/helpers'
 
 const UserQuestionStyled = styled.fieldset`
     display: flex;

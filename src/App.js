@@ -5,9 +5,9 @@ import styled from 'styled-components'
 
 import FormBuilder from './components/FormBuilder/'
 import Header from './components/Header'
-
 import UserForm from './components/UserForm/'
-import { idbEvents } from './utils/indexedDB'
+
+import { idbEvents } from 'utils/indexedDB'
 
 const AppWrapper = styled.div`
     margin: 0 auto;

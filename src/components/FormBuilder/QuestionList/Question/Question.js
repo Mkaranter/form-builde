@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import { Button } from '../../../common/Button'
+import { Button } from 'components/common/Button'
+import { idbEvents } from 'utils/indexedDB'
+import { questionConditionTypes } from 'utils/helpers'
 
-import { idbEvents } from '../../../../utils/indexedDB'
-import { questionConditionTypes } from '../../../../utils/helpers'
 import Condition from './Condition/'
 
 const QuestionStyled = styled.form`

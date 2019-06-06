@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import FormBlock from './UserQuestion'
+import { questionConditionTypes } from 'utils/helpers'
 
-import { questionConditionTypes } from '../../utils/helpers'
+import FormBlock from './UserQuestion'
 
 function UserForm({ formData, parentValue }) {
     const [formInputValue, setFormInputValue] = useState('')

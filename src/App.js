@@ -7,7 +7,7 @@ import FormBuilder from './components/FormBuilder/'
 import Header from './components/Header'
 import UserForm from './components/UserForm/'
 
-import { idbEvents } from 'utils/indexedDB'
+import { storageService } from 'utils/storageService'
 
 const AppWrapper = styled.div`
     margin: 0 auto;
@@ -20,7 +20,7 @@ const AppWrapper = styled.div`
 
 function App(props) {
     useEffect(() => {
-        idbEvents.getAllQuestions()
+        storageService.getAllQuestions()
     }, [])
 
     return (

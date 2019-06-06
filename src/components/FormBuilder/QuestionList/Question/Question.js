@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import { Button } from 'components/common/Button'
-import { idbEvents } from 'utils/indexedDB'
+import { storageService } from 'utils/storageService'
 import { questionConditionTypes } from 'utils/helpers'
 
 import Condition from './Condition/'
@@ -62,13 +62,13 @@ function Question({ question, setParentValueType, parentValueType }) {
         }
 
         questionObject[property] = e.target.value
-        idbEvents.updateQuestion(questionObject)
+        storageService.updateQuestion(questionObject)
     }
 
     const questionTypeChange = ({ target }) => {
         if (question.children) {
             question.children.forEach(element => {
-                idbEvents.updateQuestion({
+                storageService.updateQuestion({
                     ...element,
                     conditionType: questionConditionTypes.equals,
                     conditionValue: '',
@@ -76,7 +76,7 @@ function Question({ question, setParentValueType, parentValueType }) {
             })
         }
 
-        idbEvents.updateQuestion({
+        storageService.updateQuestion({
             ...question,
             type: target.value,
             children: undefined,
@@ -86,7 +86,7 @@ function Question({ question, setParentValueType, parentValueType }) {
     }
 
     const addSubQuestion = value => {
-        idbEvents.addQuestion({
+        storageService.addQuestion({
             parentId: value.id,
             text: '',
             type: 'text',
@@ -102,7 +102,7 @@ function Question({ question, setParentValueType, parentValueType }) {
                 deleteQuestion(child)
             })
         }
-        idbEvents.deleteQuestion(id)
+        storageService.deleteQuestion(id)
     }
 
     return (

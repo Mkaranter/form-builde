@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { Button } from 'components/common/Button'
-import { idbEvents } from 'utils/indexedDB'
+import { storageService } from 'utils/storageService'
 
 import QuestionList from './QuestionList/'
 
@@ -10,7 +10,7 @@ function FormBuilder({ questions, showUserForm }) {
     return (
         <>
             <QuestionList questions={questions} />
-            <Button onClick={() => idbEvents.addQuestion({ question: '', type: 'text', level: 0 })}>
+            <Button onClick={() => storageService.addQuestion({ question: '', type: 'text', level: 0 })}>
                 Add Input
             </Button>
             <Button onClick={showUserForm}>Make a form</Button>

@@ -8,7 +8,7 @@ const dbPromise = openDb('form-db', 1, upgradeDB => {
     })
 })
 
-export const idbEvents = {
+export const storageService = {
     async getAllQuestions() {
         const db = await dbPromise
         return db

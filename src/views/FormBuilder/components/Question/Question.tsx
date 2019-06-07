@@ -68,13 +68,9 @@ interface QuestionProps {
     parentValueType?: string
 }
 
-interface Keyed {
-    [key: string]: any
-}
-
 function Question({ question, setParentValueType, parentValueType }: QuestionProps) {
     const questionChange = ({ target }: React.ChangeEvent<HTMLInputElement>, property: string) => {
-        const questionObject: Keyed = {
+        const questionObject: QuestionModel = {
             ...question,
             children: undefined,
         }
@@ -103,14 +99,14 @@ function Question({ question, setParentValueType, parentValueType }: QuestionPro
         setParentValueType(target.value)
     }
 
-    const addSubQuestion = (value: QuestionModel) => {
+    const addSubQuestion = ({ level, id }: QuestionModel) => {
         storageService.addQuestion({
-            parentId: value.id,
+            parentId: id,
             text: '',
             type: 'text',
             conditionType: questionConditionTypes.equals,
             conditionValue: '',
-            level: value.level + 1,
+            level: level + 1,
         })
     }
 

@@ -1,4 +1,5 @@
 export interface Question {
+    [key: string]: string | number | undefined | Question[]
     text: string
     type: string
     level: number

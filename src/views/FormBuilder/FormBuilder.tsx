@@ -5,10 +5,11 @@ import { storageService } from 'utils/storageService'
 import { Question } from 'common/models'
 
 import QuestionList from './components/QuestionList'
+import { Dispatch } from 'utils/store'
 
 interface FormBuilderProps {
     questions: Question[]
-    toggleUserForm: any
+    toggleUserForm: Dispatch
 }
 
 function FormBuilder({ questions, toggleUserForm }: FormBuilderProps) {

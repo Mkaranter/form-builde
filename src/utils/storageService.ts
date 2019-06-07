@@ -1,6 +1,8 @@
 import { openDb } from 'idb'
 import { dispatch } from 'index'
 
+import { Question } from 'common/models'
+
 const dbPromise = openDb('form-db', 1, upgradeDB => {
     upgradeDB.createObjectStore('formStore', {
         keyPath: 'id',
@@ -20,26 +22,26 @@ export const storageService = {
             })
     },
 
-    async updateQuestion(updatedQuestion: any) {
+    async updateQuestion(updatedQuestion: Question) {
         const db = await dbPromise
         const tx = db.transaction('formStore', 'readwrite')
         tx.objectStore('formStore')
             .put(updatedQuestion)
             .then(res => {
-                updatedQuestion.id = res
+                updatedQuestion.id = parseInt(res.toString(), 10)
                 dispatch.form.updateQuestion(updatedQuestion)
             })
         return tx.complete
     },
 
-    async addQuestion(newQuestion: any) {
+    async addQuestion(newQuestion: Omit<Question, 'id'>) {
         if (newQuestion.children) delete newQuestion.children
         const db = await dbPromise
         const tx = db.transaction('formStore', 'readwrite')
         tx.objectStore('formStore')
             .put(newQuestion)
             .then(res => {
-                newQuestion.id = res
+                newQuestion.id = parseInt(res.toString(), 10)
                 dispatch.form.addQuestion(newQuestion)
             })
         return tx.complete

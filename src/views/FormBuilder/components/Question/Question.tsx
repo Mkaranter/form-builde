@@ -64,8 +64,8 @@ const ButtonWrapper = styled.div`
 
 interface QuestionProps {
     question: QuestionModel
-    setParentValueType: any
-    parentValueType: any
+    setParentValueType: React.Dispatch<React.SetStateAction<string>>
+    parentValueType?: string
 }
 
 interface Keyed {
@@ -73,17 +73,17 @@ interface Keyed {
 }
 
 function Question({ question, setParentValueType, parentValueType }: QuestionProps) {
-    const questionChange = (e: any, property: string) => {
+    const questionChange = ({ target }: React.ChangeEvent<HTMLInputElement>, property: string) => {
         const questionObject: Keyed = {
             ...question,
             children: undefined,
         }
 
-        questionObject[property] = e.target.value
+        questionObject[property] = target.value
         storageService.updateQuestion(questionObject)
     }
 
-    const questionTypeChange = ({ target }: any) => {
+    const questionTypeChange = ({ target }: React.ChangeEvent<HTMLSelectElement>) => {
         if (question.children) {
             question.children.forEach(element => {
                 storageService.updateQuestion({
@@ -116,7 +116,7 @@ function Question({ question, setParentValueType, parentValueType }: QuestionPro
 
     const deleteQuestion = ({ id, children }: QuestionModel) => {
         if (children) {
-            children.forEach((child: any) => {
+            children.forEach((child: QuestionModel) => {
                 deleteQuestion(child)
             })
         }
@@ -135,8 +135,12 @@ function Question({ question, setParentValueType, parentValueType }: QuestionPro
                     <Condition
                         value={question.conditionValue}
                         type={question.conditionType}
-                        setValue={(e: any) => questionChange(e, 'conditionValue')}
-                        setType={(e: any) => questionChange(e, 'conditionType')}
+                        setValue={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            questionChange(e, 'conditionValue')
+                        }
+                        setType={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            questionChange(e, 'conditionType')
+                        }
                         parentValueType={parentValueType}
                     />
                 </InputWrapper>

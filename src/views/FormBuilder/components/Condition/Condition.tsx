@@ -7,7 +7,7 @@ interface ConditionProps {
     type?: string
     setValue: any
     setType: any
-    parentValueType: string
+    parentValueType?: string
 }
 
 function Condition({ value, type, setValue, setType, parentValueType }: ConditionProps) {

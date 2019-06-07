@@ -1,25 +1,29 @@
 import produce from 'immer'
-import { Question, FormState } from 'common/models'
+import { createModel } from '@rematch/core'
+import { Question } from 'common/models'
 
-export const form = {
+export type FormState = {
+    questionList: Question[]
+}
+
+export const form = createModel({
     state: {
         questionList: [],
-        showUserForm: false,
     },
     reducers: {
-        initQuestionList(state: FormState, payload: Question[]) {
+        initQuestionList(state: FormState, payload: Question[]): FormState {
             return produce(state, draft => {
                 draft.questionList = payload
             })
         },
 
-        addQuestion(state: FormState, payload: Question) {
+        addQuestion(state: FormState, payload: Question): FormState {
             return produce(state, draft => {
                 draft.questionList = [...state.questionList, payload]
             })
         },
 
-        updateQuestion(state: FormState, payload: Question) {
+        updateQuestion(state: FormState, payload: Question): FormState {
             const updatedState = state.questionList.map(q => {
                 if (q.id === payload.id) return payload
                 return q
@@ -30,17 +34,11 @@ export const form = {
             })
         },
 
-        deleteQuestion(state: FormState, payload: number) {
+        deleteQuestion(state: FormState, payload: number): FormState {
             const updatedState = state.questionList.filter(q => q.id !== payload)
             return produce(state, draft => {
                 draft.questionList = updatedState
             })
         },
-
-        toggleUserForm(state: FormState) {
-            return produce(state, draft => {
-                draft.showUserForm = !draft.showUserForm
-            })
-        },
     },
-}
+})

@@ -8,7 +8,8 @@ import Header from './common/components/Header'
 import UserForm from './views/UserForm'
 
 import { storageService } from 'utils/storageService'
-import { AppState, FormState } from 'common/models'
+
+import { iRootState, Dispatch } from 'utils/store'
 
 const AppWrapper = styled.div`
     margin: 0 auto;
@@ -19,11 +20,9 @@ const AppWrapper = styled.div`
     }
 `
 
-interface AppDispatchProps {
-    toggleUserForm: any
-}
+type connectedProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
 
-type AppProps = FormState & AppDispatchProps
+type AppProps = connectedProps
 
 function App({ showUserForm, questionList, toggleUserForm }: AppProps) {
     useEffect(() => {
@@ -50,13 +49,14 @@ function App({ showUserForm, questionList, toggleUserForm }: AppProps) {
     )
 }
 
-const mapStateToProps = ({ form }: AppState) => ({
+const mapStateToProps = ({ form, view }: iRootState) => ({
     questionList: form.questionList,
-    showUserForm: form.showUserForm,
+    showUserForm: view.showUserForm,
 })
 
-const mapDispatchToProps = ({ form }: any) => ({
-    toggleUserForm: () => form.toggleUserForm(),
+//TODO: Action is loosing type due to rematch bug. Waiting for fix.
+const mapDispatchToProps = ({ view }: Dispatch): any => ({
+    toggleUserForm: view.toggleUserForm,
 })
 
 export default connect(

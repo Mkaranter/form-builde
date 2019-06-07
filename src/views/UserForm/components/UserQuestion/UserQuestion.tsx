@@ -46,7 +46,7 @@ interface UserQuestionProps {
 function UserQuestion({ data, setFormInputValue }: UserQuestionProps) {
     return (
         <UserQuestionStyled>
-            <label>{data.question}</label>
+            <label>{data.text}</label>
             {data.type !== questionTypes.boolean ? (
                 <input onChange={setFormInputValue} />
             ) : (

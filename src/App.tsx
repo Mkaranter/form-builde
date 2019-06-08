@@ -2,13 +2,14 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
-import PropTypes from 'prop-types'
 
 import FormBuilder from './views/FormBuilder'
-import Header from './components/Header'
+import Header from './common/components/Header'
 import UserForm from './views/UserForm'
 
 import { storageService } from 'utils/storageService'
+
+import { iRootState, Dispatch } from 'utils/store'
 
 const AppWrapper = styled.div`
     margin: 0 auto;
@@ -19,7 +20,11 @@ const AppWrapper = styled.div`
     }
 `
 
-function App({ showUserForm, questionList, toggleUserForm }) {
+type connectedProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
+
+type AppProps = connectedProps
+
+function App({ showUserForm, questionList, toggleUserForm }: AppProps) {
     useEffect(() => {
         storageService.getAllQuestions()
     }, [])
@@ -32,31 +37,29 @@ function App({ showUserForm, questionList, toggleUserForm }) {
                     questions={arrayToTree(questionList, {
                         parentProperty: 'parentId',
                     })}
-                    showUserForm={toggleUserForm}
+                    toggleUserForm={toggleUserForm}
                 />
             ) : (
-                <UserForm formData={arrayToTree(questionList, { parentProperty: 'parentId' })} />
+                <UserForm
+                    questions={arrayToTree(questionList, { parentProperty: 'parentId' })}
+                    parentValue={undefined}
+                />
             )}
         </AppWrapper>
     )
 }
 
-const mapStateToProps = ({ form }) => ({
+const mapStateToProps = ({ form, view }: iRootState) => ({
     questionList: form.questionList,
-    showUserForm: form.showUserForm,
+    showUserForm: view.showUserForm,
 })
 
-const mapDispatchToProps = dispatch => {
-    return { toggleUserForm: () => dispatch.form.toggleUserForm() }
-}
+//TODO: Action is loosing type due to rematch bug. Waiting for fix.
+const mapDispatchToProps = ({ view }: Dispatch): any => ({
+    toggleUserForm: view.toggleUserForm,
+})
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(App)
-
-App.propTypes = {
-    showUserForm: PropTypes.bool.isRequired,
-    questionList: PropTypes.array.isRequired,
-    toggleUserForm: PropTypes.func,
-}

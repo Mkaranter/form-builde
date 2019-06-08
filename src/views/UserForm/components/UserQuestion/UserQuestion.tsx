@@ -1,13 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
-import PropTypes from 'prop-types'
 
 import { questionTypes } from 'utils/helpers'
+import { Question } from 'common/models'
 
-const UserQuestionStyled = styled.fieldset`
+interface UserQuestionStyledProps {
+    level?: number
+}
+
+const UserQuestionStyled = styled.fieldset<UserQuestionStyledProps>`
     display: flex;
     flex-direction: column;
-    margin-left: ${props => (props.level ? `${props.level * 20}px` : '10px')};
+    margin-left: ${({ level }) => (level ? `${level * 20}px` : '10px')};
     margin-right: 10px;
     margin-bottom: 20px;
 
@@ -35,10 +39,15 @@ const RadioWrapper = styled.div`
     }
 `
 
-function UserQuestion({ data, setFormInputValue }) {
+interface UserQuestionProps {
+    data: Question
+    setFormInputValue: any
+}
+
+function UserQuestion({ data, setFormInputValue }: UserQuestionProps) {
     return (
         <UserQuestionStyled>
-            <label>{data.question}</label>
+            <label>{data.text}</label>
             {data.type !== questionTypes.boolean ? (
                 <input onChange={setFormInputValue} />
             ) : (
@@ -70,8 +79,3 @@ function UserQuestion({ data, setFormInputValue }) {
 }
 
 export default UserQuestion
-
-UserQuestion.propTypes = {
-    formData: PropTypes.array,
-    setFormInputValue: PropTypes.func.isRequired,
-}

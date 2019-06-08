@@ -1,14 +1,22 @@
 import React from 'react'
 import styled from 'styled-components'
-import PropTypes from 'prop-types'
 
-import Button from 'components/Button'
+import Button from 'common/components/Button'
 import { storageService } from 'utils/storageService'
 import { questionConditionTypes } from 'utils/helpers'
+import { Question as QuestionModel } from 'common/models'
 
 import Condition from '../Condition'
 
-const QuestionStyled = styled.form`
+interface QuestionStyledProps {
+    level?: number
+}
+
+interface InputWrapperProps {
+    select?: boolean
+}
+
+const QuestionStyled = styled.form<QuestionStyledProps>`
     display: flex;
     flex-direction: column;
     margin-left: ${({ level }) => (level ? `${level * 20}px` : '10px')};
@@ -26,7 +34,7 @@ const QuestionStyled = styled.form`
     border-image: initial;
 `
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<InputWrapperProps>`
     display: flex;
     margin: 0 10px 5px 10px;
     label {
@@ -54,18 +62,24 @@ const ButtonWrapper = styled.div`
     margin: 10px 10px 0 0;
 `
 
-function Question({ question, setParentValueType, parentValueType }) {
-    const questionChange = (e, property) => {
-        const questionObject = {
+interface QuestionProps {
+    question: QuestionModel
+    setParentValueType: React.Dispatch<React.SetStateAction<string>>
+    parentValueType?: string
+}
+
+function Question({ question, setParentValueType, parentValueType }: QuestionProps) {
+    const questionChange = ({ target }: React.ChangeEvent<HTMLInputElement>, property: string) => {
+        const questionObject: QuestionModel = {
             ...question,
             children: undefined,
         }
 
-        questionObject[property] = e.target.value
+        questionObject[property] = target.value
         storageService.updateQuestion(questionObject)
     }
 
-    const questionTypeChange = ({ target }) => {
+    const questionTypeChange = ({ target }: React.ChangeEvent<HTMLSelectElement>) => {
         if (question.children) {
             question.children.forEach(element => {
                 storageService.updateQuestion({
@@ -85,20 +99,20 @@ function Question({ question, setParentValueType, parentValueType }) {
         setParentValueType(target.value)
     }
 
-    const addSubQuestion = value => {
+    const addSubQuestion = ({ level, id }: QuestionModel) => {
         storageService.addQuestion({
-            parentId: value.id,
+            parentId: id,
             text: '',
             type: 'text',
             conditionType: questionConditionTypes.equals,
             conditionValue: '',
-            level: value.level + 1,
+            level: level + 1,
         })
     }
 
-    const deleteQuestion = ({ id, children }) => {
+    const deleteQuestion = ({ id, children }: QuestionModel) => {
         if (children) {
-            children.forEach(child => {
+            children.forEach((child: QuestionModel) => {
                 deleteQuestion(child)
             })
         }
@@ -117,8 +131,12 @@ function Question({ question, setParentValueType, parentValueType }) {
                     <Condition
                         value={question.conditionValue}
                         type={question.conditionType}
-                        setValue={e => questionChange(e, 'conditionValue')}
-                        setType={e => questionChange(e, 'conditionType')}
+                        setValue={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            questionChange(e, 'conditionValue')
+                        }
+                        setType={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            questionChange(e, 'conditionType')
+                        }
                         parentValueType={parentValueType}
                     />
                 </InputWrapper>
@@ -129,7 +147,7 @@ function Question({ question, setParentValueType, parentValueType }) {
                     type="text"
                     id={`question-${question.id}`}
                     value={question.text}
-                    onChange={e => questionChange(e, 'question')}
+                    onChange={e => questionChange(e, 'text')}
                 />
             </InputWrapper>
             <InputWrapper>
@@ -154,9 +172,3 @@ function Question({ question, setParentValueType, parentValueType }) {
 }
 
 export default Question
-
-Question.propTypes = {
-    question: PropTypes.object,
-    setParentValueType: PropTypes.func,
-    parentValueType: PropTypes.string,
-}

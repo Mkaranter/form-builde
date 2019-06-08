@@ -69,7 +69,10 @@ interface QuestionProps {
 }
 
 function Question({ question, setParentValueType, parentValueType }: QuestionProps) {
-    const questionChange = ({ target }: React.ChangeEvent<HTMLInputElement>, property: string) => {
+    const questionChange = (
+        { target }: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
+        property: string
+    ) => {
         const questionObject: QuestionModel = {
             ...question,
             children: undefined,
@@ -131,12 +134,8 @@ function Question({ question, setParentValueType, parentValueType }: QuestionPro
                     <Condition
                         value={question.conditionValue}
                         type={question.conditionType}
-                        setValue={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            questionChange(e, 'conditionValue')
-                        }
-                        setType={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            questionChange(e, 'conditionType')
-                        }
+                        setValue={e => questionChange(e, 'conditionValue')}
+                        setType={e => questionChange(e, 'conditionType')}
                         parentValueType={parentValueType}
                     />
                 </InputWrapper>

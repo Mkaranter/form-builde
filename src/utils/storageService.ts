@@ -1,5 +1,5 @@
 import { openDb } from 'idb'
-import { dispatch } from 'index'
+import { dispatch } from './store'
 
 import { Question } from 'common/models'
 

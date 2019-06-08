@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { questionTypes } from 'utils/helpers'
+import { Question } from 'common/models'
 
 interface UserQuestionStyledProps {
     level?: number
@@ -39,7 +40,7 @@ const RadioWrapper = styled.div`
 `
 
 interface UserQuestionProps {
-    data: any
+    data: Question
     setFormInputValue: any
 }
 

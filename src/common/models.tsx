@@ -8,12 +8,3 @@ export interface Question {
     id: number
     children?: Question[]
 }
-
-export interface FormState {
-    questionList: Question[]
-    showUserForm: boolean
-}
-
-export interface AppState {
-    form: FormState
-}

@@ -5,8 +5,6 @@ import { store } from './utils/store'
 import './index.css'
 import App from './App'
 
-export const { dispatch } = store
-
 ReactDOM.render(
     <Provider store={store}>
         <App />

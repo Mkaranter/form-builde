@@ -10,14 +10,14 @@ interface UserFormProps {
     parentValue?: string
 }
 
-function UserForm({ questions, parentValue }: UserFormProps): any {
+function UserForm({ questions, parentValue }: UserFormProps) {
     const [formInputValue, setFormInputValue] = useState('')
 
     const checkCondition = (
         conditionType: string,
-        formInputValue: any,
         conditionValue: string,
-        level: number
+        level: number,
+        formInputValue?: string
     ) => {
         if (level === 0) return true
 
@@ -27,31 +27,41 @@ function UserForm({ questions, parentValue }: UserFormProps): any {
         if (
             conditionType === questionConditionTypes.less &&
             formInputValue !== '' &&
-            formInputValue < parseInt(conditionValue, 10)
+            parseInt(formInputValue!) < parseInt(conditionValue, 10)
         )
             return true
         if (
             conditionType === questionConditionTypes.greater &&
-            formInputValue > parseInt(conditionValue, 10)
+            parseInt(formInputValue!) > parseInt(conditionValue, 10)
         )
             return true
 
         return false
     }
 
-    return questions.map((e: any) => (
-        <div key={e.id}>
-            {checkCondition(e.conditionType, parentValue, e.conditionValue, e.level) && (
-                <>
-                    <FormBlock
-                        data={e}
-                        setFormInputValue={(e: any) => setFormInputValue(e.target.value)}
-                    />
-                    {e.children && <UserForm questions={e.children} parentValue={formInputValue} />}
-                </>
-            )}
-        </div>
-    ))
+    return (
+        <>
+            {questions.map(e => (
+                <div key={e.id}>
+                    {checkCondition(e.conditionType!, e.conditionValue!, e.level, parentValue) && (
+                        <>
+                            <FormBlock
+                                data={e}
+                                setFormInputValue={({
+                                    target,
+                                }: React.ChangeEvent<HTMLInputElement>) =>
+                                    setFormInputValue(target.value)
+                                }
+                            />
+                            {e.children && (
+                                <UserForm questions={e.children} parentValue={formInputValue} />
+                            )}
+                        </>
+                    )}
+                </div>
+            ))}
+        </>
+    )
 }
 
 export default UserForm

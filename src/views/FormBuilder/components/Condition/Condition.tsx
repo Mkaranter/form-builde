@@ -5,8 +5,8 @@ import { questionConditionTypes } from 'utils/helpers'
 interface ConditionProps {
     value?: string
     type?: string
-    setValue: any
-    setType: any
+    setValue: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
+    setType: (event: React.ChangeEvent<HTMLSelectElement>) => void
     parentValueType?: string
 }
 

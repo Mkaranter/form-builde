@@ -41,7 +41,7 @@ const RadioWrapper = styled.div`
 
 interface UserQuestionProps {
     data: Question
-    setFormInputValue: any
+    setFormInputValue: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 function UserQuestion({ data, setFormInputValue }: UserQuestionProps) {

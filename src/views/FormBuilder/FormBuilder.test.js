@@ -6,7 +6,7 @@ import Button from 'common/components/Button'
 test('Form detail should contain styled button', () => {
     const component = shallow(<FormBuilder />)
 
-    expect(component.find(Button).exists()).toBe(true)
+    expect(component.find(Button).contains('Make a form')).toBe(true)
 })
 
 test('Form detail should contain 2 styled button', () => {

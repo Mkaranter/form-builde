@@ -7,6 +7,9 @@ import FormBuilder from './views/FormBuilder'
 import Header from './common/components/Header'
 import UserForm from './views/UserForm'
 
+import { Provider } from 'react-redux'
+import { store } from './utils/store'
+
 import { storageService } from 'utils/storageService'
 
 import { iRootState, Dispatch } from 'utils/store'
@@ -59,7 +62,15 @@ const mapDispatchToProps = ({ view }: Dispatch): any => ({
     toggleUserForm: view.toggleUserForm,
 })
 
-export default connect(
+const ConnectedApp = connect(
     mapStateToProps,
     mapDispatchToProps
 )(App)
+
+const Root = () => (
+    <Provider store={store}>
+        <ConnectedApp />
+    </Provider>
+)
+
+export default Root

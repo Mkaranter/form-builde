@@ -13,6 +13,16 @@ interface FormBuilderProps {
 }
 
 function FormBuilder({ questions, toggleUserForm }: FormBuilderProps) {
+    const validate = (): boolean => {
+        const failedFields = questions.filter(q => q.text === '')
+        if (failedFields.length === 0) return true
+        return false
+    }
+
+    const submit = () => {
+        if (validate()) toggleUserForm()
+    }
+
     return (
         <>
             <QuestionList
@@ -24,7 +34,7 @@ function FormBuilder({ questions, toggleUserForm }: FormBuilderProps) {
                 onClick={() => storageService.addQuestion({ text: '', type: 'text', level: 0 })}>
                 Add Input
             </Button>
-            <Button onClick={toggleUserForm} disabled={questions.length === 0}>
+            <Button onClick={submit} disabled={questions.length === 0}>
                 Make a form
             </Button>
         </>

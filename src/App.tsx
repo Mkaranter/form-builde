@@ -16,7 +16,7 @@ import { iRootState, Dispatch } from 'utils/store'
 
 const AppWrapper = styled.div`
     display: grid;
-    grid-template-colums: auto 50% auto;
+    grid-template-columns: auto 50% auto;
     grid-template-areas: 'header header header' '. main .';
     grid-row-gap: 25px;
 `

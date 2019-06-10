@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { questionConditionTypes } from 'utils/helpers'
+import { QuestionConditionTypes, QuestionTypes } from 'utils/helpers'
 
 interface ConditionProps {
     value?: string
@@ -15,15 +15,15 @@ function Condition({ value, type, setValue, setType, parentValueType }: Conditio
         <>
             <label>Condition</label>
             <select onChange={setType} value={type}>
-                <option value={questionConditionTypes.equals}>Equals</option>
-                {parentValueType === 'number' && (
+                <option value={QuestionConditionTypes.Equals}>Equals</option>
+                {parentValueType === QuestionTypes.Number && (
                     <>
-                        <option value={questionConditionTypes.greater}>Greater than</option>
-                        <option value={questionConditionTypes.less}>Less than</option>
+                        <option value={QuestionConditionTypes.Greater}>Greater than</option>
+                        <option value={QuestionConditionTypes.Less}>Less than</option>
                     </>
                 )}
             </select>
-            {parentValueType !== 'boolean' ? (
+            {parentValueType !== QuestionTypes.Boolean ? (
                 <input onChange={setValue} type={parentValueType} value={value} />
             ) : (
                 <select onChange={setValue} value={value}>

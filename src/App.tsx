@@ -15,12 +15,14 @@ import { storageService } from 'utils/storageService'
 import { iRootState, Dispatch } from 'utils/store'
 
 const AppWrapper = styled.div`
-    margin: 0 auto;
-    max-width: 50vw;
+    display: grid;
+    grid-template-colums: auto 50% auto;
+    grid-template-areas: 'header header header' '. main .';
+    grid-row-gap: 25px;
+`
 
-    @media (max-width: 768px) {
-        max-width: 100vw;
-    }
+const Main = styled.main`
+    grid-area: main;
 `
 
 type AppProps = ConnectedProps
@@ -33,19 +35,21 @@ function App({ showUserForm, questionList, toggleUserForm }: AppProps) {
     return (
         <AppWrapper>
             <Header />
-            {!showUserForm ? (
-                <FormBuilder
-                    questions={arrayToTree(questionList, {
-                        parentProperty: 'parentId',
-                    })}
-                    toggleUserForm={toggleUserForm}
-                />
-            ) : (
-                <UserForm
-                    questions={arrayToTree(questionList, { parentProperty: 'parentId' })}
-                    parentValue={undefined}
-                />
-            )}
+            <Main>
+                {!showUserForm ? (
+                    <FormBuilder
+                        questions={arrayToTree(questionList, {
+                            parentProperty: 'parentId',
+                        })}
+                        toggleUserForm={toggleUserForm}
+                    />
+                ) : (
+                    <UserForm
+                        questions={arrayToTree(questionList, { parentProperty: 'parentId' })}
+                        parentValue={undefined}
+                    />
+                )}
+            </Main>
         </AppWrapper>
     )
 }

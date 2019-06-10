@@ -9,3 +9,7 @@ export enum QuestionTypes {
     Number = 'number',
     Boolean = 'boolean',
 }
+
+export enum InterfaceColors {
+    Primary = '#2196f3',
+}

@@ -1,8 +1,12 @@
 import styled from 'styled-components'
+import { InterfaceColors } from 'utils/helpers'
 
 const Button = styled.button`
-    background: tomato;
-    padding: 5px 10px;
+    background: ${InterfaceColors.Primary};
+    color: #000;
+    border: none
+    cursor: pointer;
+    padding: 10px 15px;
     margin: 0 10px 0 10px;
 `
 export default Button

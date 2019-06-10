@@ -147,6 +147,7 @@ function Question({ question, setParentValueType, parentValueType }: QuestionPro
                     id={`question-${question.id}`}
                     value={question.text}
                     onChange={e => questionChange(e, 'text')}
+                    required
                 />
             </InputWrapper>
             <InputWrapper>

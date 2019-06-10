@@ -24,7 +24,9 @@ function FormBuilder({ questions, toggleUserForm }: FormBuilderProps) {
                 onClick={() => storageService.addQuestion({ text: '', type: 'text', level: 0 })}>
                 Add Input
             </Button>
-            <Button onClick={toggleUserForm}>Make a form</Button>
+            <Button onClick={toggleUserForm} disabled={questions.length === 0}>
+                Make a form
+            </Button>
         </>
     )
 }

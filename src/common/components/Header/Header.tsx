@@ -6,12 +6,17 @@ import { InterfaceColors } from 'utils/helpers'
 const HeaderStyled = styled.header`
     background: ${InterfaceColors.Primary};
     grid-area: header;
+
+    h1 {
+        margin-left: 20px;
+        text-transform: uppercase;
+    }
 `
 
 function Header() {
     return (
         <HeaderStyled>
-            <h1>FORM BUILDER APP</h1>
+            <h1>form builder</h1>
         </HeaderStyled>
     )
 }

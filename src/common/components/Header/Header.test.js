@@ -4,7 +4,7 @@ import Header from './Header'
 
 it('Render header', () => {
     const component = shallow(<Header />)
-    const header = <h1>FORM BUILDER APP</h1>
+    const header = <h1>form builder</h1>
 
     expect(component.contains(header)).toEqual(true)
 })

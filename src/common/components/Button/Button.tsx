@@ -5,7 +5,7 @@ const Button = styled.button`
     background: ${InterfaceColors.Primary};
     color: #000;
     border: none
-    cursor: pointer;
+    cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
     padding: 10px 15px;
     margin: 0 10px 0 10px;
 `

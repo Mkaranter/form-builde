@@ -24,7 +24,7 @@ function Condition({ value, type, setValue, setType, parentValueType }: Conditio
                 )}
             </select>
             {parentValueType !== QuestionTypes.Boolean ? (
-                <input onChange={setValue} type={parentValueType} value={value} />
+                <input onChange={setValue} type={parentValueType} value={value} required />
             ) : (
                 <select onChange={setValue} value={value}>
                     <option defaultChecked value="" disabled>

@@ -24,7 +24,6 @@ const UserQuestionStyled = styled.fieldset<UserQuestionStyledProps>`
     }
 
     input {
-        width: 100%;
         padding: 5px 0;
     }
 `
@@ -46,7 +45,7 @@ interface UserQuestionProps {
 
 function UserQuestion({ data, setFormInputValue }: UserQuestionProps) {
     return (
-        <UserQuestionStyled>
+        <UserQuestionStyled level={data.level}>
             <label>{data.text}</label>
             {data.type !== QuestionTypes.Boolean ? (
                 <input onChange={setFormInputValue} />

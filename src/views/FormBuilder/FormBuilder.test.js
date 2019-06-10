@@ -3,19 +3,37 @@ import { shallow } from 'enzyme'
 import FormBuilder from './FormBuilder'
 import Button from 'common/components/Button'
 
-test('Component should render "Make Form" button', () => {
-    const component = shallow(<FormBuilder />)
-    expect(component.find(Button).contains('Make a form')).toBe(true)
-})
+const mockedQuestion1 = {
+    text: 'Test question',
+    type: 'number',
+    level: 3,
+    id: 1,
+}
 
-test('Component should render "Add Input" button', () => {
-    const component = shallow(<FormBuilder />)
-    expect(component.find(Button).contains('Add Input')).toBe(true)
-})
+const mockedQuestion2 = {
+    text: 'Another question',
+    type: 'text',
+    level: 2,
+    id: 2,
+}
 
-test('Component should render 2 styled button', () => {
-    const component = shallow(<FormBuilder />)
-    const button = component.find(Button)
+const questions = [mockedQuestion1, mockedQuestion2]
 
-    expect(button).toHaveLength(2)
+describe('FormBuilder component', () => {
+    it('Component should render "Make Form" button', () => {
+        const component = shallow(<FormBuilder questions={questions} />)
+        expect(component.find(Button).contains('Make a form')).toBe(true)
+    })
+
+    it('Component should render "Add Input" button', () => {
+        const component = shallow(<FormBuilder questions={questions} />)
+        expect(component.find(Button).contains('Add Input')).toBe(true)
+    })
+
+    it('Component should render 2 styled button', () => {
+        const component = shallow(<FormBuilder questions={questions} />)
+        const button = component.find(Button)
+
+        expect(button).toHaveLength(2)
+    })
 })

@@ -11,7 +11,7 @@ interface QuestionListProps {
 }
 
 function QuestionList({ questions, parentQuestion, parentValueType }: QuestionListProps) {
-    const [parentValueTypeFromState, setParentValueType] = useState('')
+    const [parentValueTypeUpdated, setParentValueType] = useState('')
 
     return (
         <>
@@ -26,7 +26,7 @@ function QuestionList({ questions, parentQuestion, parentValueType }: QuestionLi
                         <QuestionList
                             questions={question.children}
                             parentQuestion={question}
-                            parentValueType={parentValueTypeFromState}
+                            parentValueType={parentValueTypeUpdated}
                         />
                     )}
                 </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { questionConditionTypes } from 'utils/helpers'
+import { QuestionConditionTypes } from 'utils/helpers'
 import { Question } from 'common/models'
 
 import FormBlock from './components/UserQuestion'
@@ -22,16 +22,16 @@ function UserForm({ questions, parentValue }: UserFormProps) {
         if (level === 0) return true
 
         //eslint-disable-next-line
-        if (conditionType === questionConditionTypes.equals && formInputValue == conditionValue)
+        if (conditionType === QuestionConditionTypes.Equals && formInputValue == conditionValue)
             return true
         if (
-            conditionType === questionConditionTypes.less &&
+            conditionType === QuestionConditionTypes.Less &&
             formInputValue !== '' &&
             parseInt(formInputValue!) < parseInt(conditionValue, 10)
         )
             return true
         if (
-            conditionType === questionConditionTypes.greater &&
+            conditionType === QuestionConditionTypes.Greater &&
             parseInt(formInputValue!) > parseInt(conditionValue, 10)
         )
             return true

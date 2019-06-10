@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import Button from 'common/components/Button'
 import { storageService } from 'utils/storageService'
-import { questionConditionTypes } from 'utils/helpers'
+import { QuestionConditionTypes } from 'utils/helpers'
 import { Question as QuestionModel } from 'common/models'
 
 import Condition from '../Condition'
@@ -87,7 +87,7 @@ function Question({ question, setParentValueType, parentValueType }: QuestionPro
             question.children.forEach(element => {
                 storageService.updateQuestion({
                     ...element,
-                    conditionType: questionConditionTypes.equals,
+                    conditionType: QuestionConditionTypes.Equals,
                     conditionValue: '',
                 })
             })
@@ -107,7 +107,7 @@ function Question({ question, setParentValueType, parentValueType }: QuestionPro
             parentId: id,
             text: '',
             type: 'text',
-            conditionType: questionConditionTypes.equals,
+            conditionType: QuestionConditionTypes.Equals,
             conditionValue: '',
             level: level + 1,
         })

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { questionTypes } from 'utils/helpers'
+import { QuestionTypes } from 'utils/helpers'
 import { Question } from 'common/models'
 
 interface UserQuestionStyledProps {
@@ -48,7 +48,7 @@ function UserQuestion({ data, setFormInputValue }: UserQuestionProps) {
     return (
         <UserQuestionStyled>
             <label>{data.text}</label>
-            {data.type !== questionTypes.boolean ? (
+            {data.type !== QuestionTypes.Boolean ? (
                 <input onChange={setFormInputValue} />
             ) : (
                 <>

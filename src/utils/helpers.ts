@@ -1,11 +1,11 @@
-export const questionConditionTypes = {
-    equals: 'equals',
-    less: 'less',
-    greater: 'greater',
+export enum QuestionConditionTypes {
+    Equals = 'equals',
+    Less = 'less',
+    Greater = 'greater',
 }
 
-export const questionTypes = {
-    text: 'text',
-    number: 'number',
-    boolean: 'boolean',
+export enum QuestionTypes {
+    Text = 'text',
+    Number = 'number',
+    Boolean = 'boolean',
 }

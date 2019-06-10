@@ -23,9 +23,7 @@ const AppWrapper = styled.div`
     }
 `
 
-type connectedProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
-
-type AppProps = connectedProps
+type AppProps = ConnectedProps
 
 function App({ showUserForm, questionList, toggleUserForm }: AppProps) {
     useEffect(() => {
@@ -61,6 +59,8 @@ const mapStateToProps = ({ form, view }: iRootState) => ({
 const mapDispatchToProps = ({ view }: Dispatch): any => ({
     toggleUserForm: view.toggleUserForm,
 })
+
+type ConnectedProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
 
 const ConnectedApp = connect(
     mapStateToProps,

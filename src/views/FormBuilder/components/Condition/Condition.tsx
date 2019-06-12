@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { QuestionConditionTypes, QuestionTypes } from 'utils/helpers'
+import { QuestionConditionTypes, QuestionTypes } from 'utils/enums'
 
 interface ConditionProps {
     value?: string

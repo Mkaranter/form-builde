@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import Button from 'common/components/Button'
 import { storageService } from 'utils/storageService'
-import { QuestionConditionTypes } from 'utils/helpers'
+import { QuestionConditionTypes } from 'utils/enums'
 import { Question as QuestionModel } from 'common/models'
 
 import Condition from '../Condition'

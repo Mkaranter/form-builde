@@ -1,4 +1,4 @@
-import { QuestionConditionTypes } from 'utils/helpers'
+import { QuestionConditionTypes } from 'utils/enums'
 
 export const checkForCondition = (
     conditionType: string,

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { InterfaceColors } from 'utils/helpers'
+import { InterfaceColors } from 'utils/enums'
 
 const HeaderStyled = styled.header`
     background: ${InterfaceColors.Primary};

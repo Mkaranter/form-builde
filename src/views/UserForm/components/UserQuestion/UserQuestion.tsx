@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { QuestionTypes } from 'utils/helpers'
+import { QuestionTypes } from 'utils/enums'
 import { Question } from 'common/models'
 
 interface UserQuestionStyledProps {

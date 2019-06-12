@@ -33,24 +33,18 @@ const App: React.SFC<AppProps> = ({
         storageService.getAllQuestions()
     }, [])
 
+    const questionTree = makeQuestionTree(questionList, {
+        parentProperty: 'parentId',
+    })
+
     return (
         <AppWrapper>
             <Header />
             <Main>
                 {!showUserForm ? (
-                    <FormBuilder
-                        questions={makeQuestionTree(questionList, {
-                            parentProperty: 'parentId',
-                        })}
-                        toggleUserForm={toggleUserForm}
-                    />
+                    <FormBuilder questions={questionTree} toggleUserForm={toggleUserForm} />
                 ) : (
-                    <UserForm
-                        questions={makeQuestionTree(questionList, {
-                            parentProperty: 'parentId',
-                        })}
-                        parentValue={undefined}
-                    />
+                    <UserForm questions={questionTree} parentValue={undefined} />
                 )}
             </Main>
         </AppWrapper>

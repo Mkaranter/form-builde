@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Button from 'common/components/Button'
-import { storageService } from 'utils/storageService'
 import { Question } from 'common/models'
 
 import QuestionList from './components/QuestionList'
@@ -10,9 +9,14 @@ import { Dispatch } from 'utils/store'
 interface FormBuilderProps {
     questions: Question[]
     toggleUserForm: Dispatch
+    addQuestion: Dispatch
 }
 
-const FormBuilder: React.SFC<FormBuilderProps> = ({ questions, toggleUserForm }): JSX.Element => {
+const FormBuilder: React.SFC<FormBuilderProps> = ({
+    questions,
+    toggleUserForm,
+    addQuestion,
+}): JSX.Element => {
     const validate = (): boolean => {
         const failedFields = questions.filter(q => q.text === '')
         if (failedFields.length === 0) return true
@@ -30,8 +34,7 @@ const FormBuilder: React.SFC<FormBuilderProps> = ({ questions, toggleUserForm })
                 parentQuestion={undefined}
                 parentValueType={undefined}
             />
-            <Button
-                onClick={() => storageService.addQuestion({ text: '', type: 'text', level: 0 })}>
+            <Button onClick={() => addQuestion({ text: '', type: 'text', level: 0 })}>
                 Add Input
             </Button>
             <Button onClick={submit} disabled={questions.length === 0}>

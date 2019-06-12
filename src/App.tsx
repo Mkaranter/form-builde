@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, Provider } from 'react-redux'
 import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
 
@@ -7,12 +7,8 @@ import FormBuilder from './views/FormBuilder'
 import Header from './common/components/Header'
 import UserForm from './views/UserForm'
 
-import { Provider } from 'react-redux'
-import { store } from './utils/store'
-
+import { store, iRootState, Dispatch } from 'utils/store'
 import { storageService } from 'utils/storageService'
-
-import { iRootState, Dispatch } from 'utils/store'
 
 const AppWrapper = styled.div`
     display: grid;
@@ -27,27 +23,28 @@ const Main = styled.main`
 
 type AppProps = ConnectedProps
 
-const App: React.SFC<AppProps> = ({ showUserForm, questionList, toggleUserForm }): JSX.Element => {
+const App: React.SFC<AppProps> = ({
+    showUserForm,
+    questionList,
+    toggleUserForm,
+    makeQuestionTree,
+}): JSX.Element => {
     useEffect(() => {
         storageService.getAllQuestions()
     }, [])
+
+    const questionTree = makeQuestionTree(questionList, {
+        parentProperty: 'parentId',
+    })
 
     return (
         <AppWrapper>
             <Header />
             <Main>
                 {!showUserForm ? (
-                    <FormBuilder
-                        questions={arrayToTree(questionList, {
-                            parentProperty: 'parentId',
-                        })}
-                        toggleUserForm={toggleUserForm}
-                    />
+                    <FormBuilder questions={questionTree} toggleUserForm={toggleUserForm} />
                 ) : (
-                    <UserForm
-                        questions={arrayToTree(questionList, { parentProperty: 'parentId' })}
-                        parentValue={undefined}
-                    />
+                    <UserForm questions={questionTree} parentValue={undefined} />
                 )}
             </Main>
         </AppWrapper>
@@ -57,6 +54,7 @@ const App: React.SFC<AppProps> = ({ showUserForm, questionList, toggleUserForm }
 const mapStateToProps = ({ form, view }: iRootState) => ({
     questionList: form.questionList,
     showUserForm: view.showUserForm,
+    makeQuestionTree: arrayToTree,
 })
 
 //TODO: Action is loosing type due to rematch bug. Waiting for fix.

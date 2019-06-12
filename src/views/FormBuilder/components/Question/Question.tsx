@@ -68,7 +68,11 @@ interface QuestionProps {
     parentValueType?: string
 }
 
-function Question({ question, setParentValueType, parentValueType }: QuestionProps) {
+const Question: React.SFC<QuestionProps> = ({
+    question,
+    setParentValueType,
+    parentValueType,
+}): JSX.Element => {
     const questionChange = (
         { target }: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
         property: string

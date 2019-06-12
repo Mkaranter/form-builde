@@ -10,7 +10,13 @@ interface ConditionProps {
     parentValueType?: string
 }
 
-function Condition({ value, type, setValue, setType, parentValueType }: ConditionProps) {
+const Condition: React.SFC<ConditionProps> = ({
+    value,
+    type,
+    setValue,
+    setType,
+    parentValueType,
+}): JSX.Element => {
     return (
         <>
             <label>Condition</label>

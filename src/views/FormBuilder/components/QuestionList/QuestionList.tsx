@@ -10,7 +10,11 @@ interface QuestionListProps {
     parentValueType?: string
 }
 
-function QuestionList({ questions, parentQuestion, parentValueType }: QuestionListProps) {
+const QuestionList: React.SFC<QuestionListProps> = ({
+    questions,
+    parentQuestion,
+    parentValueType,
+}): JSX.Element => {
     const [parentValueTypeUpdated, setParentValueType] = useState('')
 
     return (

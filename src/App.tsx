@@ -27,7 +27,7 @@ const Main = styled.main`
 
 type AppProps = ConnectedProps
 
-function App({ showUserForm, questionList, toggleUserForm }: AppProps) {
+const App: React.SFC<AppProps> = ({ showUserForm, questionList, toggleUserForm }): JSX.Element => {
     useEffect(() => {
         storageService.getAllQuestions()
     }, [])

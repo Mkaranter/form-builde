@@ -10,7 +10,7 @@ interface UserFormProps {
     parentValue?: string
 }
 
-function UserForm({ questions, parentValue }: UserFormProps) {
+const UserForm: React.SFC<UserFormProps> = ({ questions, parentValue }): JSX.Element => {
     const [formInputValue, setFormInputValue] = useState('')
 
     const checkCondition = (

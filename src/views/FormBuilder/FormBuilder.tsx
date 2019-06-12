@@ -12,7 +12,7 @@ interface FormBuilderProps {
     toggleUserForm: Dispatch
 }
 
-function FormBuilder({ questions, toggleUserForm }: FormBuilderProps) {
+const FormBuilder: React.SFC<FormBuilderProps> = ({ questions, toggleUserForm }): JSX.Element => {
     const validate = (): boolean => {
         const failedFields = questions.filter(q => q.text === '')
         if (failedFields.length === 0) return true

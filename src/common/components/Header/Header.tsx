@@ -13,7 +13,7 @@ const HeaderStyled = styled.header`
     }
 `
 
-function Header() {
+const Header: React.SFC = (): JSX.Element => {
     return (
         <HeaderStyled>
             <h1>form builder</h1>

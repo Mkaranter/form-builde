@@ -4,11 +4,12 @@ import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
 
 import FormBuilder from './views/FormBuilder'
-import Header from './common/components/Header'
 import UserForm from './views/UserForm'
 
 import { store, iRootState, Dispatch } from 'utils/store'
 import { storageService } from 'utils/storageService'
+import { GlobalStyles } from 'common/globalStyles'
+import Header from 'common/components/Header'
 
 const AppWrapper = styled.div`
     display: grid;
@@ -39,6 +40,7 @@ const App: React.SFC<AppProps> = ({
 
     return (
         <AppWrapper>
+            <GlobalStyles />
             <Header />
             <Main>
                 {!showUserForm ? (

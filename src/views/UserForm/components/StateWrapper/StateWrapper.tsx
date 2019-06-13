@@ -11,18 +11,18 @@ interface StateWrapperProps {
 }
 
 const StateWrapper = ({ question }: StateWrapperProps) => {
-    const [formInputValue, setFormInputValue] = useState('')
+    const [inputValue, setInputValue] = useState('')
 
     return (
         <>
             <UserQuestion
                 data={question}
-                setFormInputValue={({ target }: React.ChangeEvent<HTMLInputElement>) =>
-                    setFormInputValue(target.value)
+                setInputValue={({ target }: React.ChangeEvent<HTMLInputElement>) =>
+                    setInputValue(target.value)
                 }
             />
             {question.children && (
-                <UserForm questions={question.children} parentValue={formInputValue} />
+                <UserForm questions={question.children} parentValue={inputValue} />
             )}
         </>
     )

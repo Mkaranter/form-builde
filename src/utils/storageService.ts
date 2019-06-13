@@ -1,8 +1,8 @@
 import { openDb } from 'idb'
 import { Question } from 'common/models'
 
-const StorageServiceFactory = () => {
-    const dbPromise = openDb('form-db', 1, upgradeDB => {
+const StorageServiceFactory = (accessDB: any) => {
+    const dbPromise = accessDB('form-db', 1, (upgradeDB: any) => {
         upgradeDB.createObjectStore('formStore', {
             keyPath: 'id',
             autoIncrement: true,
@@ -15,7 +15,6 @@ const StorageServiceFactory = () => {
             .transaction('formStore')
             .objectStore('formStore')
             .getAll()
-            .then(res => res)
     }
 
     const updateQuestion = async (updatedQuestion: Question) => {
@@ -28,10 +27,7 @@ const StorageServiceFactory = () => {
         if (newQuestion.children) delete newQuestion.children
         const db = await dbPromise
         const tx = db.transaction('formStore', 'readwrite')
-        return tx
-            .objectStore('formStore')
-            .put(newQuestion)
-            .then(res => res)
+        return tx.objectStore('formStore').put(newQuestion)
     }
 
     const deleteQuestion = async (key: number) => {
@@ -53,4 +49,4 @@ const StorageServiceFactory = () => {
     })
 }
 
-export const storageService = new (StorageServiceFactory as any)()
+export const storageService = new (StorageServiceFactory as any)(openDb)

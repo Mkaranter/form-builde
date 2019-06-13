@@ -13,19 +13,19 @@ export const form = createModel({
         questionList: [],
     },
     reducers: {
-        initQuestionList(state: FormState, payload: Question[]): FormState {
+        initList(state: FormState, payload: Question[]): FormState {
             return produce(state, draft => {
                 draft.questionList = payload
             })
         },
 
-        addQuestion(state: FormState, payload: Question): FormState {
+        add(state: FormState, payload: Question): FormState {
             return produce(state, draft => {
                 draft.questionList = [...state.questionList, payload]
             })
         },
 
-        updateQuestion(state: FormState, payload: Question): FormState {
+        update(state: FormState, payload: Question): FormState {
             const updatedState = state.questionList.map(q => {
                 if (q.id === payload.id) return payload
                 return q
@@ -36,7 +36,7 @@ export const form = createModel({
             })
         },
 
-        deleteQuestion(state: FormState, payload: number): FormState {
+        delete(state: FormState, payload: number): FormState {
             const updatedState = state.questionList.filter(q => q.id !== payload)
             return produce(state, draft => {
                 draft.questionList = updatedState
@@ -44,22 +44,22 @@ export const form = createModel({
         },
     },
     effects: dispatch => ({
-        async initQList() {
+        async initQuestionList() {
             const questions = await storageService.getAllQuestions()
-            dispatch.form.initQuestionList(questions)
+            dispatch.form.initList(questions)
         },
-        async addQ(question: Question) {
+        async addQuestion(question: Question) {
             const newQuestionId = await storageService.addQuestion(question)
-            dispatch.form.addQuestion({ ...question, id: newQuestionId })
+            dispatch.form.add({ ...question, id: newQuestionId })
         },
 
-        async updateQ(question: Question) {
+        async updateQuestion(question: Question) {
             await storageService.updateQuestion(question)
-            dispatch.form.updateQuestion(question)
+            dispatch.form.update(question)
         },
-        async deleteQ(id: number) {
+        async deleteQuestion(id: number) {
             const deleteQuestionId = await storageService.deleteQuestion(id)
-            dispatch.form.deleteQuestion(deleteQuestionId)
+            dispatch.form.delete(deleteQuestionId)
         },
     }),
 })

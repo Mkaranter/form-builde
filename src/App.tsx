@@ -67,8 +67,8 @@ const mapStateToProps = ({ form, view }: iRootState) => ({
 //TODO: Action is loosing type due to rematch bug. Waiting for fix.
 const mapDispatchToProps = ({ view, form }: Dispatch): any => ({
     toggleUserForm: view.toggleUserForm,
-    addQuestion: form.addQ,
-    getAllQuestions: form.initQList,
+    addQuestion: form.addQuestion,
+    getAllQuestions: form.initQuestionList,
 })
 
 type ConnectedProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>

@@ -43,10 +43,10 @@ const App: React.SFC<AppProps> = ({
             <GlobalStyles />
             <Header />
             <Main>
-                {!showUserForm ? (
-                    <FormBuilder questions={questionTree} toggleUserForm={toggleUserForm} />
+                {showUserForm ? (
+                    <UserForm questions={questionTree} />
                 ) : (
-                    <UserForm questions={questionTree} parentValue={undefined} />
+                    <FormBuilder questions={questionTree} toggleUserForm={toggleUserForm} />
                 )}
             </Main>
         </AppWrapper>

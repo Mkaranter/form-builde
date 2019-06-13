@@ -2,8 +2,9 @@ import { openDb } from 'idb'
 import { Question } from 'common/models'
 
 const StorageServiceFactory = (accessDB: any) => {
+    const formStore = 'formStore'
     const dbPromise = accessDB('form-db', 1, (upgradeDB: any) => {
-        upgradeDB.createObjectStore('formStore', {
+        upgradeDB.createObjectStore(formStore, {
             keyPath: 'id',
             autoIncrement: true,
         })
@@ -12,29 +13,29 @@ const StorageServiceFactory = (accessDB: any) => {
     const getAllQuestions = async () => {
         const db = await dbPromise
         return db
-            .transaction('formStore')
-            .objectStore('formStore')
+            .transaction(formStore)
+            .objectStore(formStore)
             .getAll()
     }
 
     const updateQuestion = async (updatedQuestion: Question) => {
         const db = await dbPromise
-        const tx = db.transaction('formStore', 'readwrite')
-        return tx.objectStore('formStore').put(updatedQuestion)
+        const tx = db.transaction(formStore, 'readwrite')
+        return tx.objectStore(formStore).put(updatedQuestion)
     }
 
     const addQuestion = async (newQuestion: Omit<Question, 'id'>) => {
         if (newQuestion.children) delete newQuestion.children
         const db = await dbPromise
-        const tx = db.transaction('formStore', 'readwrite')
-        return tx.objectStore('formStore').put(newQuestion)
+        const tx = db.transaction(formStore, 'readwrite')
+        return tx.objectStore(formStore).put(newQuestion)
     }
 
     const deleteQuestion = async (key: number) => {
         const db = await dbPromise
-        const tx = db.transaction('formStore', 'readwrite')
+        const tx = db.transaction(formStore, 'readwrite')
         return tx
-            .objectStore('formStore')
+            .objectStore(formStore)
             .delete(key)
             .then(() => {
                 return key

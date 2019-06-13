@@ -116,7 +116,7 @@ const Question: React.SFC<QuestionProps> = ({
             </InputWrapper>
             <ButtonWrapper>
                 <Button type="submit">Add Sub-Input</Button>
-                <Button type="button" onClick={() => questionService.delete(question)}>
+                <Button type="button" onClick={() => questionService.remove(question)}>
                     Delete
                 </Button>
             </ButtonWrapper>

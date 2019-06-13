@@ -8,4 +8,4 @@ export const store = init({
 export const { dispatch } = store
 export type Store = typeof store
 export type Dispatch = typeof store.dispatch
-export type iRootState = RematchRootState<typeof models>
+export type RootState = RematchRootState<typeof models>

@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { Question } from 'common/models'
 
-import FormBlock from './components/UserQuestion'
+import StateWrapper from './components/StateWrapper'
 import { checkForCondition } from './checkForCondition'
 
 interface UserFormProps {
@@ -11,34 +11,23 @@ interface UserFormProps {
 }
 
 const UserForm: React.SFC<UserFormProps> = ({ questions, parentValue }): JSX.Element => {
-    const [formInputValue, setFormInputValue] = useState('')
-
     return (
         <>
-            {questions.map(e => (
-                <div key={e.id}>
-                    {checkForCondition(
-                        e.conditionType!,
-                        e.conditionValue!,
-                        e.level,
+            {questions.map(
+                question =>
+                    checkForCondition(
+                        question.conditionType!,
+                        question.conditionValue!,
+                        question.level,
                         parentValue
                     ) && (
-                        <>
-                            <FormBlock
-                                data={e}
-                                setFormInputValue={({
-                                    target,
-                                }: React.ChangeEvent<HTMLInputElement>) =>
-                                    setFormInputValue(target.value)
-                                }
-                            />
-                            {e.children && (
-                                <UserForm questions={e.children} parentValue={formInputValue} />
-                            )}
-                        </>
-                    )}
-                </div>
-            ))}
+                        <StateWrapper
+                            question={question}
+                            key={question.id}
+                            parentValue={parentValue}
+                        />
+                    )
+            )}
         </>
     )
 }

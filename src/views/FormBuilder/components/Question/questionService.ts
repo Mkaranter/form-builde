@@ -1,28 +1,24 @@
-import { RematchDispatch } from '@rematch/core'
-
 import { dispatch } from 'utils/store'
 import { QuestionConditionTypes } from 'utils/enums'
 import { Question } from 'common/models'
-import * as models from 'models'
 
-const QuestionServiceFactory = (dispatchEffect: RematchDispatch<typeof models>) => {
-    const change = (
+export const questionService = {
+    change(
         { target }: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
         property: string,
         question: Question
-    ) => {
+    ) {
         const questionObject: Question = {
             ...question,
             children: undefined,
         }
         questionObject[property] = target.value
-        dispatchEffect.form.updateQuestion(questionObject)
-    }
-
-    const changeType = ({ target }: React.ChangeEvent<HTMLSelectElement>, question: Question) => {
+        dispatch.form.updateQuestion(questionObject)
+    },
+    changeType({ target }: React.ChangeEvent<HTMLSelectElement>, question: Question) {
         if (question.children) {
             question.children.forEach(element => {
-                dispatchEffect.form.updateQuestion({
+                dispatch.form.updateQuestion({
                     ...element,
                     conditionType: QuestionConditionTypes.Equals,
                     conditionValue: '',
@@ -30,24 +26,22 @@ const QuestionServiceFactory = (dispatchEffect: RematchDispatch<typeof models>) 
             })
         }
 
-        dispatchEffect.form.updateQuestion({
+        dispatch.form.updateQuestion({
             ...question,
             type: target.value,
             children: undefined,
         })
-    }
-
-    const remove = ({ id, children }: Question) => {
+    },
+    remove({ id, children }: Question) {
         if (children) {
             children.forEach((child: Question) => {
-                remove(child)
+                this.remove(child)
             })
         }
-        dispatchEffect.form.deleteQuestion(id)
-    }
-
-    const addSub = ({ level, id }: Question) => {
-        dispatchEffect.form.addQuestion({
+        dispatch.form.deleteQuestion(id)
+    },
+    addSub({ level, id }: Question) {
+        dispatch.form.addQuestion({
             parentId: id,
             text: '',
             type: 'text',
@@ -55,9 +49,5 @@ const QuestionServiceFactory = (dispatchEffect: RematchDispatch<typeof models>) 
             conditionValue: '',
             level: level + 1,
         })
-    }
-
-    return Object.freeze({ change, changeType, remove, addSub })
+    },
 }
-
-export const questionService = new (QuestionServiceFactory as any)(dispatch)

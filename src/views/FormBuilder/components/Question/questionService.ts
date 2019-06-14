@@ -8,12 +8,9 @@ export const questionService = {
         property: string,
         question: Question
     ) {
-        const questionObject: Question = {
-            ...question,
-            children: undefined,
-        }
-        questionObject[property] = target.value
-        dispatch.form.updateQuestion(questionObject)
+        delete question.children
+        question[property] = target.value
+        dispatch.form.updateQuestion(question)
     },
     changeType({ target }: React.ChangeEvent<HTMLSelectElement>, question: Question) {
         if (question.children) {
@@ -26,10 +23,10 @@ export const questionService = {
             })
         }
 
+        delete question.children
         dispatch.form.updateQuestion({
             ...question,
             type: target.value,
-            children: undefined,
         })
     },
     remove({ id, children }: Question) {

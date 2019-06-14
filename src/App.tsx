@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import FormBuilder from './views/FormBuilder'
 import UserForm from './views/UserForm'
 
-import { store, iRootState, Dispatch } from 'utils/store'
+import { store, RootState, Dispatch } from 'utils/store'
 import { GlobalStyles } from 'common/globalStyles'
 import Header from 'common/components/Header'
 
@@ -58,7 +58,7 @@ const App: React.SFC<AppProps> = ({
     )
 }
 
-const mapStateToProps = ({ form, view }: iRootState) => ({
+const mapStateToProps = ({ form, view }: RootState) => ({
     questionList: form.questionList,
     showUserForm: view.showUserForm,
     makeQuestionTree: arrayToTree,

@@ -1,48 +1,49 @@
 import { openDb } from 'idb'
 import { Question } from 'common/models'
 
-const dbPromise = openDb('form-db', 1, upgradeDB => {
-    upgradeDB.createObjectStore(IdbHelper.FormStore, {
-        keyPath: 'id',
-        autoIncrement: true,
+class storageService {
+    store: string
+    constructor(store: string) {
+        this.store = store
+    }
+
+    private dbPromise = openDb('form-db', 1, upgradeDB => {
+        upgradeDB.createObjectStore(this.store, {
+            keyPath: 'id',
+            autoIncrement: true,
+        })
     })
-})
 
-enum IdbHelper {
-    FormStore = 'formStore',
-    ReadWrite = 'readwrite',
-}
-
-export const storageService = {
-    async getAllQuestions() {
-        const db = await dbPromise
+    async getAll() {
+        const db = await this.dbPromise
         return db
-            .transaction(IdbHelper.FormStore)
-            .objectStore(IdbHelper.FormStore)
+            .transaction(this.store)
+            .objectStore(this.store)
             .getAll()
-    },
+    }
 
-    async updateQuestion(updatedQuestion: Question) {
-        const db = await dbPromise
-        const tx = db.transaction(IdbHelper.FormStore, IdbHelper.ReadWrite)
-        return tx.objectStore(IdbHelper.FormStore).put(updatedQuestion)
-    },
+    async update(updated: Question) {
+        const db = await this.dbPromise
+        const tx = db.transaction(this.store, 'readwrite')
+        return tx.objectStore(this.store).put(updated)
+    }
 
-    async addQuestion(newQuestion: Omit<Question, 'id'>) {
-        if (newQuestion.children) delete newQuestion.children
-        const db = await dbPromise
-        const tx = db.transaction(IdbHelper.FormStore, IdbHelper.ReadWrite)
-        return tx.objectStore(IdbHelper.FormStore).put(newQuestion)
-    },
+    async add(added: Omit<Question, 'id'>) {
+        const db = await this.dbPromise
+        const tx = db.transaction(this.store, 'readwrite')
+        return tx.objectStore(this.store).put(added)
+    }
 
-    async deleteQuestion(key: number) {
-        const db = await dbPromise
-        const tx = db.transaction(IdbHelper.FormStore, IdbHelper.ReadWrite)
+    async delete(key: number) {
+        const db = await this.dbPromise
+        const tx = db.transaction(this.store, 'readwrite')
         return tx
-            .objectStore(IdbHelper.FormStore)
+            .objectStore(this.store)
             .delete(key)
             .then(() => {
                 return key
             })
-    },
+    }
 }
+
+export const formStoreService = new storageService('formStore')

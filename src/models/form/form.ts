@@ -2,7 +2,7 @@ import produce from 'immer'
 import { createModel } from '@rematch/core'
 import { Question } from 'common/models'
 
-import { storageService } from 'utils/storageService'
+import { formStoreService } from 'utils/storageService'
 
 export type FormState = {
     questionList: Question[]
@@ -45,20 +45,20 @@ export const form = createModel({
     },
     effects: dispatch => ({
         async initQuestionList() {
-            const questions = await storageService.getAllQuestions()
+            const questions = await formStoreService.getAll()
             dispatch.form.initList(questions)
         },
         async addQuestion(question: Question) {
-            const newQuestionId = await storageService.addQuestion(question)
+            const newQuestionId = await formStoreService.add(question)
             dispatch.form.add({ ...question, id: newQuestionId })
         },
 
         async updateQuestion(question: Question) {
-            await storageService.updateQuestion(question)
+            await formStoreService.update(question)
             dispatch.form.update(question)
         },
         async deleteQuestion(id: number) {
-            const deleteQuestionId = await storageService.deleteQuestion(id)
+            const deleteQuestionId = await formStoreService.delete(id)
             dispatch.form.delete(deleteQuestionId)
         },
     }),

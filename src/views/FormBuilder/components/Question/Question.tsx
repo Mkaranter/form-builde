@@ -2,9 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 
 import Button from 'common/components/Button'
-import { questionService } from './questionService'
 import { Question as QuestionModel } from 'common/models'
+import { QuestionTypes } from 'utils/enums'
 
+import { questionService } from './questionService'
 import Condition from '../Condition'
 
 interface QuestionStyledProps {
@@ -84,8 +85,8 @@ const Question: React.SFC<QuestionProps> = ({
                     <Condition
                         value={question.conditionValue}
                         type={question.conditionType}
-                        setValue={e => questionService.change(e, 'conditionValue', question)}
-                        setType={e => questionService.change(e, 'conditionType', question)}
+                        setValue={e => questionService.changeValue(e, 'conditionValue', question)}
+                        setType={e => questionService.changeValue(e, 'conditionType', question)}
                         parentValueType={parentValueType}
                     />
                 </InputWrapper>
@@ -96,7 +97,7 @@ const Question: React.SFC<QuestionProps> = ({
                     type="text"
                     id={`question-${question.id}`}
                     value={question.text}
-                    onChange={e => questionService.change(e, 'text', question)}
+                    onChange={e => questionService.changeValue(e, 'text', question)}
                     required
                 />
             </InputWrapper>
@@ -109,9 +110,9 @@ const Question: React.SFC<QuestionProps> = ({
                         setParentValueType(e.target.value)
                         questionService.changeType(e, question)
                     }}>
-                    <option value="text">Text</option>
-                    <option value="number">Number</option>
-                    <option value="boolean">Yes / No</option>
+                    <option value={QuestionTypes.Text}>Text</option>
+                    <option value={QuestionTypes.Number}>Number</option>
+                    <option value={QuestionTypes.Boolean}>Yes / No</option>
                 </select>
             </InputWrapper>
             <ButtonWrapper>

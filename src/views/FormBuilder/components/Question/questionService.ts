@@ -3,7 +3,7 @@ import { QuestionConditionTypes } from 'utils/enums'
 import { Question } from 'common/models'
 
 export const questionService = {
-    change(
+    changeValue(
         { target }: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
         property: string,
         question: Question
@@ -22,7 +22,6 @@ export const questionService = {
                 })
             })
         }
-
         delete question.children
         dispatch.form.updateQuestion({
             ...question,

@@ -1,58 +1,49 @@
 import { openDb } from 'idb'
-import { dispatch } from './store'
-
 import { Question } from 'common/models'
 
-const dbPromise = openDb('form-db', 1, upgradeDB => {
-    upgradeDB.createObjectStore('formStore', {
-        keyPath: 'id',
-        autoIncrement: true,
+class storageService {
+    store: string
+    constructor(store: string) {
+        this.store = store
+    }
+
+    private dbPromise = openDb('form-db', 1, upgradeDB => {
+        upgradeDB.createObjectStore(this.store, {
+            keyPath: 'id',
+            autoIncrement: true,
+        })
     })
-})
 
-export const storageService = {
-    async getAllQuestions() {
-        const db = await dbPromise
+    async getAll() {
+        const db = await this.dbPromise
         return db
-            .transaction('formStore')
-            .objectStore('formStore')
+            .transaction(this.store)
+            .objectStore(this.store)
             .getAll()
-            .then(res => {
-                dispatch.form.initQuestionList(res)
-            })
-    },
+    }
 
-    async updateQuestion(updatedQuestion: Question) {
-        const db = await dbPromise
-        const tx = db.transaction('formStore', 'readwrite')
-        tx.objectStore('formStore')
-            .put(updatedQuestion)
-            .then(res => {
-                updatedQuestion.id = parseInt(res.toString(), 10)
-                dispatch.form.updateQuestion(updatedQuestion)
-            })
-        return tx.complete
-    },
+    async update(updated: Question) {
+        const db = await this.dbPromise
+        const tx = db.transaction(this.store, 'readwrite')
+        return tx.objectStore(this.store).put(updated)
+    }
 
-    async addQuestion(newQuestion: Omit<Question, 'id'>) {
-        if (newQuestion.children) delete newQuestion.children
-        const db = await dbPromise
-        const tx = db.transaction('formStore', 'readwrite')
-        tx.objectStore('formStore')
-            .put(newQuestion)
-            .then(res => {
-                newQuestion.id = parseInt(res.toString(), 10)
-                dispatch.form.addQuestion(newQuestion)
-            })
-        return tx.complete
-    },
+    async add(added: Omit<Question, 'id'>) {
+        const db = await this.dbPromise
+        const tx = db.transaction(this.store, 'readwrite')
+        return tx.objectStore(this.store).put(added)
+    }
 
-    async deleteQuestion(key: number) {
-        const db = await dbPromise
-        const tx = db.transaction('formStore', 'readwrite')
-        tx.objectStore('formStore')
+    async delete(key: number) {
+        const db = await this.dbPromise
+        const tx = db.transaction(this.store, 'readwrite')
+        return tx
+            .objectStore(this.store)
             .delete(key)
-            .then(() => dispatch.form.deleteQuestion(key))
-        return tx.complete
-    },
+            .then(() => {
+                return key
+            })
+    }
 }
+
+export const formStoreService = new storageService('formStore')

@@ -29,11 +29,7 @@ const FormBuilder: React.SFC<FormBuilderProps> = ({
 
     return (
         <>
-            <QuestionList
-                questions={questions}
-                parentQuestion={undefined}
-                parentValueType={undefined}
-            />
+            <QuestionList questions={questions} />
             <Button onClick={() => addQuestion({ text: '', type: 'text', level: 0 })}>
                 Add Input
             </Button>

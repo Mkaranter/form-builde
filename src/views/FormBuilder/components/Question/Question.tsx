@@ -40,12 +40,6 @@ const InputWrapper = styled.div<InputWrapperProps>`
     label {
         width: 20%;
     }
-    input {
-        flex-grow: ${({ select }) => (select ? '0' : '1')};
-        width: ${({ select }) => (select ? '20%' : 'unset')};
-        margin: ${({ select }) => (select ? '0 0 0 10px' : '0')};
-        padding: 0 0 0 5px;
-    }
     select {
         flex-grow: 1;
     }
@@ -53,6 +47,19 @@ const InputWrapper = styled.div<InputWrapperProps>`
         width: 30%;
         margin: 0 0 0 10px;
         flex-grow: 0;
+    }
+    input {
+        flex-grow: 1;
+        width: unset;
+        margin: 0;
+        padding: 0 0 0 5px;
+        ${({ select }) =>
+            select &&
+            `
+                flex-grow: 0;
+                width: 20%;
+                margin: 0 0 0 10px;
+            `}
     }
 `
 

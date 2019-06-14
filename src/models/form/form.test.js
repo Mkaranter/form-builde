@@ -1,68 +1,42 @@
 import { init } from '@rematch/core'
 import { form } from './form'
 
-const mockedQuestion1 = {
-    text: 'Test question',
-    type: 'number',
-    level: 3,
-    id: 1,
-}
-
-const mockedQuestionUpdated1 = {
-    text: 'Test question changed',
-    type: 'boolean',
-    level: 2,
-    id: 1,
-}
-
-const mockedQuestion2 = {
-    text: 'Another question',
-    type: 'text',
-    level: 2,
-    id: 2,
-}
+import { questions, updatedQuestion } from './__mocks__/questions'
 
 describe('form model', () => {
-    it('should update store with array of questions', () => {
-        const store = init({
+    let store
+
+    beforeEach(() => {
+        store = init({
             models: { form },
         })
-
-        store.dispatch.form.initQuestionList([mockedQuestion1, mockedQuestion2])
-        const formData = store.getState().form
-
-        expect(formData).toStrictEqual({ questionList: [mockedQuestion1, mockedQuestion2] })
     })
 
-    it('should add question to store', () => {
-        const store = init({
-            models: { form },
-        })
-
-        store.dispatch.form.addQuestion(mockedQuestion1)
+    it('should update store with initial values', () => {
+        store.dispatch.form.initList(questions)
         const formData = store.getState().form
 
-        expect(formData).toStrictEqual({ questionList: [mockedQuestion1] })
+        expect(formData).toStrictEqual({ questionList: questions })
     })
 
-    it('should update question', () => {
-        const store = init({
-            models: { form },
-        })
-
-        store.dispatch.form.addQuestion(mockedQuestion1)
-        store.dispatch.form.updateQuestion(mockedQuestionUpdated1)
+    it('should add data to store', () => {
+        store.dispatch.form.add(questions[0])
         const formData = store.getState().form
 
-        expect(formData).toStrictEqual({ questionList: [mockedQuestionUpdated1] })
+        expect(formData).toStrictEqual({ questionList: [questions[0]] })
     })
 
-    it('should delete question from store', () => {
-        const store = init({
-            models: { form },
-        })
+    it('should update data in store', () => {
+        store.dispatch.form.add(questions[0])
+        store.dispatch.form.update(updatedQuestion)
+        const formData = store.getState().form
 
-        store.dispatch.form.deleteQuestion(mockedQuestion1)
+        expect(formData).toStrictEqual({ questionList: [updatedQuestion] })
+    })
+
+    it('should delete data from store', () => {
+        store.dispatch.form.add(questions[0])
+        store.dispatch.form.delete(questions[0].id)
         const formData = store.getState().form
 
         expect(formData).toStrictEqual({ questionList: [] })

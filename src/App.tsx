@@ -7,7 +7,6 @@ import FormBuilder from './views/FormBuilder'
 import UserForm from './views/UserForm'
 
 import { store, RootState, Dispatch } from 'utils/store'
-import { storageService } from 'utils/storageService'
 import { GlobalStyles } from 'common/globalStyles'
 import Header from 'common/components/Header'
 
@@ -28,11 +27,13 @@ const App: React.SFC<AppProps> = ({
     showUserForm,
     questionList,
     toggleUserForm,
+    addQuestion,
     makeQuestionTree,
+    getAllQuestions,
 }): JSX.Element => {
     useEffect(() => {
-        storageService.getAllQuestions()
-    }, [])
+        getAllQuestions()
+    }, [getAllQuestions])
 
     const questionTree = makeQuestionTree(questionList, {
         parentProperty: 'parentId',
@@ -46,7 +47,11 @@ const App: React.SFC<AppProps> = ({
                 {showUserForm ? (
                     <UserForm questions={questionTree} />
                 ) : (
-                    <FormBuilder questions={questionTree} toggleUserForm={toggleUserForm} />
+                    <FormBuilder
+                        questions={questionTree}
+                        toggleUserForm={toggleUserForm}
+                        addQuestion={addQuestion}
+                    />
                 )}
             </Main>
         </AppWrapper>
@@ -60,8 +65,10 @@ const mapStateToProps = ({ form, view }: RootState) => ({
 })
 
 //TODO: Action is loosing type due to rematch bug. Waiting for fix.
-const mapDispatchToProps = ({ view }: Dispatch): any => ({
+const mapDispatchToProps = ({ view, form }: Dispatch): any => ({
     toggleUserForm: view.toggleUserForm,
+    addQuestion: form.addQuestion,
+    getAllQuestions: form.initQuestionList,
 })
 
 type ConnectedProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>

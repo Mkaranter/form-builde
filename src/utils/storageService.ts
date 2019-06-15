@@ -1,49 +1,46 @@
 import { openDb } from 'idb'
 import { Question } from 'common/models'
 
-class storageService {
-    store: string
-    constructor(store: string) {
-        this.store = store
-    }
-
-    private dbPromise = openDb('form-db', 1, upgradeDB => {
-        upgradeDB.createObjectStore(this.store, {
+const storageServiceFactory = (store: string) => {
+    const dbPromise = openDb('form-db', 1, upgradeDB => {
+        upgradeDB.createObjectStore(store, {
             keyPath: 'id',
             autoIncrement: true,
         })
     })
 
-    async getAll() {
-        const db = await this.dbPromise
+    const getAll = async () => {
+        const db = await dbPromise
         return db
-            .transaction(this.store)
-            .objectStore(this.store)
+            .transaction(store)
+            .objectStore(store)
             .getAll()
     }
 
-    async update(updated: Question) {
-        const db = await this.dbPromise
-        const tx = db.transaction(this.store, 'readwrite')
-        return tx.objectStore(this.store).put(updated)
+    const update = async (updated: Question) => {
+        const db = await dbPromise
+        const tx = db.transaction(store, 'readwrite')
+        return tx.objectStore(store).put(updated)
     }
 
-    async add(added: Omit<Question, 'id'>) {
-        const db = await this.dbPromise
-        const tx = db.transaction(this.store, 'readwrite')
-        return tx.objectStore(this.store).put(added)
+    const add = async (added: Omit<Question, 'id'>) => {
+        const db = await dbPromise
+        const tx = db.transaction(store, 'readwrite')
+        return tx.objectStore(store).put(added)
     }
 
-    async delete(key: number) {
-        const db = await this.dbPromise
-        const tx = db.transaction(this.store, 'readwrite')
+    const remove = async (key: number) => {
+        const db = await dbPromise
+        const tx = db.transaction(store, 'readwrite')
         return tx
-            .objectStore(this.store)
+            .objectStore(store)
             .delete(key)
             .then(() => {
                 return key
             })
     }
+
+    return Object.freeze({ getAll, update, add, remove })
 }
 
-export const formStoreService = new storageService('formStore')
+export const formStoreService = storageServiceFactory('formStore')

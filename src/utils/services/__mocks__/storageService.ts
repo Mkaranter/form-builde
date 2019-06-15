@@ -1,17 +1,19 @@
-class storageService {
-    getAll() {
+import { questions } from 'common/__mocks__/questions'
+
+const storageService = () => {
+    const getAll = () => {
         return new Promise((resolve, reject) => {
             process.nextTick(() =>
                 true
-                    ? resolve(['dupaaaa'])
+                    ? resolve(questions)
                     : reject({
-                          error: 'dupa',
+                          error: 'Something went wrong',
                       })
             )
         })
     }
+
+    return Object.freeze({ getAll })
 }
 
-const formStoreService = new storageService()
-
-export default formStoreService
+export const formStoreService = storageService()

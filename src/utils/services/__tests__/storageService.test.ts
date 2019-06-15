@@ -1,4 +1,5 @@
-import formStoreService from '../storageService'
+import { formStoreService } from '../storageService'
+import { questions } from 'common/__mocks__/questions'
 
 jest.mock('../storageService')
 
@@ -6,5 +7,5 @@ test('works with async/await', async () => {
     expect.assertions(1)
     const data = await formStoreService.getAll()
 
-    expect(data).toEqual(['dupa'])
+    expect(data).toEqual(questions)
 })

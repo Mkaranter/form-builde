@@ -1,14 +1,15 @@
 import { init } from '@rematch/core'
-import { form } from '../form/'
 
-import { questions, updatedQuestion } from '../__mocks__/questions'
+import * as models from 'models'
+import { Store } from 'utils/store'
+import { questions, updatedQuestion } from 'common/__mocks__/questions'
 
 describe('form model', () => {
-    let store
+    let store: Store
 
     beforeEach(() => {
         store = init({
-            models: { form },
+            models,
         })
     })
 

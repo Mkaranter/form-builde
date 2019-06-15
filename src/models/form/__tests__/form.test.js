@@ -1,7 +1,7 @@
 import { init } from '@rematch/core'
-import { form } from './form'
+import { form } from '../form/'
 
-import { questions, updatedQuestion } from './__mocks__/questions'
+import { questions, updatedQuestion } from '../__mocks__/questions'
 
 describe('form model', () => {
     let store

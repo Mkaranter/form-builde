@@ -1,7 +1,9 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import FormBuilder from './FormBuilder'
+
 import Button from 'common/components/Button'
+
+import FormBuilder from './FormBuilder'
 
 const mockedQuestion1 = {
     text: 'Test question',

@@ -1,7 +1,8 @@
 import { openDb } from 'idb'
+
 import { Question } from 'common/models'
 
-const storageServiceFactory = (store: string) => {
+export const storageServiceFactory = (store: string) => {
     const dbPromise = openDb('form-db', 1, upgradeDB => {
         upgradeDB.createObjectStore(store, {
             keyPath: 'id',
@@ -40,5 +41,3 @@ const storageServiceFactory = (store: string) => {
 
     return Object.freeze({ getAll, update, add, remove })
 }
-
-export const formStoreService = storageServiceFactory('formStore')

@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { Dispatch } from 'utils/store'
 import Button from 'common/components/Button'
 import { Question } from 'common/models'
 
 import QuestionList from './components/QuestionList'
-import { Dispatch } from 'utils/store'
 
 interface FormBuilderProps {
     questions: Question[]

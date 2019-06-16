@@ -1,4 +1,5 @@
 import { init } from '@rematch/core'
+
 import { form } from './form'
 
 const mockedQuestion1 = {

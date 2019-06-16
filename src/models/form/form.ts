@@ -2,7 +2,7 @@ import produce from 'immer'
 import { createModel } from '@rematch/core'
 
 import { Question } from 'common/models'
-import { formStoreService } from 'utils/storageService'
+import { formStoreService } from 'services'
 
 export type FormState = {
     questionList: Question[]

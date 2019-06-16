@@ -2,7 +2,7 @@ import { openDb } from 'idb'
 
 import { Question } from 'common/models'
 
-class storageService {
+export class storageService {
     store: string
     constructor(store: string) {
         this.store = store
@@ -46,5 +46,3 @@ class storageService {
             })
     }
 }
-
-export const formStoreService = new storageService('formStore')

@@ -17,17 +17,15 @@ const storageServiceFactory = (store: string) => {
             .getAll()
     }
 
-    const update = async (updated: Question) => {
+    const send = async (data: Question | Omit<Question, 'id'>) => {
         const db = await dbPromise
         const tx = db.transaction(store, 'readwrite')
-        return tx.objectStore(store).put(updated)
+        return tx.objectStore(store).put(data)
     }
 
-    const add = async (added: Omit<Question, 'id'>) => {
-        const db = await dbPromise
-        const tx = db.transaction(store, 'readwrite')
-        return tx.objectStore(store).put(added)
-    }
+    const update = async (updated: Question) => send(updated)
+
+    const add = async (added: Omit<Question, 'id'>) => send(added)
 
     const remove = async (key: number) => {
         const db = await dbPromise

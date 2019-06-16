@@ -40,15 +40,15 @@ const RadioWrapper = styled.div`
 
 interface UserQuestionProps {
     data: Question
-    setFormInputValue: (event: React.ChangeEvent<HTMLInputElement>) => void
+    setInputValue: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const UserQuestion: React.SFC<UserQuestionProps> = ({ data, setFormInputValue }): JSX.Element => {
+const UserQuestion: React.SFC<UserQuestionProps> = ({ data, setInputValue }): JSX.Element => {
     return (
         <UserQuestionStyled level={data.level}>
             <label>{data.text}</label>
             {data.type !== QuestionTypes.Boolean ? (
-                <input onChange={setFormInputValue} />
+                <input onChange={setInputValue} />
             ) : (
                 <>
                     <RadioWrapper>
@@ -57,7 +57,7 @@ const UserQuestion: React.SFC<UserQuestionProps> = ({ data, setFormInputValue })
                             id="yes"
                             name="boolForm"
                             value="true"
-                            onChange={setFormInputValue}
+                            onChange={setInputValue}
                         />
                         <label htmlFor="yes">Yes</label>
                     </RadioWrapper>
@@ -67,7 +67,7 @@ const UserQuestion: React.SFC<UserQuestionProps> = ({ data, setFormInputValue })
                             name="boolForm"
                             id="no"
                             value="false"
-                            onChange={setFormInputValue}
+                            onChange={setInputValue}
                         />
                         <label htmlFor="no">No</label>
                     </RadioWrapper>

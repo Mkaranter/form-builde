@@ -23,9 +23,7 @@ const FormBuilder: React.SFC<FormBuilderProps> = ({
         return false
     }
 
-    const submit = () => {
-        if (validate()) toggleUserForm()
-    }
+    const submit = () => validate() && toggleUserForm()
 
     return (
         <>

@@ -58,7 +58,7 @@ export const form = createModel({
             dispatch.form.update(question)
         },
         async deleteQuestion(id: number) {
-            const deleteQuestionId = await formStoreService.delete(id)
+            const deleteQuestionId = await formStoreService.remove(id)
             dispatch.form.delete(deleteQuestionId)
         },
     }),

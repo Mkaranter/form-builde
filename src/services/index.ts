@@ -1,3 +1,3 @@
-import { storageService } from './storageService'
+import { storageServiceFactory } from './storageServiceFactory'
 
-export const formStoreService = new storageService('formStore')
+export const formStoreService = storageServiceFactory('formStore')

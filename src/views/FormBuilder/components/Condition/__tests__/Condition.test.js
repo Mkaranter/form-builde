@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 
-import Condition from './Condition'
+import Condition from '../Condition'
 
 describe('Condition component', () => {
     it('Component should render "Condition" label', () => {

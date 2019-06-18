@@ -2,24 +2,9 @@ import React from 'react'
 import { shallow } from 'enzyme'
 
 import Button from 'common/components/Button'
+import { questions } from 'common/__mocks__/questions'
 
 import FormBuilder from './FormBuilder'
-
-const mockedQuestion1 = {
-    text: 'Test question',
-    type: 'number',
-    level: 3,
-    id: 1,
-}
-
-const mockedQuestion2 = {
-    text: 'Another question',
-    type: 'text',
-    level: 2,
-    id: 2,
-}
-
-const questions = [mockedQuestion1, mockedQuestion2]
 
 describe('FormBuilder component', () => {
     it('Component should render "Make Form" button', () => {

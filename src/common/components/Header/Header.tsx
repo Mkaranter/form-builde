@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { InterfaceColors } from 'utils/enums'
+import { Colors } from 'utils/enums'
 
 const HeaderStyled = styled.header`
-    background: ${InterfaceColors.Primary};
+    background: ${Colors.Primary};
     grid-area: header;
 
     h1 {

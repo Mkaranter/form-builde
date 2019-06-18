@@ -7,12 +7,12 @@ export const checkForCondition = (
     formInputValue?: string
 ) => {
     if (level === 0) return true
+
     const equals =
         conditionType === QuestionConditionTypes.Equals && formInputValue == conditionValue
-    const less =
-        conditionType === QuestionConditionTypes.Less &&
-        formInputValue !== '' &&
-        parseInt(formInputValue!) < parseInt(conditionValue, 10)
+
+    const less = conditionType === QuestionConditionTypes.Less && formInputValue !== ''
+
     const greater =
         conditionType === QuestionConditionTypes.Greater &&
         formInputValue !== '' &&

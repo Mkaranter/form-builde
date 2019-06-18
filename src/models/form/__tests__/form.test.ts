@@ -36,8 +36,8 @@ describe('form model', () => {
     })
 
     it('should delete data from store', () => {
-        store.dispatch.form.add(questions[0])
-        store.dispatch.form.delete(questions[0].id)
+        store.dispatch.form.add(questionsMock[0])
+        store.dispatch.form.delete(questionsMock[0].id)
         const formData = store.getState().form
 
         expect(formData).toStrictEqual({ questionList: [] })

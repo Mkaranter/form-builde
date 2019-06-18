@@ -3,12 +3,12 @@ import { connect, Provider } from 'react-redux'
 import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
 
-import FormBuilder from './views/FormBuilder'
-import UserForm from './views/UserForm'
-
 import { store, RootState, Dispatch } from 'utils/store'
 import { GlobalStyles } from 'utils/globalStyles'
 import Header from 'common/components/Header'
+
+import FormBuilder from './views/FormBuilder'
+import UserForm from './views/UserForm'
 
 const AppWrapper = styled.div`
     display: grid;
@@ -64,7 +64,7 @@ const mapStateToProps = ({ form, view }: RootState) => ({
     makeQuestionTree: arrayToTree,
 })
 
-//TODO: Action is loosing type due to rematch bug. Waiting for fix.
+//Github Issue: https://github.com/rematch/rematch/issues/601
 const mapDispatchToProps = ({ view, form }: Dispatch): any => ({
     toggleUserForm: view.toggleUserForm,
     addQuestion: form.addQuestion,

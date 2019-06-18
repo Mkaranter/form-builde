@@ -1,4 +1,4 @@
-export const questions = [
+export const questionsMock = [
     {
         text: 'Test question',
         type: 'number',

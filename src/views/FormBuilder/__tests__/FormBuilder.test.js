@@ -4,7 +4,7 @@ import { shallow } from 'enzyme'
 import Button from 'common/components/Button'
 
 import FormBuilder from './FormBuilder'
-..
+
 const mockedQuestion1 = {
     text: 'Test question',
     type: 'number',

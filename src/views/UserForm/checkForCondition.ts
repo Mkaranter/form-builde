@@ -11,12 +11,14 @@ export const checkForCondition = (
     const equals =
         conditionType === QuestionConditionTypes.Equals && formInputValue == conditionValue
 
-    const less = conditionType === QuestionConditionTypes.Less && formInputValue !== ''
+    const less =
+        conditionType === QuestionConditionTypes.Less &&
+        formInputValue !== '' &&
+        parseInt(formInputValue!, 10) < parseInt(conditionValue, 10)
 
     const greater =
         conditionType === QuestionConditionTypes.Greater &&
-        formInputValue !== '' &&
-        parseInt(formInputValue!) > parseInt(conditionValue, 10)
+        parseInt(formInputValue!, 10) > parseInt(conditionValue, 10)
 
     return equals || less || greater
 }

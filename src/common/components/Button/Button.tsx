@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
-import { InterfaceColors } from 'utils/enums'
+import { Colors } from 'utils/enums'
 
 const Button = styled.button`
-    background: ${InterfaceColors.Primary};
+    background: ${Colors.Primary};
     color: #000;
     border: none;
     cursor: pointer;
@@ -13,7 +13,7 @@ const Button = styled.button`
     ${({ disabled }) =>
         disabled &&
         `
-            background: ${InterfaceColors.Disabled};
+            background: ${Colors.Disabled};
             cursor: not-allowed;
         `}
 `

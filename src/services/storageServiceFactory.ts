@@ -1,13 +1,15 @@
-import { openDb } from 'idb'
+import { openDB } from 'idb'
 
 import { Question } from 'common/models'
 
 export const storageServiceFactory = (store: string) => {
-    const dbPromise = openDb('form-db', 1, upgradeDB => {
-        upgradeDB.createObjectStore(store, {
-            keyPath: 'id',
-            autoIncrement: true,
-        })
+    const dbPromise = openDB('form-db', 1, {
+        upgrade(db) {
+            db.createObjectStore(store, {
+                keyPath: 'id',
+                autoIncrement: true,
+            })
+        },
     })
 
     const getAll = async () => {

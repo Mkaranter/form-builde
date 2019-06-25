@@ -1,9 +1,14 @@
 import React, { useState, useContext } from 'react'
+import styled from 'styled-components'
 
 import { Question as QuestionModel } from 'common/models'
 import { QuestionServiceContext } from 'App'
 
 import Question from '../Question'
+
+const ListStyled = styled.ul`
+    list-style-type: none;
+`
 
 interface QuestionListProps {
     questions: QuestionModel[]
@@ -20,7 +25,7 @@ const QuestionList: React.FC<QuestionListProps> = ({
     const questionService = useContext(QuestionServiceContext)
 
     return (
-        <ul>
+        <ListStyled>
             {questions.map(question => (
                 <li key={question.id}>
                     <Question
@@ -38,7 +43,7 @@ const QuestionList: React.FC<QuestionListProps> = ({
                     )}
                 </li>
             ))}
-        </ul>
+        </ListStyled>
     )
 }
 

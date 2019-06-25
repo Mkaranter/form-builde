@@ -81,8 +81,6 @@ interface QuestionProps {
     questionService: QuestionServiceFactory
 }
 
-//wywyalic rturn? wrzucic metoddy
-
 const Question: React.FC<QuestionProps> = ({
     question,
     setParentValueType,

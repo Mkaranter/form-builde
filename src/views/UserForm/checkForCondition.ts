@@ -11,7 +11,7 @@ export const checkForCondition = (
     }
 
     const equals =
-        conditionType === QuestionConditionTypes.Equals && formInputValue == conditionValue
+        conditionType === QuestionConditionTypes.Equals && formInputValue === conditionValue
 
     const less =
         conditionType === QuestionConditionTypes.Less &&

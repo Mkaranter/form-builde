@@ -11,6 +11,8 @@ interface FormBuilderProps {
     addQuestion(question: Omit<Question, 'id'>): void
 }
 
+const newQuestion = { text: '', type: 'text', level: 0 }
+
 const FormBuilder: React.FC<FormBuilderProps> = ({ questions, toggleUserForm, addQuestion }) => {
     const validate = (): boolean => {
         const failedFields = questions.filter(q => q.text === '')
@@ -23,10 +25,7 @@ const FormBuilder: React.FC<FormBuilderProps> = ({ questions, toggleUserForm, ad
     return (
         <>
             <QuestionList questions={questions} />
-            {/* / move it to const */}
-            <Button onClick={() => addQuestion({ text: '', type: 'text', level: 0 })}>
-                Add Input
-            </Button>
+            <Button onClick={() => addQuestion(newQuestion)}>Add Input</Button>
             <Button onClick={submit} disabled={questions.length === 0}>
                 Make a form
             </Button>

@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 
 import { Question as QuestionModel } from 'common/models'
+import { QuestionServiceContext } from 'App'
 
 import Question from '../Question'
 
@@ -16,15 +17,15 @@ const QuestionList: React.FC<QuestionListProps> = ({
     parentValueType,
 }) => {
     const [parentValueTypeUpdated, setParentValueType] = useState('')
+    const questionService = useContext(QuestionServiceContext)
 
     return (
         <ul>
             {questions.map(question => (
                 <li key={question.id}>
-                    {/* //   questionServiceContext.Consumer */}
                     <Question
                         question={question}
-                        // questionService={questionService}
+                        questionService={questionService}
                         setParentValueType={setParentValueType}
                         parentValueType={parentQuestion ? parentQuestion.type : parentValueType}
                     />

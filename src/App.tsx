@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { store, RootState, Dispatch } from 'utils/store'
 import { GlobalStyles } from 'utils/globalStyles'
+import { questionService } from 'utils/store' //move it
 import Header from 'common/components/Header'
 
 import FormBuilder from './views/FormBuilder'
@@ -23,41 +24,40 @@ const Main = styled.main`
 
 type AppProps = ConnectedProps
 
-// create context for services
-// const questionServiceContext = React.createContext(qestionService)
+export const QuestionServiceContext = React.createContext(questionService)
 
-const App: React.SFC<AppProps> = ({
+const App: React.FC<AppProps> = ({
     isUserFormVisible,
     questionList,
     toggleUserForm,
     addQuestion,
     makeQuestionTree,
     getAllQuestions,
-}): JSX.Element => {
+}) => {
     useEffect(() => {
         getAllQuestions()
-    }, [getAllQuestions]) // check if [] is enough
-
+    }, [getAllQuestions])
     const questionTree = makeQuestionTree(questionList, {
         parentProperty: 'parentId',
     })
 
     return (
         <AppWrapper>
-            {/* questionServiceContext.Provider */}
-            <GlobalStyles />
-            <Header />
-            <Main>
-                {isUserFormVisible ? (
-                    <UserForm questions={questionTree} />
-                ) : (
-                    <FormBuilder
-                        questions={questionTree}
-                        toggleUserForm={toggleUserForm}
-                        addQuestion={addQuestion}
-                    />
-                )}
-            </Main>
+            <QuestionServiceContext.Provider value={questionService}>
+                <GlobalStyles />
+                <Header />
+                <Main>
+                    {isUserFormVisible ? (
+                        <UserForm questions={questionTree} />
+                    ) : (
+                        <FormBuilder
+                            questions={questionTree}
+                            toggleUserForm={toggleUserForm}
+                            addQuestion={addQuestion}
+                        />
+                    )}
+                </Main>
+            </QuestionServiceContext.Provider>
         </AppWrapper>
     )
 }

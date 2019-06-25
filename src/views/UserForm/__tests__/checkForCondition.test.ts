@@ -1,7 +1,7 @@
+import { QuestionConditionTypes } from 'utils/enums'
+
 import { checkForCondition } from '../checkForCondition'
 import { randomStringsArray, randomLevel } from '../__mocks__/mocks'
-
-import { QuestionConditionTypes } from 'utils/enums' // check imports convention
 
 describe('should check condition', () => {
     it('should return true for level = 0 ', () => {

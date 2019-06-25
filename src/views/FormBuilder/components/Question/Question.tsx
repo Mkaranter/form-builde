@@ -5,7 +5,6 @@ import Button from 'common/components/Button'
 import { Question as QuestionModel } from 'common/models'
 import { QuestionTypes } from 'utils/enums'
 
-import { questionService } from './questionService'
 import Condition from '../Condition'
 
 interface QuestionStyledProps {
@@ -78,16 +77,22 @@ interface QuestionProps {
     question: QuestionModel
     setParentValueType: React.Dispatch<React.SetStateAction<string>>
     parentValueType?: string
+    questionService: any
 }
 
-//wywyalic rturn
+//wywyalic rturn? wrzucic metoddy
 
-const Question: React.FC<QuestionProps> = ({ question, setParentValueType, parentValueType }) => {
+const Question: React.FC<QuestionProps> = ({
+    question,
+    setParentValueType,
+    parentValueType,
+    questionService,
+}) => {
     return (
         <QuestionStyled
             level={question.level}
             onSubmit={e => {
-                questionService.addSubQuestion(question) // take it from consumer
+                questionService.addSubQuestion(question)
                 e.preventDefault()
             }}>
             {question.level > 0 && (

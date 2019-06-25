@@ -10,26 +10,20 @@ interface UserFormProps {
     parentValue?: string
 }
 
-const UserForm: React.SFC<UserFormProps> = ({ questions, parentValue }) => {
-    return (
-        <>
-            {questions.map(
-                question =>
-                    checkForCondition(
-                        question.conditionType!,
-                        question.conditionValue!,
-                        question.level,
-                        parentValue
-                    ) && (
-                        <StateWrapper
-                            question={question}
-                            key={question.id}
-                            parentValue={parentValue}
-                        />
-                    )
-            )}
-        </>
-    )
-}
+const UserForm: React.FC<UserFormProps> = ({ questions, parentValue }) => (
+    <>
+        {questions.map(
+            question =>
+                checkForCondition(
+                    question.conditionType!,
+                    question.conditionValue!,
+                    question.level,
+                    parentValue
+                ) && (
+                    <StateWrapper question={question} key={question.id} parentValue={parentValue} />
+                )
+        )}
+    </>
+)
 
 export default UserForm

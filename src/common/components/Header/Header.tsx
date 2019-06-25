@@ -19,6 +19,4 @@ const Header: React.FC = () => (
     </HeaderStyled>
 )
 
-export default Header // :thinking
-
-//zmienic react.sfc na FC
+export default Header

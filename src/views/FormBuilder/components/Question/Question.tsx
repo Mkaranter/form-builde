@@ -87,7 +87,7 @@ const Question: React.FC<QuestionProps> = ({ question, setParentValueType, paren
         <QuestionStyled
             level={question.level}
             onSubmit={e => {
-                questionService.addSub(question) // take it from consumer
+                questionService.addSubQuestion(question) // take it from consumer
                 e.preventDefault()
             }}>
             {question.level > 0 && (

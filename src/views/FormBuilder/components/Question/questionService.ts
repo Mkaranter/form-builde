@@ -9,14 +9,16 @@ export const questionService = {
         property: string,
         { children, ...question }: Question
     ) {
-        // delete question.children
         question[property] = target.value
         dispatch.form.updateQuestion(question)
     },
 
-    changeType({ target }: React.ChangeEvent<HTMLSelectElement>, question: Question) {
-        if (question.children) {
-            question.children.forEach(element => {
+    changeType(
+        { target }: React.ChangeEvent<HTMLSelectElement>,
+        { children, ...question }: Question
+    ) {
+        if (Array.isArray(question.children)) {
+            question.children.forEach((element: Question) => {
                 dispatch.form.updateQuestion({
                     ...element,
                     conditionType: QuestionConditionTypes.Equals,
@@ -25,7 +27,6 @@ export const questionService = {
             })
         }
 
-        delete question.children // as above
         dispatch.form.updateQuestion({
             ...question,
             type: target.value,
@@ -41,8 +42,7 @@ export const questionService = {
 
         dispatch.form.deleteQuestion(id)
     },
-    // addSubQuestion
-    addSub({ level, id }: Question) {
+    addSubQuestion({ level, id }: Question) {
         dispatch.form.addQuestion({
             parentId: id,
             text: '',

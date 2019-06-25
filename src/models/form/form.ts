@@ -2,15 +2,13 @@ import produce from 'immer'
 import { createModel } from '@rematch/core'
 
 import { Question } from 'common/models'
-import { formStoreServiceFactory } from 'services'
+import { StorageServiceFactory } from 'services/storageServiceFactory'
 
 export type FormState = {
     questionList: Question[]
 }
 
-// create factory fucntion, inject formStoreService trough fucntion param
-// wywal FormState, wywal any
-export const formModelFactory = (formStoreService: any) =>
+export const formModelFactory = (formStoreService: StorageServiceFactory) =>
     createModel<FormState>({
         state: {
             questionList: [],
@@ -28,10 +26,9 @@ export const formModelFactory = (formStoreService: any) =>
                 })
             },
 
-            update(state: FormState, payload: Question): FormState {
+            update(state, payload: Question) {
                 const updatedState = state.questionList.map(q => {
-                    if (q.id === payload.id) return payload //ternary, add {} if using 'if'
-                    return q
+                    return q.id === payload.id ? payload : q
                 })
 
                 return produce(state, draft => {
@@ -39,7 +36,7 @@ export const formModelFactory = (formStoreService: any) =>
                 })
             },
 
-            delete(state: FormState, payload: number): FormState {
+            delete(state, payload: number) {
                 const updatedState = state.questionList.filter(q => q.id !== payload)
                 return produce(state, draft => {
                     draft.questionList = updatedState
@@ -66,5 +63,3 @@ export const formModelFactory = (formStoreService: any) =>
             },
         }),
     })
-
-// export type FormState = typeof form.state

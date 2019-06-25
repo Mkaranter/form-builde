@@ -19,4 +19,4 @@ export const viewModelFactory = () =>
         },
     })
 
-//tez zrobic factory, testy
+// testy

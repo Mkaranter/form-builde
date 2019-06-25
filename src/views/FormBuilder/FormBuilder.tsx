@@ -11,11 +11,7 @@ interface FormBuilderProps {
     addQuestion(question: Omit<Question, 'id'>): void
 }
 
-const FormBuilder: React.SFC<FormBuilderProps> = ({
-    questions,
-    toggleUserForm,
-    addQuestion,
-}): JSX.Element => {
+const FormBuilder: React.FC<FormBuilderProps> = ({ questions, toggleUserForm, addQuestion }) => {
     const validate = (): boolean => {
         const failedFields = questions.filter(q => q.text === '')
 

@@ -89,6 +89,11 @@ const Question: React.FC<QuestionProps> = ({
     parentValueType,
     questionService,
 }) => {
+    const changeType = (e: React.ChangeEvent<HTMLSelectElement>, question: QuestionModel) => {
+        setParentValueType(e.target.value)
+        questionService.changeType(e, question)
+    }
+
     return (
         <QuestionStyled
             level={question.level}
@@ -122,11 +127,7 @@ const Question: React.FC<QuestionProps> = ({
                 <select
                     id={`type-${question.id}`}
                     value={question.type}
-                    // extract it \/
-                    onChange={e => {
-                        setParentValueType(e.target.value)
-                        questionService.changeType(e, question)
-                    }}>
+                    onChange={e => changeType(e, question)}>
                     <option value={QuestionTypes.Text}>Text</option>
                     <option value={QuestionTypes.Number}>Number</option>
                     <option value={QuestionTypes.Boolean}>Yes / No</option>

@@ -44,7 +44,7 @@ interface UserQuestionProps {
     setInputValue: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const UserQuestion: React.SFC<UserQuestionProps> = ({ data, setInputValue }): JSX.Element => {
+const UserQuestion: React.FC<UserQuestionProps> = ({ data, setInputValue }) => {
     return (
         <UserQuestionStyled level={data.level}>
             <label>{data.text}</label>

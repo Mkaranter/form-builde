@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components'
 import Button from 'common/components/Button'
 import { Question as QuestionModel } from 'common/models'
 import { QuestionTypes } from 'utils/enums'
+import { QuestionServiceFactory } from 'services/questionServiceFactory'
 
 import Condition from '../Condition'
 
@@ -77,7 +78,7 @@ interface QuestionProps {
     question: QuestionModel
     setParentValueType: React.Dispatch<React.SetStateAction<string>>
     parentValueType?: string
-    questionService: any
+    questionService: QuestionServiceFactory
 }
 
 //wywyalic rturn? wrzucic metoddy

@@ -1,8 +1,9 @@
+import { OpenDB } from './'
 import { Question, DbStore } from 'common/models'
 
-export const storageServiceFactory = (store: DbStore, openDB: any) => {
+export const storageServiceFactory = (store: DbStore, openDB: OpenDB) => {
     const dbPromise = openDB('form-db', 1, {
-        upgrade(db: any) {
+        upgrade(db) {
             db.createObjectStore(store, {
                 keyPath: 'id',
                 autoIncrement: true,

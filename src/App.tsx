@@ -43,21 +43,19 @@ const App: React.FC<AppProps> = ({
 
     return (
         <AppWrapper>
-            <QuestionServiceContext.Provider value={questionService}>
-                <GlobalStyles />
-                <Header />
-                <Main>
-                    {isUserFormVisible ? (
-                        <UserForm questions={questionTree} />
-                    ) : (
-                        <FormBuilder
-                            questions={questionTree}
-                            toggleUserForm={toggleUserForm}
-                            addQuestion={addQuestion}
-                        />
-                    )}
-                </Main>
-            </QuestionServiceContext.Provider>
+            <GlobalStyles />
+            <Header />
+            <Main>
+                {isUserFormVisible ? (
+                    <UserForm questions={questionTree} />
+                ) : (
+                    <FormBuilder
+                        questions={questionTree}
+                        toggleUserForm={toggleUserForm}
+                        addQuestion={addQuestion}
+                    />
+                )}
+            </Main>
         </AppWrapper>
     )
 }
@@ -84,7 +82,9 @@ const ConnectedApp = connect(
 
 const Root = () => (
     <Provider store={store}>
-        <ConnectedApp />
+        <QuestionServiceContext.Provider value={questionService}>
+            <ConnectedApp />
+        </QuestionServiceContext.Provider>
     </Provider>
 )
 

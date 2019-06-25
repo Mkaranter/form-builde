@@ -1,7 +1,8 @@
 import { QuestionConditionTypes } from 'utils/enums'
 import { Question } from 'common/models'
+import { Dispatch } from 'utils/store'
 
-export const questionServiceFactory = (dispatch: any) => {
+export const questionServiceFactory = (dispatch: Dispatch) => {
     const changeValue = (
         { target }: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
         property: string,
@@ -54,3 +55,5 @@ export const questionServiceFactory = (dispatch: any) => {
 
     return Object.freeze({ changeValue, changeType, remove, addSubQuestion })
 }
+
+export type QuestionServiceFactory = ReturnType<typeof questionServiceFactory>

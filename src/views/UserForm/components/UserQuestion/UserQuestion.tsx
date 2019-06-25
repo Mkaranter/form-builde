@@ -8,6 +8,7 @@ interface UserQuestionStyledProps {
     level?: number
 }
 
+// you can extract margin-left calc to helper
 const UserQuestionStyled = styled.fieldset<UserQuestionStyledProps>`
     display: flex;
     flex-direction: column;

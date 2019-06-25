@@ -24,3 +24,5 @@ describe('Condition component', () => {
         expect(component.find('select')).toHaveLength(1)
     })
 })
+
+// use ts

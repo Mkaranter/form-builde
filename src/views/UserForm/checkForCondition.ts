@@ -6,19 +6,26 @@ export const checkForCondition = (
     level: number,
     formInputValue?: string
 ) => {
-    if (level === 0) return true
+    if (level === 0) {
+        return true
+    }
 
     const equals =
         conditionType === QuestionConditionTypes.Equals && formInputValue == conditionValue
 
     const less =
         conditionType === QuestionConditionTypes.Less &&
-        formInputValue !== '' &&
-        parseInt(formInputValue!, 10) < parseInt(conditionValue, 10)
+        formInputValue &&
+        toNumber(formInputValue) < toNumber(conditionValue)
 
     const greater =
         conditionType === QuestionConditionTypes.Greater &&
-        parseInt(formInputValue!, 10) > parseInt(conditionValue, 10)
+        formInputValue &&
+        toNumber(formInputValue) > toNumber(conditionValue)
 
     return equals || less || greater
+}
+
+function toNumber(strNum: string) {
+    return Number.parseInt(strNum, 10)
 }

@@ -13,12 +13,12 @@ const HeaderStyled = styled.header`
     }
 `
 
-const Header: React.SFC = (): JSX.Element => {
-    return (
-        <HeaderStyled>
-            <h1>form builder</h1>
-        </HeaderStyled>
-    )
-}
+const Header: React.FC = () => (
+    <HeaderStyled>
+        <h1>form builder</h1>
+    </HeaderStyled>
+)
 
-export default Header
+export default Header // :thinking
+
+//zmienic react.sfc na FC

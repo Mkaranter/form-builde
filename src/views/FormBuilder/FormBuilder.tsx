@@ -8,8 +8,8 @@ import QuestionList from './components/QuestionList'
 
 interface FormBuilderProps {
     questions: Question[]
-    toggleUserForm: Dispatch
-    addQuestion: Dispatch
+    toggleUserForm(): void
+    addQuestion(question: Question): void
 }
 
 const FormBuilder: React.SFC<FormBuilderProps> = ({
@@ -19,7 +19,7 @@ const FormBuilder: React.SFC<FormBuilderProps> = ({
 }): JSX.Element => {
     const validate = (): boolean => {
         const failedFields = questions.filter(q => q.text === '')
-        if (failedFields.length === 0) return true
+        if (failedFields.length === 0) return true // use {}, or even ternary
         return false
     }
 
@@ -28,6 +28,7 @@ const FormBuilder: React.SFC<FormBuilderProps> = ({
     return (
         <>
             <QuestionList questions={questions} />
+            {/* / move it to const */}
             <Button onClick={() => addQuestion({ text: '', type: 'text', level: 0 })}>
                 Add Input
             </Button>

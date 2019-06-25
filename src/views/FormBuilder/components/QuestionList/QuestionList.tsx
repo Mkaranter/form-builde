@@ -10,19 +10,21 @@ interface QuestionListProps {
     parentValueType?: string
 }
 
-const QuestionList: React.SFC<QuestionListProps> = ({
+const QuestionList: React.FC<QuestionListProps> = ({
     questions,
     parentQuestion,
     parentValueType,
-}): JSX.Element => {
+}) => {
     const [parentValueTypeUpdated, setParentValueType] = useState('')
 
     return (
-        <>
+        <ul>
             {questions.map(question => (
-                <div key={question.id}>
+                <li key={question.id}>
+                    {/* //   questionServiceContext.Consumer */}
                     <Question
                         question={question}
+                        // questionService={questionService}
                         setParentValueType={setParentValueType}
                         parentValueType={parentQuestion ? parentQuestion.type : parentValueType}
                     />
@@ -33,9 +35,9 @@ const QuestionList: React.SFC<QuestionListProps> = ({
                             parentValueType={parentValueTypeUpdated}
                         />
                     )}
-                </div>
+                </li>
             ))}
-        </>
+        </ul>
     )
 }
 

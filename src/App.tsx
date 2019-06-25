@@ -23,6 +23,9 @@ const Main = styled.main`
 
 type AppProps = ConnectedProps
 
+// create context for services
+// const questionServiceContext = React.createContext(qestionService)
+
 const App: React.SFC<AppProps> = ({
     isUserFormVisible,
     questionList,
@@ -33,7 +36,7 @@ const App: React.SFC<AppProps> = ({
 }): JSX.Element => {
     useEffect(() => {
         getAllQuestions()
-    }, [getAllQuestions])
+    }, [getAllQuestions]) // check if [] is enough
 
     const questionTree = makeQuestionTree(questionList, {
         parentProperty: 'parentId',
@@ -41,6 +44,7 @@ const App: React.SFC<AppProps> = ({
 
     return (
         <AppWrapper>
+            {/* questionServiceContext.Provider */}
             <GlobalStyles />
             <Header />
             <Main>
@@ -64,7 +68,7 @@ const mapStateToProps = ({ form, view }: RootState) => ({
     makeQuestionTree: arrayToTree,
 })
 
-//Github Issue: https://github.com/rematch/rematch/issues/601
+// Usage of "any" due to Github Issue: https://github.com/rematch/rematch/issues/601
 const mapDispatchToProps = ({ view, form }: Dispatch): any => ({
     toggleUserForm: view.toggleUserForm,
     addQuestion: form.addQuestion,

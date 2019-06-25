@@ -10,7 +10,7 @@ interface UserFormProps {
     parentValue?: string
 }
 
-const UserForm: React.SFC<UserFormProps> = ({ questions, parentValue }): JSX.Element => {
+const UserForm: React.SFC<UserFormProps> = ({ questions, parentValue }) => {
     return (
         <>
             {questions.map(

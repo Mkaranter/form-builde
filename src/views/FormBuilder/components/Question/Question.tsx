@@ -104,7 +104,7 @@ const Question: React.FC<QuestionProps> = ({
                     <Condition
                         value={question.conditionValue}
                         type={question.conditionType}
-                        setValue={e => questionService.changeValue(e, 'conditionValue', question)} // move it to separate functions
+                        setValue={e => questionService.changeValue(e, 'conditionValue', question)} // move it to separate functions, Issue with types
                         setType={e => questionService.changeValue(e, 'conditionType', question)}
                         parentValueType={parentValueType}
                     />

@@ -1,5 +1,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
+import 'fake-indexeddb/auto'
 
 import Button from 'common/components/Button'
 import { questionsMock } from 'common/__mocks__/questionsMock'

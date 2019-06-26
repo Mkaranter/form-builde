@@ -1,4 +1,5 @@
 import { init } from '@rematch/core'
+import 'fake-indexeddb/auto'
 
 import * as models from 'models'
 import { Store } from 'utils/store'

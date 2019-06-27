@@ -9,8 +9,8 @@ export const questionServiceFactory = (dispatch: Dispatch) => {
     }
 
     const changeType = (value: string, { children, ...question }: Question) => {
-        if (Array.isArray(question.children)) {
-            question.children.forEach((element: Question) => {
+        if (Array.isArray(children)) {
+            children.forEach((element: Question) => {
                 dispatch.form.updateQuestion({
                     ...element,
                     conditionType: QuestionConditionTypes.Equals,

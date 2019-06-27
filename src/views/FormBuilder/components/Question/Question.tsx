@@ -92,6 +92,9 @@ const Question: React.FC<QuestionProps> = ({
         questionService.changeType(value, question)
     }
 
+    const changeValue = (value: string, property: string, question: any) =>
+        questionService.changeValue(value, property, question)
+
     return (
         <QuestionStyled
             level={question.level}
@@ -104,12 +107,8 @@ const Question: React.FC<QuestionProps> = ({
                     <Condition
                         value={question.conditionValue}
                         type={question.conditionType}
-                        setValue={e =>
-                            questionService.changeValue(e.target.value, 'conditionValue', question)
-                        } // move it to separate functions, Issue with types
-                        setType={e =>
-                            questionService.changeValue(e.target.value, 'conditionType', question)
-                        }
+                        setValue={e => changeValue(e.target.value, 'conditionValue', question)}
+                        setType={e => changeValue(e.target.value, 'conditionType', question)}
                         parentValueType={parentValueType}
                     />
                 </InputWrapper>
@@ -120,7 +119,7 @@ const Question: React.FC<QuestionProps> = ({
                     type="text"
                     id={`question-${question.id}`}
                     value={question.text}
-                    onChange={e => questionService.changeValue(e.target.value, 'text', question)}
+                    onChange={e => changeValue(e.target.value, 'text', question)}
                     required
                 />
             </InputWrapper>

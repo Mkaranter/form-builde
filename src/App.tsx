@@ -5,6 +5,8 @@ import styled from 'styled-components'
 
 import { store, RootState, Dispatch } from 'utils/store'
 import { GlobalStyles } from 'utils/globalStyles'
+import { questionServiceFactory } from 'services/questionServiceFactory'
+
 import Header from 'common/components/Header'
 
 import FormBuilder from './views/FormBuilder'
@@ -23,18 +25,19 @@ const Main = styled.main`
 
 type AppProps = ConnectedProps
 
-const App: React.SFC<AppProps> = ({
+export const QuestionServiceContext = React.createContext(questionServiceFactory)
+
+const App: React.FC<AppProps> = ({
     isUserFormVisible,
     questionList,
     toggleUserForm,
     addQuestion,
     makeQuestionTree,
     getAllQuestions,
-}): JSX.Element => {
+}) => {
     useEffect(() => {
         getAllQuestions()
     }, [getAllQuestions])
-
     const questionTree = makeQuestionTree(questionList, {
         parentProperty: 'parentId',
     })
@@ -64,7 +67,7 @@ const mapStateToProps = ({ form, view }: RootState) => ({
     makeQuestionTree: arrayToTree,
 })
 
-//Github Issue: https://github.com/rematch/rematch/issues/601
+// Usage of "any" due to Github Issue: https://github.com/rematch/rematch/issues/601
 const mapDispatchToProps = ({ view, form }: Dispatch): any => ({
     toggleUserForm: view.toggleUserForm,
     addQuestion: form.addQuestion,
@@ -80,7 +83,9 @@ const ConnectedApp = connect(
 
 const Root = () => (
     <Provider store={store}>
-        <ConnectedApp />
+        <QuestionServiceContext.Provider value={questionServiceFactory}>
+            <ConnectedApp />
+        </QuestionServiceContext.Provider>
     </Provider>
 )
 

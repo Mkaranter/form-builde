@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { Dispatch } from 'utils/store'
 import Button from 'common/components/Button'
 import { Question } from 'common/models'
 
@@ -8,19 +7,17 @@ import QuestionList from './components/QuestionList'
 
 interface FormBuilderProps {
     questions: Question[]
-    toggleUserForm: Dispatch
-    addQuestion: Dispatch
+    toggleUserForm(): void
+    addQuestion(question: Omit<Question, 'id'>): void
 }
 
-const FormBuilder: React.SFC<FormBuilderProps> = ({
-    questions,
-    toggleUserForm,
-    addQuestion,
-}): JSX.Element => {
+const newQuestion = { text: '', type: 'text', level: 0 }
+
+const FormBuilder: React.FC<FormBuilderProps> = ({ questions, toggleUserForm, addQuestion }) => {
     const validate = (): boolean => {
         const failedFields = questions.filter(q => q.text === '')
-        if (failedFields.length === 0) return true
-        return false
+
+        return failedFields.length === 0 ? true : false
     }
 
     const submit = () => validate() && toggleUserForm()
@@ -28,9 +25,7 @@ const FormBuilder: React.SFC<FormBuilderProps> = ({
     return (
         <>
             <QuestionList questions={questions} />
-            <Button onClick={() => addQuestion({ text: '', type: 'text', level: 0 })}>
-                Add Input
-            </Button>
+            <Button onClick={() => addQuestion(newQuestion)}>Add Input</Button>
             <Button onClick={submit} disabled={questions.length === 0}>
                 Make a form
             </Button>

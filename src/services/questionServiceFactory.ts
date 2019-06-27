@@ -1,20 +1,16 @@
-import { dispatch } from 'utils/store'
 import { QuestionConditionTypes } from 'utils/enums'
 import { Question } from 'common/models'
+import { Dispatch } from 'utils/store'
 
-export const questionService = {
-    changeValue(
-        { target }: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
-        property: string,
-        question: Question
-    ) {
-        delete question.children
-        question[property] = target.value
+export const questionServiceFactory = (dispatch: Dispatch) => {
+    const changeValue = (value: string, property: string, { children, ...question }: Question) => {
+        question[property] = value
         dispatch.form.updateQuestion(question)
-    },
-    changeType({ target }: React.ChangeEvent<HTMLSelectElement>, question: Question) {
-        if (question.children) {
-            question.children.forEach(element => {
+    }
+
+    const changeType = (value: string, { children, ...question }: Question) => {
+        if (Array.isArray(children)) {
+            children.forEach((element: Question) => {
                 dispatch.form.updateQuestion({
                     ...element,
                     conditionType: QuestionConditionTypes.Equals,
@@ -22,21 +18,24 @@ export const questionService = {
                 })
             })
         }
-        delete question.children
+
         dispatch.form.updateQuestion({
             ...question,
-            type: target.value,
+            type: value,
         })
-    },
-    remove({ id, children }: Question) {
+    }
+
+    const remove = ({ id, children }: Question) => {
         if (children) {
             children.forEach((child: Question) => {
-                this.remove(child)
+                remove(child)
             })
         }
+
         dispatch.form.deleteQuestion(id)
-    },
-    addSub({ level, id }: Question) {
+    }
+
+    const addSubQuestion = ({ level, id }: Question) => {
         dispatch.form.addQuestion({
             parentId: id,
             text: '',
@@ -45,5 +44,9 @@ export const questionService = {
             conditionValue: '',
             level: level + 1,
         })
-    },
+    }
+
+    return Object.freeze({ changeValue, changeType, remove, addSubQuestion })
 }
+
+export type QuestionServiceFactory = ReturnType<typeof questionServiceFactory>

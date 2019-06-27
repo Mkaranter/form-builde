@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { QuestionTypes } from 'utils/enums'
 import { Question } from 'common/models'
+import { getMarginForQuestion } from 'utils/helpers'
 
 interface UserQuestionStyledProps {
     level?: number
@@ -11,7 +12,7 @@ interface UserQuestionStyledProps {
 const UserQuestionStyled = styled.fieldset<UserQuestionStyledProps>`
     display: flex;
     flex-direction: column;
-    margin-left: ${({ level }) => (level ? `${level * 20}px` : '10px')};
+    margin-left: ${({ level }) => getMarginForQuestion(level)};
     margin-right: 10px;
     margin-bottom: 20px;
 
@@ -43,7 +44,7 @@ interface UserQuestionProps {
     setInputValue: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const UserQuestion: React.SFC<UserQuestionProps> = ({ data, setInputValue }): JSX.Element => {
+const UserQuestion: React.FC<UserQuestionProps> = ({ data, setInputValue }) => {
     return (
         <UserQuestionStyled level={data.level}>
             <label>{data.text}</label>

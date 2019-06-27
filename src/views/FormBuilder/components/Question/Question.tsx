@@ -1,11 +1,12 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import Button from 'common/components/Button'
 import { Question as QuestionModel } from 'common/models'
 import { QuestionTypes } from 'utils/enums'
+import { getMarginForQuestion } from 'utils/helpers'
+import { QuestionServiceFactory } from 'services/questionServiceFactory'
 
-import { questionService } from './questionService'
 import Condition from '../Condition'
 
 interface QuestionStyledProps {
@@ -19,7 +20,7 @@ interface InputWrapperProps {
 const QuestionStyled = styled.form<QuestionStyledProps>`
     display: flex;
     flex-direction: column;
-    margin-left: ${({ level }) => (level ? `${level * 20}px` : '10px')};
+    margin-left: ${({ level }) => getMarginForQuestion(level)};
     margin-right: 10px;
     margin-bottom: 20px;
     margin-inline-end: 2px;
@@ -37,17 +38,21 @@ const QuestionStyled = styled.form<QuestionStyledProps>`
 const InputWrapper = styled.div<InputWrapperProps>`
     display: flex;
     margin: 0 10px 5px 10px;
+
     label {
         width: 20%;
     }
+
     select {
         flex-grow: 1;
     }
+
     select:nth-child(3) {
         width: 30%;
         margin: 0 0 0 10px;
         flex-grow: 0;
     }
+
     input {
         flex-grow: 1;
         width: unset;
@@ -55,7 +60,7 @@ const InputWrapper = styled.div<InputWrapperProps>`
         padding: 0 0 0 5px;
         ${({ select }) =>
             select &&
-            `
+            css`
                 flex-grow: 0;
                 width: 20%;
                 margin: 0 0 0 10px;
@@ -73,27 +78,39 @@ interface QuestionProps {
     question: QuestionModel
     setParentValueType: React.Dispatch<React.SetStateAction<string>>
     parentValueType?: string
+    questionService: QuestionServiceFactory
 }
 
-const Question: React.SFC<QuestionProps> = ({
+const Question: React.FC<QuestionProps> = ({
     question,
     setParentValueType,
     parentValueType,
-}): JSX.Element => {
+    questionService,
+}) => {
+    const changeType = (value: string) => {
+        setParentValueType(value)
+        questionService.changeType(value, question)
+    }
+
+    const changeValue = (value: string, property: string) =>
+        questionService.changeValue(value, property, question)
+
+    const submit = (e: React.FormEvent<HTMLFormElement>) => {
+        questionService.addSubQuestion(question)
+        e.preventDefault()
+    }
+
+    const remove = () => questionService.remove(question)
+
     return (
-        <QuestionStyled
-            level={question.level}
-            onSubmit={e => {
-                questionService.addSub(question)
-                e.preventDefault()
-            }}>
+        <QuestionStyled level={question.level} onSubmit={submit}>
             {question.level > 0 && (
                 <InputWrapper select>
                     <Condition
                         value={question.conditionValue}
                         type={question.conditionType}
-                        setValue={e => questionService.changeValue(e, 'conditionValue', question)}
-                        setType={e => questionService.changeValue(e, 'conditionType', question)}
+                        setValue={e => changeValue(e.target.value, 'conditionValue')}
+                        setType={e => changeValue(e.target.value, 'conditionType')}
                         parentValueType={parentValueType}
                     />
                 </InputWrapper>
@@ -104,7 +121,7 @@ const Question: React.SFC<QuestionProps> = ({
                     type="text"
                     id={`question-${question.id}`}
                     value={question.text}
-                    onChange={e => questionService.changeValue(e, 'text', question)}
+                    onChange={e => changeValue(e.target.value, 'text')}
                     required
                 />
             </InputWrapper>
@@ -113,10 +130,7 @@ const Question: React.SFC<QuestionProps> = ({
                 <select
                     id={`type-${question.id}`}
                     value={question.type}
-                    onChange={e => {
-                        setParentValueType(e.target.value)
-                        questionService.changeType(e, question)
-                    }}>
+                    onChange={e => changeType(e.target.value)}>
                     <option value={QuestionTypes.Text}>Text</option>
                     <option value={QuestionTypes.Number}>Number</option>
                     <option value={QuestionTypes.Boolean}>Yes / No</option>
@@ -124,7 +138,7 @@ const Question: React.SFC<QuestionProps> = ({
             </InputWrapper>
             <ButtonWrapper>
                 <Button type="submit">Add Sub-Input</Button>
-                <Button type="button" onClick={() => questionService.remove(question)}>
+                <Button type="button" onClick={remove}>
                     Delete
                 </Button>
             </ButtonWrapper>

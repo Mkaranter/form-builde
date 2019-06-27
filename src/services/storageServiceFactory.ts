@@ -1,8 +1,7 @@
-import { openDB } from 'idb'
+import { OpenDB } from './'
+import { Question, DbStore } from 'common/models'
 
-import { Question } from 'common/models'
-
-export const storageServiceFactory = (store: string) => {
+export const storageServiceFactory = (store: DbStore, openDB: OpenDB) => {
     const dbPromise = openDB('form-db', 1, {
         upgrade(db) {
             db.createObjectStore(store, {
@@ -14,6 +13,7 @@ export const storageServiceFactory = (store: string) => {
 
     const getAll = async () => {
         const db = await dbPromise
+
         return db
             .transaction(store)
             .objectStore(store)
@@ -23,6 +23,7 @@ export const storageServiceFactory = (store: string) => {
     const send = async (data: Question | Omit<Question, 'id'>) => {
         const db = await dbPromise
         const tx = db.transaction(store, 'readwrite')
+
         return tx.objectStore(store).put(data)
     }
 
@@ -33,13 +34,14 @@ export const storageServiceFactory = (store: string) => {
     const remove = async (key: number) => {
         const db = await dbPromise
         const tx = db.transaction(store, 'readwrite')
+
         return tx
             .objectStore(store)
             .delete(key)
-            .then(() => {
-                return key
-            })
+            .then(() => key)
     }
 
     return Object.freeze({ getAll, update, add, remove })
 }
+
+export type StorageServiceFactory = ReturnType<typeof storageServiceFactory>

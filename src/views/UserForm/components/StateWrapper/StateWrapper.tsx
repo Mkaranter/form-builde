@@ -17,9 +17,7 @@ const StateWrapper = ({ question }: StateWrapperProps) => {
         <>
             <UserQuestion
                 data={question}
-                setInputValue={({ target }: React.ChangeEvent<HTMLInputElement>) =>
-                    setInputValue(target.value)
-                }
+                setInputValue={({ target }) => setInputValue(target.value)}
             />
             {question.children && (
                 <UserForm questions={question.children} parentValue={inputValue} />

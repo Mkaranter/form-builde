@@ -13,4 +13,5 @@ export enum QuestionTypes {
 export enum Colors {
     Primary = '#2196f3',
     Disabled = '#e0e0e0',
+    Black = '#000',
 }

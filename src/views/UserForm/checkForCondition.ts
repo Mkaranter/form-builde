@@ -1,4 +1,5 @@
 import { QuestionConditionTypes } from 'utils/enums'
+import { toNumber } from 'utils/helpers'
 
 export const checkForCondition = (
     conditionType: string,
@@ -24,8 +25,4 @@ export const checkForCondition = (
         toNumber(formInputValue) > toNumber(conditionValue)
 
     return equals || less || greater
-}
-
-function toNumber(strNum: string) {
-    return Number.parseInt(strNum, 10)
 }

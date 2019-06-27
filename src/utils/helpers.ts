@@ -3,3 +3,5 @@ export const getMarginForQuestion = (level?: number) => {
 
     return `${10 * level}px`
 }
+
+export const toNumber = (strNum: string) => Number.parseInt(strNum, 10)

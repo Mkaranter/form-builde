@@ -11,7 +11,7 @@ const mockedQuestion = {
     id: 2,
 }
 
-describe('should methods for Question Service Factory', () => {
+describe('should check methods of Question Service Factory', () => {
     let questionService: QuestionServiceFactory
     beforeEach(() => {
         questionService = questionServiceFactory(dispatch)

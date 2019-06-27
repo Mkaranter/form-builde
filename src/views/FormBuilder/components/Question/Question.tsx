@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components'
 import Button from 'common/components/Button'
 import { Question as QuestionModel } from 'common/models'
 import { QuestionTypes } from 'utils/enums'
+import { setMarginForQuestion } from 'utils/helpers'
 import { QuestionServiceFactory } from 'services/questionServiceFactory'
 
 import Condition from '../Condition'
@@ -16,11 +17,10 @@ interface InputWrapperProps {
     select?: boolean
 }
 
-// use helper for margin-left
 const QuestionStyled = styled.form<QuestionStyledProps>`
     display: flex;
     flex-direction: column;
-    margin-left: ${({ level }) => (level ? `${level * 20}px` : '10px')};
+    margin-left: ${({ level }) => setMarginForQuestion(level)};
     margin-right: 10px;
     margin-bottom: 20px;
     margin-inline-end: 2px;

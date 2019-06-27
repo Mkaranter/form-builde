@@ -5,8 +5,8 @@ import styled from 'styled-components'
 
 import { store, RootState, Dispatch } from 'utils/store'
 import { GlobalStyles } from 'utils/globalStyles'
-import { questionService } from 'utils/store' //???
-// import { questionService } from 'services' //not working
+import { questionServiceFactory } from 'services/questionServiceFactory'
+
 import Header from 'common/components/Header'
 
 import FormBuilder from './views/FormBuilder'
@@ -25,7 +25,7 @@ const Main = styled.main`
 
 type AppProps = ConnectedProps
 
-export const QuestionServiceContext = React.createContext(questionService)
+export const QuestionServiceContext = React.createContext(questionServiceFactory)
 
 const App: React.FC<AppProps> = ({
     isUserFormVisible,
@@ -83,7 +83,7 @@ const ConnectedApp = connect(
 
 const Root = () => (
     <Provider store={store}>
-        <QuestionServiceContext.Provider value={questionService}>
+        <QuestionServiceContext.Provider value={questionServiceFactory}>
             <ConnectedApp />
         </QuestionServiceContext.Provider>
     </Provider>

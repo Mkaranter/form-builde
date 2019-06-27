@@ -5,6 +5,7 @@ import { Question as QuestionModel } from 'common/models'
 import { QuestionServiceContext } from 'App'
 
 import Question from '../Question'
+import { dispatch } from 'utils/store'
 
 const ListStyled = styled.ul`
     list-style-type: none;
@@ -22,7 +23,7 @@ const QuestionList: React.FC<QuestionListProps> = ({
     parentValueType,
 }) => {
     const [parentValueTypeUpdated, setParentValueType] = useState('')
-    const questionService = useContext(QuestionServiceContext)
+    const questionService = useContext(QuestionServiceContext)(dispatch)
 
     return (
         <ListStyled>

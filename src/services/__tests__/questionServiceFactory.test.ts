@@ -2,7 +2,7 @@ import 'fake-indexeddb/auto'
 import { dispatch } from 'utils/store'
 import { QuestionConditionTypes, QuestionTypes } from 'utils/enums'
 
-import { questionServiceFactory } from '../questionServiceFactory'
+import { questionServiceFactory, QuestionServiceFactory } from '../questionServiceFactory'
 
 const mockedQuestion = {
     text: 'test',
@@ -12,7 +12,7 @@ const mockedQuestion = {
 }
 
 describe('should methods for Question Service Factory', () => {
-    let questionService: any
+    let questionService: QuestionServiceFactory
     beforeEach(() => {
         questionService = questionServiceFactory(dispatch)
     })
@@ -66,13 +66,13 @@ describe('should methods for Question Service Factory', () => {
 
     it('addSubQuestion', () => {
         const spy = jest.spyOn(dispatch.form, 'addQuestion')
-        const params = { level: 1, id: 2 }
+        const params = { level: 1, id: 2, text: '', type: QuestionTypes.Text }
 
         questionService.addSubQuestion(params)
 
         expect(spy).toHaveBeenCalledWith({
             parentId: params.id,
-            text: '',
+            text: params.text,
             type: QuestionTypes.Text,
             conditionType: QuestionConditionTypes.Equals,
             conditionValue: '',

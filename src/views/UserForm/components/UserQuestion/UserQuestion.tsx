@@ -44,38 +44,36 @@ interface UserQuestionProps {
     setInputValue: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const UserQuestion: React.FC<UserQuestionProps> = ({ data, setInputValue }) => {
-    return (
-        <UserQuestionStyled level={data.level}>
-            <label>{data.text}</label>
-            {data.type !== QuestionTypes.Boolean ? (
-                <input onChange={setInputValue} />
-            ) : (
-                <>
-                    <RadioWrapper>
-                        <input
-                            type="radio"
-                            id="yes"
-                            name="boolForm"
-                            value="true"
-                            onChange={setInputValue}
-                        />
-                        <label htmlFor="yes">Yes</label>
-                    </RadioWrapper>
-                    <RadioWrapper>
-                        <input
-                            type="radio"
-                            name="boolForm"
-                            id="no"
-                            value="false"
-                            onChange={setInputValue}
-                        />
-                        <label htmlFor="no">No</label>
-                    </RadioWrapper>
-                </>
-            )}
-        </UserQuestionStyled>
-    )
-}
+const UserQuestion: React.FC<UserQuestionProps> = ({ data, setInputValue }) => (
+    <UserQuestionStyled level={data.level}>
+        <label>{data.text}</label>
+        {data.type !== QuestionTypes.Boolean ? (
+            <input onChange={setInputValue} />
+        ) : (
+            <>
+                <RadioWrapper>
+                    <input
+                        type="radio"
+                        id="yes"
+                        name="boolForm"
+                        value="true"
+                        onChange={setInputValue}
+                    />
+                    <label htmlFor="yes">Yes</label>
+                </RadioWrapper>
+                <RadioWrapper>
+                    <input
+                        type="radio"
+                        name="boolForm"
+                        id="no"
+                        value="false"
+                        onChange={setInputValue}
+                    />
+                    <label htmlFor="no">No</label>
+                </RadioWrapper>
+            </>
+        )}
+    </UserQuestionStyled>
+)
 
 export default UserQuestion

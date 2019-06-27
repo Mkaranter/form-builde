@@ -2,8 +2,6 @@ import { QuestionConditionTypes } from 'utils/enums'
 
 import { checkForCondition } from '../checkForCondition'
 
-require('fake-indexeddb/auto')
-
 describe('should check condition', () => {
     it('should return true for level = 0 ', () => {
         const result = checkForCondition('someString', 'anotherString', 0)

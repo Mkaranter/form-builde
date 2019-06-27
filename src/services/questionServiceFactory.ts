@@ -3,19 +3,12 @@ import { Question } from 'common/models'
 import { Dispatch } from 'utils/store'
 
 export const questionServiceFactory = (dispatch: Dispatch) => {
-    const changeValue = (
-        { target }: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
-        property: string,
-        { children, ...question }: Question
-    ) => {
-        question[property] = target.value
+    const changeValue = (value: string, property: string, { children, ...question }: Question) => {
+        question[property] = value
         dispatch.form.updateQuestion(question)
     }
 
-    const changeType = (
-        { target }: React.ChangeEvent<HTMLSelectElement>,
-        { children, ...question }: Question
-    ) => {
+    const changeType = (value: string, { children, ...question }: Question) => {
         if (Array.isArray(question.children)) {
             question.children.forEach((element: Question) => {
                 dispatch.form.updateQuestion({
@@ -28,7 +21,7 @@ export const questionServiceFactory = (dispatch: Dispatch) => {
 
         dispatch.form.updateQuestion({
             ...question,
-            type: target.value,
+            type: value,
         })
     }
 

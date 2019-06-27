@@ -87,9 +87,9 @@ const Question: React.FC<QuestionProps> = ({
     parentValueType,
     questionService,
 }) => {
-    const changeType = (e: React.ChangeEvent<HTMLSelectElement>, question: QuestionModel) => {
-        setParentValueType(e.target.value)
-        questionService.changeType(e, question)
+    const changeType = (value: string, question: QuestionModel) => {
+        setParentValueType(value)
+        questionService.changeType(value, question)
     }
 
     return (
@@ -104,8 +104,12 @@ const Question: React.FC<QuestionProps> = ({
                     <Condition
                         value={question.conditionValue}
                         type={question.conditionType}
-                        setValue={e => questionService.changeValue(e, 'conditionValue', question)} // move it to separate functions, Issue with types
-                        setType={e => questionService.changeValue(e, 'conditionType', question)}
+                        setValue={e =>
+                            questionService.changeValue(e.target.value, 'conditionValue', question)
+                        } // move it to separate functions, Issue with types
+                        setType={e =>
+                            questionService.changeValue(e.target.value, 'conditionType', question)
+                        }
                         parentValueType={parentValueType}
                     />
                 </InputWrapper>
@@ -116,7 +120,7 @@ const Question: React.FC<QuestionProps> = ({
                     type="text"
                     id={`question-${question.id}`}
                     value={question.text}
-                    onChange={e => questionService.changeValue(e, 'text', question)}
+                    onChange={e => questionService.changeValue(e.target.value, 'text', question)}
                     required
                 />
             </InputWrapper>
@@ -125,7 +129,7 @@ const Question: React.FC<QuestionProps> = ({
                 <select
                     id={`type-${question.id}`}
                     value={question.type}
-                    onChange={e => changeType(e, question)}>
+                    onChange={e => changeType(e.target.value, question)}>
                     <option value={QuestionTypes.Text}>Text</option>
                     <option value={QuestionTypes.Number}>Number</option>
                     <option value={QuestionTypes.Boolean}>Yes / No</option>

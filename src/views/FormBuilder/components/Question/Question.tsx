@@ -87,28 +87,30 @@ const Question: React.FC<QuestionProps> = ({
     parentValueType,
     questionService,
 }) => {
-    const changeType = (value: string, question: QuestionModel) => {
+    const changeType = (value: string) => {
         setParentValueType(value)
         questionService.changeType(value, question)
     }
 
-    const changeValue = (value: string, property: string, question: any) =>
+    const changeValue = (value: string, property: string) =>
         questionService.changeValue(value, property, question)
 
+    const submit = (e: React.FormEvent<HTMLFormElement>) => {
+        questionService.addSubQuestion(question)
+        e.preventDefault()
+    }
+
+    const remove = () => questionService.remove(question)
+
     return (
-        <QuestionStyled
-            level={question.level}
-            onSubmit={e => {
-                questionService.addSubQuestion(question)
-                e.preventDefault()
-            }}>
+        <QuestionStyled level={question.level} onSubmit={submit}>
             {question.level > 0 && (
                 <InputWrapper select>
                     <Condition
                         value={question.conditionValue}
                         type={question.conditionType}
-                        setValue={e => changeValue(e.target.value, 'conditionValue', question)}
-                        setType={e => changeValue(e.target.value, 'conditionType', question)}
+                        setValue={e => changeValue(e.target.value, 'conditionValue')}
+                        setType={e => changeValue(e.target.value, 'conditionType')}
                         parentValueType={parentValueType}
                     />
                 </InputWrapper>
@@ -119,7 +121,7 @@ const Question: React.FC<QuestionProps> = ({
                     type="text"
                     id={`question-${question.id}`}
                     value={question.text}
-                    onChange={e => changeValue(e.target.value, 'text', question)}
+                    onChange={e => changeValue(e.target.value, 'text')}
                     required
                 />
             </InputWrapper>
@@ -128,7 +130,7 @@ const Question: React.FC<QuestionProps> = ({
                 <select
                     id={`type-${question.id}`}
                     value={question.type}
-                    onChange={e => changeType(e.target.value, question)}>
+                    onChange={e => changeType(e.target.value)}>
                     <option value={QuestionTypes.Text}>Text</option>
                     <option value={QuestionTypes.Number}>Number</option>
                     <option value={QuestionTypes.Boolean}>Yes / No</option>
@@ -136,7 +138,7 @@ const Question: React.FC<QuestionProps> = ({
             </InputWrapper>
             <ButtonWrapper>
                 <Button type="submit">Add Sub-Input</Button>
-                <Button type="button" onClick={() => questionService.remove(question)}>
+                <Button type="button" onClick={remove}>
                     Delete
                 </Button>
             </ButtonWrapper>

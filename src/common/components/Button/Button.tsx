@@ -4,7 +4,7 @@ import { Colors } from 'utils/enums'
 
 const Button = styled.button`
     background: ${Colors.Primary};
-    /* color: #000; use variable */
+    color: ${Colors.Black};
     border: none;
     cursor: pointer;
     padding: 10px 15px;

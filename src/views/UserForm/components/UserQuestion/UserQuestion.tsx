@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { QuestionTypes } from 'utils/helpers'
+import { QuestionTypes } from 'utils/enums'
 import { Question } from 'common/models'
+import { getMarginForQuestion } from 'utils/helpers'
 
 interface UserQuestionStyledProps {
     level?: number
@@ -11,7 +12,7 @@ interface UserQuestionStyledProps {
 const UserQuestionStyled = styled.fieldset<UserQuestionStyledProps>`
     display: flex;
     flex-direction: column;
-    margin-left: ${({ level }) => (level ? `${level * 20}px` : '10px')};
+    margin-left: ${({ level }) => getMarginForQuestion(level)};
     margin-right: 10px;
     margin-bottom: 20px;
 
@@ -40,15 +41,15 @@ const RadioWrapper = styled.div`
 
 interface UserQuestionProps {
     data: Question
-    setFormInputValue: (event: React.ChangeEvent<HTMLInputElement>) => void
+    setInputValue: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-function UserQuestion({ data, setFormInputValue }: UserQuestionProps) {
+const UserQuestion: React.FC<UserQuestionProps> = ({ data, setInputValue }) => {
     return (
         <UserQuestionStyled level={data.level}>
             <label>{data.text}</label>
             {data.type !== QuestionTypes.Boolean ? (
-                <input onChange={setFormInputValue} />
+                <input onChange={setInputValue} />
             ) : (
                 <>
                     <RadioWrapper>
@@ -57,7 +58,7 @@ function UserQuestion({ data, setFormInputValue }: UserQuestionProps) {
                             id="yes"
                             name="boolForm"
                             value="true"
-                            onChange={setFormInputValue}
+                            onChange={setInputValue}
                         />
                         <label htmlFor="yes">Yes</label>
                     </RadioWrapper>
@@ -67,7 +68,7 @@ function UserQuestion({ data, setFormInputValue }: UserQuestionProps) {
                             name="boolForm"
                             id="no"
                             value="false"
-                            onChange={setFormInputValue}
+                            onChange={setInputValue}
                         />
                         <label htmlFor="no">No</label>
                     </RadioWrapper>

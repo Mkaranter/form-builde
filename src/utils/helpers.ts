@@ -1,16 +1,9 @@
-export enum QuestionConditionTypes {
-    Equals = 'equals',
-    Less = 'less',
-    Greater = 'greater',
+export const getMarginForQuestion = (level?: number) => {
+    if (!level) {
+        return '10px'
+    }
+
+    return `${10 * level}px`
 }
 
-export enum QuestionTypes {
-    Text = 'text',
-    Number = 'number',
-    Boolean = 'boolean',
-}
-
-export enum InterfaceColors {
-    Primary = '#2196f3',
-    Disabled = '#e0e0e0',
-}
+export const toNumber = (strNum: string) => Number.parseInt(strNum, 10)

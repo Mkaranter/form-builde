@@ -1,18 +1,16 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, Provider } from 'react-redux'
 import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
 
+import { store, RootState, Dispatch } from 'utils/store'
+import { GlobalStyles } from 'utils/globalStyles'
+import { questionServiceFactory } from 'services/questionServiceFactory'
+
+import Header from 'common/components/Header'
+
 import FormBuilder from './views/FormBuilder'
-import Header from './common/components/Header'
 import UserForm from './views/UserForm'
-
-import { Provider } from 'react-redux'
-import { store } from './utils/store'
-
-import { storageService } from 'utils/storageService'
-
-import { iRootState, Dispatch } from 'utils/store'
 
 const AppWrapper = styled.div`
     display: grid;
@@ -27,26 +25,35 @@ const Main = styled.main`
 
 type AppProps = ConnectedProps
 
-function App({ showUserForm, questionList, toggleUserForm }: AppProps) {
+export const QuestionServiceContext = React.createContext(questionServiceFactory)
+
+const App: React.FC<AppProps> = ({
+    isUserFormVisible,
+    questionList,
+    toggleUserForm,
+    addQuestion,
+    makeQuestionTree,
+    getAllQuestions,
+}) => {
     useEffect(() => {
-        storageService.getAllQuestions()
-    }, [])
+        getAllQuestions()
+    }, [getAllQuestions])
+    const questionTree = makeQuestionTree(questionList, {
+        parentProperty: 'parentId',
+    })
 
     return (
         <AppWrapper>
+            <GlobalStyles />
             <Header />
             <Main>
-                {!showUserForm ? (
-                    <FormBuilder
-                        questions={arrayToTree(questionList, {
-                            parentProperty: 'parentId',
-                        })}
-                        toggleUserForm={toggleUserForm}
-                    />
+                {isUserFormVisible ? (
+                    <UserForm questions={questionTree} />
                 ) : (
-                    <UserForm
-                        questions={arrayToTree(questionList, { parentProperty: 'parentId' })}
-                        parentValue={undefined}
+                    <FormBuilder
+                        questions={questionTree}
+                        toggleUserForm={toggleUserForm}
+                        addQuestion={addQuestion}
                     />
                 )}
             </Main>
@@ -54,14 +61,17 @@ function App({ showUserForm, questionList, toggleUserForm }: AppProps) {
     )
 }
 
-const mapStateToProps = ({ form, view }: iRootState) => ({
+const mapStateToProps = ({ form, view }: RootState) => ({
     questionList: form.questionList,
-    showUserForm: view.showUserForm,
+    isUserFormVisible: view.isUserFormVisible,
+    makeQuestionTree: arrayToTree,
 })
 
-//TODO: Action is loosing type due to rematch bug. Waiting for fix.
-const mapDispatchToProps = ({ view }: Dispatch): any => ({
+// Usage of "any" due to Github Issue: https://github.com/rematch/rematch/issues/601
+const mapDispatchToProps = ({ view, form }: Dispatch): any => ({
     toggleUserForm: view.toggleUserForm,
+    addQuestion: form.addQuestion,
+    getAllQuestions: form.initQuestionList,
 })
 
 type ConnectedProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
@@ -73,7 +83,9 @@ const ConnectedApp = connect(
 
 const Root = () => (
     <Provider store={store}>
-        <ConnectedApp />
+        <QuestionServiceContext.Provider value={questionServiceFactory}>
+            <ConnectedApp />
+        </QuestionServiceContext.Provider>
     </Provider>
 )
 

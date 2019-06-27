@@ -1,4 +1,7 @@
-import { view } from './view/view'
-import { form } from './form'
+import { formStoreService } from 'services'
 
-export { view, form }
+import { viewModelFactory } from './view'
+import { formModelFactory } from './form'
+
+export const view = viewModelFactory()
+export const form = formModelFactory(formStoreService)

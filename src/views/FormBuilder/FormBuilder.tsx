@@ -1,39 +1,31 @@
 import React from 'react'
 
 import Button from 'common/components/Button'
-import { storageService } from 'utils/storageService'
 import { Question } from 'common/models'
 
 import QuestionList from './components/QuestionList'
-import { Dispatch } from 'utils/store'
 
 interface FormBuilderProps {
     questions: Question[]
-    toggleUserForm: Dispatch
+    toggleUserForm(): void
+    addQuestion(question: Omit<Question, 'id'>): void
 }
 
-function FormBuilder({ questions, toggleUserForm }: FormBuilderProps) {
+const newQuestion = { text: '', type: 'text', level: 0 }
+
+const FormBuilder: React.FC<FormBuilderProps> = ({ questions, toggleUserForm, addQuestion }) => {
     const validate = (): boolean => {
         const failedFields = questions.filter(q => q.text === '')
-        if (failedFields.length === 0) return true
-        return false
+
+        return failedFields.length === 0 ? true : false
     }
 
-    const submit = () => {
-        if (validate()) toggleUserForm()
-    }
+    const submit = () => validate() && toggleUserForm()
 
     return (
         <>
-            <QuestionList
-                questions={questions}
-                parentQuestion={undefined}
-                parentValueType={undefined}
-            />
-            <Button
-                onClick={() => storageService.addQuestion({ text: '', type: 'text', level: 0 })}>
-                Add Input
-            </Button>
+            <QuestionList questions={questions} />
+            <Button onClick={() => addQuestion(newQuestion)}>Add Input</Button>
             <Button onClick={submit} disabled={questions.length === 0}>
                 Make a form
             </Button>

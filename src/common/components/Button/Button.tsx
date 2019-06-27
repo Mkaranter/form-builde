@@ -1,13 +1,20 @@
-import styled from 'styled-components'
-import { InterfaceColors } from 'utils/helpers'
+import styled, { css } from 'styled-components'
+
+import { Colors } from 'utils/enums'
 
 const Button = styled.button`
-    background: ${({ disabled }) =>
-        disabled ? InterfaceColors.Disabled : InterfaceColors.Primary};
-    color: #000;
+    background: ${Colors.Primary};
+    color: ${Colors.Black};
     border: none;
-    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    cursor: pointer;
     padding: 10px 15px;
     margin: 0 10px 0 10px;
+
+    ${({ disabled }) =>
+        disabled &&
+        css`
+            background: ${Colors.Disabled};
+            cursor: not-allowed;
+        `}
 `
 export default Button

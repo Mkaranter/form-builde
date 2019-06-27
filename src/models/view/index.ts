@@ -1,1 +1,1 @@
-export { view } from './view'
+export * from './view'

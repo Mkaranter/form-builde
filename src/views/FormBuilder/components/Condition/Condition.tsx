@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { QuestionConditionTypes, QuestionTypes } from 'utils/helpers'
+import { QuestionConditionTypes, QuestionTypes } from 'utils/enums'
 
 interface ConditionProps {
     value?: string
@@ -10,32 +10,36 @@ interface ConditionProps {
     parentValueType?: string
 }
 
-function Condition({ value, type, setValue, setType, parentValueType }: ConditionProps) {
-    return (
-        <>
-            <label>Condition</label>
-            <select onChange={setType} value={type}>
-                <option value={QuestionConditionTypes.Equals}>Equals</option>
-                {parentValueType === QuestionTypes.Number && (
-                    <>
-                        <option value={QuestionConditionTypes.Greater}>Greater than</option>
-                        <option value={QuestionConditionTypes.Less}>Less than</option>
-                    </>
-                )}
-            </select>
-            {parentValueType !== QuestionTypes.Boolean ? (
-                <input onChange={setValue} type={parentValueType} value={value} required />
-            ) : (
-                <select onChange={setValue} value={value}>
-                    <option defaultChecked value="" disabled>
-                        -- select --
-                    </option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                </select>
+const Condition: React.FC<ConditionProps> = ({
+    value,
+    type,
+    setValue,
+    setType,
+    parentValueType,
+}) => (
+    <>
+        <label>Condition</label>
+        <select onChange={setType} value={type}>
+            <option value={QuestionConditionTypes.Equals}>Equals</option>
+            {parentValueType === QuestionTypes.Number && (
+                <>
+                    <option value={QuestionConditionTypes.Greater}>Greater than</option>
+                    <option value={QuestionConditionTypes.Less}>Less than</option>
+                </>
             )}
-        </>
-    )
-}
+        </select>
+        {parentValueType !== QuestionTypes.Boolean ? (
+            <input onChange={setValue} type={parentValueType} value={value} required />
+        ) : (
+            <select onChange={setValue} value={value}>
+                <option defaultChecked value="" disabled>
+                    -- select --
+                </option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        )}
+    </>
+)
 
 export default Condition

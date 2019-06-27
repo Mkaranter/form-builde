@@ -8,3 +8,8 @@ export interface Question {
     id: number
     children?: Question[]
 }
+
+/*
+ * DbStore represents a name of the store in the db
+ */
+export type DbStore = string

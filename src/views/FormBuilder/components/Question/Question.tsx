@@ -1,10 +1,11 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import Button from 'common/components/Button'
-import { storageService } from 'utils/storageService'
-import { QuestionConditionTypes } from 'utils/helpers'
 import { Question as QuestionModel } from 'common/models'
+import { QuestionTypes } from 'utils/enums'
+import { getMarginForQuestion } from 'utils/helpers'
+import { QuestionServiceFactory } from 'services/questionServiceFactory'
 
 import Condition from '../Condition'
 
@@ -19,7 +20,7 @@ interface InputWrapperProps {
 const QuestionStyled = styled.form<QuestionStyledProps>`
     display: flex;
     flex-direction: column;
-    margin-left: ${({ level }) => (level ? `${level * 20}px` : '10px')};
+    margin-left: ${({ level }) => getMarginForQuestion(level)};
     margin-right: 10px;
     margin-bottom: 20px;
     margin-inline-end: 2px;
@@ -37,22 +38,33 @@ const QuestionStyled = styled.form<QuestionStyledProps>`
 const InputWrapper = styled.div<InputWrapperProps>`
     display: flex;
     margin: 0 10px 5px 10px;
+
     label {
         width: 20%;
     }
-    input {
-        flex-grow: ${({ select }) => (select ? '0' : '1')};
-        width: ${({ select }) => (select ? '20%' : 'unset')};
-        margin: ${({ select }) => (select ? '0 0 0 10px' : '0')};
-        padding: 0 0 0 5px;
-    }
+
     select {
         flex-grow: 1;
     }
+
     select:nth-child(3) {
         width: 30%;
         margin: 0 0 0 10px;
         flex-grow: 0;
+    }
+
+    input {
+        flex-grow: 1;
+        width: unset;
+        margin: 0;
+        padding: 0 0 0 5px;
+        ${({ select }) =>
+            select &&
+            css`
+                flex-grow: 0;
+                width: 20%;
+                margin: 0 0 0 10px;
+            `}
     }
 `
 
@@ -66,76 +78,39 @@ interface QuestionProps {
     question: QuestionModel
     setParentValueType: React.Dispatch<React.SetStateAction<string>>
     parentValueType?: string
+    questionService: QuestionServiceFactory
 }
 
-function Question({ question, setParentValueType, parentValueType }: QuestionProps) {
-    const questionChange = (
-        { target }: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
-        property: string
-    ) => {
-        const questionObject: QuestionModel = {
-            ...question,
-            children: undefined,
-        }
-
-        questionObject[property] = target.value
-        storageService.updateQuestion(questionObject)
+const Question: React.FC<QuestionProps> = ({
+    question,
+    setParentValueType,
+    parentValueType,
+    questionService,
+}) => {
+    const changeType = (value: string) => {
+        setParentValueType(value)
+        questionService.changeType(value, question)
     }
 
-    const questionTypeChange = ({ target }: React.ChangeEvent<HTMLSelectElement>) => {
-        if (question.children) {
-            question.children.forEach(element => {
-                storageService.updateQuestion({
-                    ...element,
-                    conditionType: QuestionConditionTypes.Equals,
-                    conditionValue: '',
-                })
-            })
-        }
+    const changeValue = (value: string, property: string) =>
+        questionService.changeValue(value, property, question)
 
-        storageService.updateQuestion({
-            ...question,
-            type: target.value,
-            children: undefined,
-        })
-
-        setParentValueType(target.value)
+    const submit = (e: React.FormEvent<HTMLFormElement>) => {
+        questionService.addSubQuestion(question)
+        e.preventDefault()
     }
 
-    const addSubQuestion = ({ level, id }: QuestionModel) => {
-        storageService.addQuestion({
-            parentId: id,
-            text: '',
-            type: 'text',
-            conditionType: QuestionConditionTypes.Equals,
-            conditionValue: '',
-            level: level + 1,
-        })
-    }
-
-    const deleteQuestion = ({ id, children }: QuestionModel) => {
-        if (children) {
-            children.forEach((child: QuestionModel) => {
-                deleteQuestion(child)
-            })
-        }
-        storageService.deleteQuestion(id)
-    }
+    const remove = () => questionService.remove(question)
 
     return (
-        <QuestionStyled
-            level={question.level}
-            onSubmit={e => {
-                addSubQuestion(question)
-                e.preventDefault()
-            }}>
+        <QuestionStyled level={question.level} onSubmit={submit}>
             {question.level > 0 && (
                 <InputWrapper select>
                     <Condition
                         value={question.conditionValue}
                         type={question.conditionType}
-                        setValue={e => questionChange(e, 'conditionValue')}
-                        setType={e => questionChange(e, 'conditionType')}
+                        setValue={e => changeValue(e.target.value, 'conditionValue')}
+                        setType={e => changeValue(e.target.value, 'conditionType')}
                         parentValueType={parentValueType}
                     />
                 </InputWrapper>
@@ -146,7 +121,7 @@ function Question({ question, setParentValueType, parentValueType }: QuestionPro
                     type="text"
                     id={`question-${question.id}`}
                     value={question.text}
-                    onChange={e => questionChange(e, 'text')}
+                    onChange={e => changeValue(e.target.value, 'text')}
                     required
                 />
             </InputWrapper>
@@ -155,15 +130,15 @@ function Question({ question, setParentValueType, parentValueType }: QuestionPro
                 <select
                     id={`type-${question.id}`}
                     value={question.type}
-                    onChange={questionTypeChange}>
-                    <option value="text">Text</option>
-                    <option value="number">Number</option>
-                    <option value="boolean">Yes / No</option>
+                    onChange={e => changeType(e.target.value)}>
+                    <option value={QuestionTypes.Text}>Text</option>
+                    <option value={QuestionTypes.Number}>Number</option>
+                    <option value={QuestionTypes.Boolean}>Yes / No</option>
                 </select>
             </InputWrapper>
             <ButtonWrapper>
                 <Button type="submit">Add Sub-Input</Button>
-                <Button type="button" onClick={() => deleteQuestion(question)}>
+                <Button type="button" onClick={remove}>
                     Delete
                 </Button>
             </ButtonWrapper>

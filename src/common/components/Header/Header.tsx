@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { InterfaceColors } from 'utils/helpers'
+import { Colors } from 'utils/enums'
 
 const HeaderStyled = styled.header`
-    background: ${InterfaceColors.Primary};
+    background: ${Colors.Primary};
     grid-area: header;
 
     h1 {
@@ -13,12 +13,10 @@ const HeaderStyled = styled.header`
     }
 `
 
-function Header() {
-    return (
-        <HeaderStyled>
-            <h1>form builder</h1>
-        </HeaderStyled>
-    )
-}
+const Header: React.FC = () => (
+    <HeaderStyled>
+        <h1>form builder</h1>
+    </HeaderStyled>
+)
 
 export default Header

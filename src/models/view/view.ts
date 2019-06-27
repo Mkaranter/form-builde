@@ -2,18 +2,19 @@ import produce from 'immer'
 import { createModel } from '@rematch/core'
 
 export type ViewState = {
-    showUserForm: boolean
+    isUserFormVisible: boolean
 }
 
-export const view = createModel({
-    state: {
-        showUserForm: false,
-    },
-    reducers: {
-        toggleUserForm(state: ViewState): ViewState {
-            return produce(state, draft => {
-                draft.showUserForm = !draft.showUserForm
-            })
+export const viewModelFactory = () =>
+    createModel({
+        state: {
+            isUserFormVisible: false,
         },
-    },
-})
+        reducers: {
+            toggleUserForm(state: ViewState): ViewState {
+                return produce(state, draft => {
+                    draft.isUserFormVisible = !draft.isUserFormVisible
+                })
+            },
+        },
+    })

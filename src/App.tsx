@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
-import { connect, Provider } from 'react-redux'
-import arrayToTree from 'array-to-tree'
+import { Provider, useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 import { store, RootState, Dispatch } from 'utils/store'
 import { GlobalStyles } from 'utils/globalStyles'
 import { questionServiceFactory } from 'services/questionServiceFactory'
-
 import Header from 'common/components/Header'
+import { listToTree } from 'utils/helpers'
+import { Question } from 'common/models'
 
 import FormBuilder from './views/FormBuilder'
 import UserForm from './views/UserForm'
@@ -23,24 +23,19 @@ const Main = styled.main`
     grid-area: main;
 `
 
-type AppProps = ConnectedProps
-
 export const QuestionServiceContext = React.createContext(questionServiceFactory)
 
-const App: React.FC<AppProps> = ({
-    isUserFormVisible,
-    questionList,
-    toggleUserForm,
-    addQuestion,
-    makeQuestionTree,
-    getAllQuestions,
-}) => {
+const App: React.FC = () => {
+    const questionList = useSelector((state: RootState) => state.form.questionList)
+    const isUserFormVisible = useSelector((state: RootState) => state.view.isUserFormVisible)
+
+    const dispatch = useDispatch<Dispatch>()
+
     useEffect(() => {
-        getAllQuestions()
-    }, [getAllQuestions])
-    const questionTree = makeQuestionTree(questionList, {
-        parentProperty: 'parentId',
-    })
+        dispatch.form.initQuestionList()
+    }, [dispatch.form])
+
+    const questionTree = listToTree<Question>(questionList)
 
     return (
         <AppWrapper>
@@ -50,41 +45,17 @@ const App: React.FC<AppProps> = ({
                 {isUserFormVisible ? (
                     <UserForm questions={questionTree} />
                 ) : (
-                    <FormBuilder
-                        questions={questionTree}
-                        toggleUserForm={toggleUserForm}
-                        addQuestion={addQuestion}
-                    />
+                    <FormBuilder questions={questionTree} />
                 )}
             </Main>
         </AppWrapper>
     )
 }
 
-const mapStateToProps = ({ form, view }: RootState) => ({
-    questionList: form.questionList,
-    isUserFormVisible: view.isUserFormVisible,
-    makeQuestionTree: arrayToTree,
-})
-
-// Usage of "any" due to Github Issue: https://github.com/rematch/rematch/issues/601
-const mapDispatchToProps = ({ view, form }: Dispatch): any => ({
-    toggleUserForm: view.toggleUserForm,
-    addQuestion: form.addQuestion,
-    getAllQuestions: form.initQuestionList,
-})
-
-type ConnectedProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
-
-const ConnectedApp = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(App)
-
 const Root = () => (
     <Provider store={store}>
         <QuestionServiceContext.Provider value={questionServiceFactory}>
-            <ConnectedApp />
+            <App />
         </QuestionServiceContext.Provider>
     </Provider>
 )

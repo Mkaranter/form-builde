@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { connect, Provider } from 'react-redux'
+import { Provider, useSelector, useDispatch } from 'react-redux'
 import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
 
@@ -23,22 +23,18 @@ const Main = styled.main`
     grid-area: main;
 `
 
-type AppProps = ConnectedProps
-
 export const QuestionServiceContext = React.createContext(questionServiceFactory)
 
-const App: React.FC<AppProps> = ({
-    isUserFormVisible,
-    questionList,
-    toggleUserForm,
-    addQuestion,
-    makeQuestionTree,
-    getAllQuestions,
-}) => {
+const App: React.FC = () => {
+    const questionList = useSelector((state: RootState) => state.form.questionList)
+    const isUserFormVisible = useSelector((state: RootState) => state.view.isUserFormVisible)
+
+    const dispatch = useDispatch<Dispatch>()
+
     useEffect(() => {
-        getAllQuestions()
-    }, [getAllQuestions])
-    const questionTree = makeQuestionTree(questionList, {
+        dispatch.form.initQuestionList()
+    }, [dispatch.form])
+    const questionTree = arrayToTree(questionList, {
         parentProperty: 'parentId',
     })
 
@@ -52,8 +48,8 @@ const App: React.FC<AppProps> = ({
                 ) : (
                     <FormBuilder
                         questions={questionTree}
-                        toggleUserForm={toggleUserForm}
-                        addQuestion={addQuestion}
+                        toggleUserForm={dispatch.view.toggleUserForm}
+                        addQuestion={dispatch.form.addQuestion}
                     />
                 )}
             </Main>
@@ -61,30 +57,10 @@ const App: React.FC<AppProps> = ({
     )
 }
 
-const mapStateToProps = ({ form, view }: RootState) => ({
-    questionList: form.questionList,
-    isUserFormVisible: view.isUserFormVisible,
-    makeQuestionTree: arrayToTree,
-})
-
-// Usage of "any" due to Github Issue: https://github.com/rematch/rematch/issues/601
-const mapDispatchToProps = ({ view, form }: Dispatch): any => ({
-    toggleUserForm: view.toggleUserForm,
-    addQuestion: form.addQuestion,
-    getAllQuestions: form.initQuestionList,
-})
-
-type ConnectedProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
-
-const ConnectedApp = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(App)
-
 const Root = () => (
     <Provider store={store}>
         <QuestionServiceContext.Provider value={questionServiceFactory}>
-            <ConnectedApp />
+            <App />
         </QuestionServiceContext.Provider>
     </Provider>
 )

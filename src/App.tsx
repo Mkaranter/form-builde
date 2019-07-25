@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import { Provider, useSelector, useDispatch } from 'react-redux'
-import arrayToTree from 'array-to-tree'
 import styled from 'styled-components'
 
 import { store, RootState, Dispatch } from 'utils/store'
 import { GlobalStyles } from 'utils/globalStyles'
 import { questionServiceFactory } from 'services/questionServiceFactory'
-
 import Header from 'common/components/Header'
+import { listToTree } from 'utils/helpers'
+import { Question } from 'common/models'
 
 import FormBuilder from './views/FormBuilder'
 import UserForm from './views/UserForm'
@@ -34,9 +34,8 @@ const App: React.FC = () => {
     useEffect(() => {
         dispatch.form.initQuestionList()
     }, [dispatch.form])
-    const questionTree = arrayToTree(questionList, {
-        parentProperty: 'parentId',
-    })
+
+    const questionTree = listToTree<Question>(questionList)
 
     return (
         <AppWrapper>
@@ -46,11 +45,7 @@ const App: React.FC = () => {
                 {isUserFormVisible ? (
                     <UserForm questions={questionTree} />
                 ) : (
-                    <FormBuilder
-                        questions={questionTree}
-                        toggleUserForm={dispatch.view.toggleUserForm}
-                        addQuestion={dispatch.form.addQuestion}
-                    />
+                    <FormBuilder questions={questionTree} />
                 )}
             </Main>
         </AppWrapper>

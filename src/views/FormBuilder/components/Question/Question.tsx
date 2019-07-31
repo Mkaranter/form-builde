@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import styled, { css } from 'styled-components'
-import { isEqual } from 'lodash'
+import isEqual from 'lodash.isequal'
 
 import Button from 'common/components/Button'
 import { Question as QuestionModel } from 'common/models'

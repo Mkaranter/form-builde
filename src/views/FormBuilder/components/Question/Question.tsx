@@ -149,19 +149,6 @@ const Question: React.FC<QuestionProps> = ({
     )
 }
 
-// const shouldRefresh = (prevProps: QuestionProps, nextProps: QuestionProps) => {
-//     const questionTextEqual = prevProps.question.text === nextProps.question.text
-//     const questionTypeEqual = prevProps.question.type === nextProps.question.type
-//     const conditionTypeEqual = prevProps.question.conditionType === nextProps.question.conditionType
-//     const conditionValueEqual =
-//         prevProps.question.conditionValue === nextProps.question.conditionValue
-
-//     console.log(isEqual(prevProps.question, nextProps.question))
-//     console.log(questionTextEqual && questionTypeEqual && conditionTypeEqual && conditionValueEqual)
-
-//     return questionTextEqual && questionTypeEqual && conditionTypeEqual && conditionValueEqual
-// }
-
 const shouldRefresh = (prevProps: QuestionProps, nextProps: QuestionProps) =>
     isEqual(prevProps.question, nextProps.question)
 

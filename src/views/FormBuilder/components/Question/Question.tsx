@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { memo } from 'react'
 import styled, { css } from 'styled-components'
+import isEqual from 'lodash.isequal'
 
 import Button from 'common/components/Button'
 import { Question as QuestionModel } from 'common/models'
@@ -103,47 +104,52 @@ const Question: React.FC<QuestionProps> = ({
     const remove = () => questionService.remove(question)
 
     return (
-        <QuestionStyled level={question.level} onSubmit={submit}>
-            {question.level > 0 && (
-                <InputWrapper select>
-                    <Condition
-                        value={question.conditionValue}
-                        type={question.conditionType}
-                        setValue={e => changeValue(e.target.value, 'conditionValue')}
-                        setType={e => changeValue(e.target.value, 'conditionType')}
-                        parentValueType={parentValueType}
+        <>
+            <QuestionStyled level={question.level} onSubmit={submit}>
+                {question.level > 0 && (
+                    <InputWrapper select>
+                        <Condition
+                            value={question.conditionValue}
+                            type={question.conditionType}
+                            setValue={e => changeValue(e.target.value, 'conditionValue')}
+                            setType={e => changeValue(e.target.value, 'conditionType')}
+                            parentValueType={parentValueType}
+                        />
+                    </InputWrapper>
+                )}
+                <InputWrapper>
+                    <label htmlFor={`question-${question.id}`}>Question</label>
+                    <input
+                        type="text"
+                        id={`question-${question.id}`}
+                        value={question.text}
+                        onChange={e => changeValue(e.target.value, 'text')}
+                        required
                     />
                 </InputWrapper>
-            )}
-            <InputWrapper>
-                <label htmlFor={`question-${question.id}`}>Question</label>
-                <input
-                    type="text"
-                    id={`question-${question.id}`}
-                    value={question.text}
-                    onChange={e => changeValue(e.target.value, 'text')}
-                    required
-                />
-            </InputWrapper>
-            <InputWrapper>
-                <label htmlFor={`type-${question.id}`}>Type</label>
-                <select
-                    id={`type-${question.id}`}
-                    value={question.type}
-                    onChange={e => changeType(e.target.value)}>
-                    <option value={QuestionTypes.Text}>Text</option>
-                    <option value={QuestionTypes.Number}>Number</option>
-                    <option value={QuestionTypes.Boolean}>Yes / No</option>
-                </select>
-            </InputWrapper>
-            <ButtonWrapper>
-                <Button type="submit">Add Sub-Input</Button>
-                <Button type="button" onClick={remove}>
-                    Delete
-                </Button>
-            </ButtonWrapper>
-        </QuestionStyled>
+                <InputWrapper>
+                    <label htmlFor={`type-${question.id}`}>Type</label>
+                    <select
+                        id={`type-${question.id}`}
+                        value={question.type}
+                        onChange={e => changeType(e.target.value)}>
+                        <option value={QuestionTypes.Text}>Text</option>
+                        <option value={QuestionTypes.Number}>Number</option>
+                        <option value={QuestionTypes.Boolean}>Yes / No</option>
+                    </select>
+                </InputWrapper>
+                <ButtonWrapper>
+                    <Button type="submit">Add Sub-Input</Button>
+                    <Button type="button" onClick={remove}>
+                        Delete
+                    </Button>
+                </ButtonWrapper>
+            </QuestionStyled>
+        </>
     )
 }
 
-export default Question
+const shouldRefresh = (prevProps: QuestionProps, nextProps: QuestionProps) =>
+    isEqual(prevProps.question, nextProps.question)
+
+export default memo(Question, shouldRefresh)

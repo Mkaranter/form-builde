@@ -27,9 +27,9 @@ export const storageServiceFactory = (store: DbStore, openDB: OpenDB) => {
         return tx.objectStore(store).put(data)
     }
 
-    const update = async (updated: Question) => send(updated)
+    const update = (updated: Question) => send(updated)
 
-    const add = async (added: Omit<Question, 'id'>) => send(added)
+    const add = (added: Omit<Question, 'id'>) => send(added)
 
     const remove = async (key: number) => {
         const db = await dbPromise

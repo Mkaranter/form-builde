@@ -32,7 +32,7 @@
         "react-scripts": "3.0.1",
         "react-test-renderer": "^16.9.0",
         "redux": "^4.0.4",
-        "styled-components": "beta"
+        "styled-components": "^5.0.1"
     },
     "scripts": {
         "start": "react-scripts start",

@@ -14,7 +14,7 @@
         "enzyme": "^3.10.0",
         "enzyme-adapter-react-16": "^1.14.0",
         "fake-indexeddb": "^2.1.1",
-        "prettier": "^1.19.1",
+        "prettier": "^2.0.1",
         "tslint": "^5.20.1",
         "tslint-config-prettier": "^1.18.0",
         "tslint-plugin-prettier": "^2.0.1",
